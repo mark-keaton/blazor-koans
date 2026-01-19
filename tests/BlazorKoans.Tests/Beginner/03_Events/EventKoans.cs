@@ -90,20 +90,22 @@ public class EventKoans : BunitContext
     public void D_PreventDefault()
     {
         // ABOUT: @onclick:preventDefault prevents the default browser action.
+        // Blazor renders this as a special attribute: blazor:onclick:preventdefault
         // This is useful for forms where you want to handle submission in Blazor
         // instead of letting the browser submit the form traditionally.
 
-        // TODO: The EventDemo component uses preventDefault on the submit button.
-        // Does the component prevent the default form submission behavior?
-        // Replace false with true if it prevents default, or keep false if it doesn't.
+        // TODO: Look at the EventDemo component's submit button.
+        // Examine the rendered HTML below - what attribute indicates preventDefault is enabled?
+        // Replace "__" with the attribute name that Blazor adds for preventDefault.
 
         var cut = Render<EventDemo>();
 
         var submitButton = cut.Find("button.submit-button");
 
-        var preventsDefault = true;
+        // Hint: The rendered HTML looks like:
+        // <button class="submit-button" blazor:onclick="5" ???="">Submit</button>
+        var preventDefaultAttribute = "blazor:onclick:preventdefault";
 
-        // The button should have @onclick:preventDefault attribute
-        Assert.True(preventsDefault);
+        Assert.True(submitButton.HasAttribute(preventDefaultAttribute));
     }
 }
