@@ -105,7 +105,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("test");
 
-        var expectedCount = "__";
+        var expectedCount = "4";
 
         Assert.Contains($"Characters: {expectedCount}", cut.Markup);
     }
