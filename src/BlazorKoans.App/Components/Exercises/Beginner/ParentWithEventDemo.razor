@@ -1,0 +1,13 @@
+<div class="parent">
+    <p class="parent-message">@message</p>
+    <EventDemo OnButtonClick="HandleChildClick" />
+</div>
+
+@code {
+    private string message = "Waiting for child...";
+
+    private void HandleChildClick()
+    {
+        message = "Child was clicked!";
+    }
+}
