@@ -54,7 +54,7 @@ public class EventKoans : BunitContext
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedParentMessage = "__";
+        var expectedParentMessage = "Child was clicked!";
 
         Assert.Equal(expectedParentMessage, cut.Find("p.parent-message").TextContent);
     }
