@@ -1,11 +1,13 @@
 using System.Reflection;
+using Bunit;
 using BlazorKoans.App.Components.Exercises.Intermediate;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
-public class C_QueryStrings
+public class C_QueryStrings : BunitContext
 {
     [Fact]
     [Trait("Category", "Intermediate")]
@@ -83,5 +85,44 @@ public class C_QueryStrings
             .GetCustomAttribute<SupplyParameterFromQueryAttribute>();
 
         Assert.Equal("q", attribute?.Name);
+    }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void QueryStrings_BindingInAction()
+    {
+        // ABOUT: Now let's see query string binding in action!
+        // bUnit's NavigationManager lets us set the URL before rendering.
+        // When we navigate to /search?Query=blazor, the Query property gets the value.
+
+        // TODO: Once you've added [SupplyParameterFromQuery] to Query and made it nullable,
+        // the component will receive the query string value from the URL.
+
+        var navMan = Services.GetRequiredService<NavigationManager>();
+        navMan.NavigateTo("/search?Query=blazor");
+
+        var cut = Render<SearchPage>();
+
+        // The Query property should have received the value from the URL
+        Assert.Equal("blazor", cut.Instance.Query);
+    }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void QueryStrings_CustomKeyBindingInAction()
+    {
+        // ABOUT: Custom query keys work the same way.
+        // With [SupplyParameterFromQuery(Name = "q")], the URL ?q=test binds to SearchTerm.
+
+        // TODO: Once you've added Name = "q" to SearchTerm's attribute,
+        // the component will receive the value from ?q=... in the URL.
+
+        var navMan = Services.GetRequiredService<NavigationManager>();
+        navMan.NavigateTo("/search?q=test");
+
+        var cut = Render<SearchPage>();
+
+        // The SearchTerm property should have received the value from ?q=test
+        Assert.Equal("test", cut.Instance.SearchTerm);
     }
 }
