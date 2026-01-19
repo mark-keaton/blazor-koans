@@ -40,7 +40,7 @@ public class C_QueryStrings
         var queryProperty = Array.Find(properties, p =>
             p.GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null);
 
-        var expectedPropertyName = "Query"; // SOLUTION: "Query"
+        var expectedPropertyName = "Query";
 
         Assert.Equal(expectedPropertyName, queryProperty?.Name);
     }
@@ -60,7 +60,7 @@ public class C_QueryStrings
         var nullabilityInfo = nullabilityContext.Create(queryProperty!);
         var isNullable = nullabilityInfo.WriteState == NullabilityState.Nullable;
 
-        var expectedIsNullable = true; // SOLUTION: true
+        var expectedIsNullable = true;
 
         Assert.Equal(expectedIsNullable, isNullable);
     }
