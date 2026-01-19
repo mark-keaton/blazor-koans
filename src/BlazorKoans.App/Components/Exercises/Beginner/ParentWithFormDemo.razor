@@ -1,0 +1,13 @@
+<div class="parent">
+    <p class="received-value">@receivedValue</p>
+    <EventDemo OnSubmit="HandleChildSubmit" />
+</div>
+
+@code {
+    private string receivedValue = "No submission yet";
+
+    private void HandleChildSubmit(string value)
+    {
+        receivedValue = $"Received: {value}";
+    }
+}

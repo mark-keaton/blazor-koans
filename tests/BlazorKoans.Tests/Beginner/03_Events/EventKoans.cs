@@ -1,6 +1,5 @@
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Beginner;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazorKoans.Tests.Beginner.Events;
 
@@ -67,24 +66,23 @@ public class EventKoans : BunitContext
         // This is useful when you need to send data along with the event notification.
         // For example, passing form data or user input to a parent component.
 
-        // TODO: The EventDemo component has an EventCallback<string> for form submission.
-        // Type "test" in the input and click Submit. What value is passed to the callback?
-        // Replace "__" with the expected value.
+        // TODO: Look at ParentWithFormDemo - it contains EventDemo as a child.
+        // The parent passes HandleChildSubmit to the child's OnSubmit parameter.
+        // Type "Blazor" in the input and click Submit.
+        // What text does the PARENT display in <p class="received-value">?
+        // Replace "__" with the expected text.
 
-        var submittedValue = string.Empty;
-
-        var cut = Render<EventDemo>(parameters => parameters
-            .Add(p => p.OnSubmit, EventCallback.Factory.Create<string>(this, value => submittedValue = value)));
+        var cut = Render<ParentWithFormDemo>();
 
         var input = cut.Find("input[type='text']");
-        input.Change("test");
+        input.Change("Blazor");
 
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedValue = "test";
+        var expectedReceivedText = "Received: Blazor";
 
-        Assert.Equal(expectedValue, submittedValue);
+        Assert.Equal(expectedReceivedText, cut.Find("p.received-value").TextContent);
     }
 
     [Fact]
