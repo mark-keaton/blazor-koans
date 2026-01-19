@@ -1,8 +1,8 @@
 ---
 name: blazor-koans
-status: backlog
+status: completed
 created: 2026-01-19T04:19:22Z
-progress: 0%
+progress: 100%
 prd: .claude/prds/blazor-koans.md
 github: [Will be updated when synced to GitHub]
 ---

@@ -26,6 +26,106 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ApiDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvQXBpRGVtby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ErrorDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvRXJyb3JEZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/LoggingDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvTG9nZ2luZ0RlbW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/LoginStatus.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvTG9naW5TdGF0dXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ProtectedPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvUHJvdGVjdGVkUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ShoppingCart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvU2hvcHBpbmdDYXJ0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ThemeConsumer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvVGhlbWVDb25zdW1lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/ThemeProvider.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvVGhlbWVQcm92aWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Advanced/WeatherDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQWR2YW5jZWQvV2VhdGhlckRpc3BsYXkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/BindingDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvQmluZGluZ0RlbW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/Card.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/EventDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvRXZlbnREZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/Greeting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvR3JlZXRpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/HelloWorld.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvSGVsbG9Xb3JsZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/ItemList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvSXRlbUxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Beginner/LifecycleDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvQmVnaW5uZXIvTGlmZWN5Y2xlRGVtby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/FormDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL0Zvcm1EZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/ProductPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1Byb2R1Y3RQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/RegistrationForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1JlZ2lzdHJhdGlvbkZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/RoutingDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1JvdXRpbmdEZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/SearchPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1NlYXJjaFBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/ServiceDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1NlcnZpY2VEZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/ServiceDemoCodeBehind.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1NlcnZpY2VEZW1vQ29kZUJlaGluZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Exercises/Intermediate/ValidationDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9FeGVyY2lzZXMvSW50ZXJtZWRpYXRlL1ZhbGlkYXRpb25EZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/mark/playground/csharp/blazor-koans/src/BlazorKoans.App/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

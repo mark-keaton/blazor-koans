@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlazorKoans.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3fa8c13bc6ff7c13d14c83c2c4791461191093b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+869794ecae73af623a3b95aac6ed30ee9e71f431")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlazorKoans.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlazorKoans.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
