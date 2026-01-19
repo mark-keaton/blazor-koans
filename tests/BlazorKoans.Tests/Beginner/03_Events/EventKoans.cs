@@ -27,10 +27,11 @@ public class EventKoans : BunitContext
         increment.Click();
         increment.Click();
         increment.Click();
+
         decrement.Click();
         decrement.Click();
 
-        var expectedCount = "__";
+        var expectedCount = "3";
 
         Assert.Equal(expectedCount, cut.Find("span.click-count").TextContent);
     }
