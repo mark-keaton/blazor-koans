@@ -4,6 +4,7 @@
 <h3>Search Page</h3>
 
 <p>Query: @Query</p>
+<p>Search Term: @SearchTerm</p>
 <p>Current URL: @Navigation.Uri</p>
 
 <button @onclick="NavigateToHome">Go to Home</button>
@@ -14,6 +15,12 @@
     // HINT: The attribute name starts with "SupplyParameter..."
     // [???]
     public string? Query { get; set; }
+
+    [Parameter]
+    // TODO: Add the attribute that binds this property to ?q=value in the URL.
+    // HINT: Use the Name parameter to customize the query key: (Name = "q")
+    [SupplyParameterFromQuery]
+    public string? SearchTerm { get; set; }
 
     private void NavigateToHome()
     {

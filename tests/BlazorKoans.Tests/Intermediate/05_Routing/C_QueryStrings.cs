@@ -64,4 +64,22 @@ public class C_QueryStrings
 
         Assert.Equal(expectedIsNullable, isNullable);
     }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void QueryStrings_CustomQueryKey()
+    {
+        // ABOUT: You can customize the query string key using the Name parameter.
+        // [SupplyParameterFromQuery(Name = "q")] binds to ?q=value instead of ?SearchTerm=value.
+        // This is useful for shorter URLs or matching existing API conventions.
+
+        // TODO: Add Name = "q" to the [SupplyParameterFromQuery] attribute on SearchTerm
+        // in SearchPage.razor so it binds to ?q=value in the URL.
+
+        var searchTermProperty = typeof(SearchPage).GetProperty("SearchTerm");
+        var attribute = searchTermProperty?
+            .GetCustomAttribute<SupplyParameterFromQueryAttribute>();
+
+        Assert.Equal("q", attribute?.Name);
+    }
 }
