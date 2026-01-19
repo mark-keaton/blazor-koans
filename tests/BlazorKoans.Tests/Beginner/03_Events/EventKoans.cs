@@ -14,22 +14,26 @@ public class EventKoans : BunitContext
         // When a user clicks an element, the handler method executes.
         // This is how you make your UI interactive.
 
-        // TODO: The EventDemo component has a button that increments a click count.
-        // Click the button 3 times. What is the final click count?
-        // Replace 0 with the expected count.
+        // TODO: Look at the EventDemo component. It has increment (+) and decrement (-) buttons.
+        // After these clicks, what is the final count displayed?
+        // Replace "__" with the expected count as a string.
 
         var cut = Render<EventDemo>();
 
-        var button = cut.Find("button.click-counter");
-        button.Click();
-        button.Click();
-        button.Click();
+        var increment = cut.Find("button.increment");
+        var decrement = cut.Find("button.decrement");
 
-        var expectedCount = 3; // SOLUTION: 3
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        decrement.Click();
+        decrement.Click();
 
-        // Check the button text contains the expected count
-        var buttonText = cut.Find("button.click-counter").TextContent;
-        Assert.Contains($"Clicked: {expectedCount}", buttonText);
+        var expectedCount = "3";
+
+        Assert.Equal(expectedCount, cut.Find("span.click-count").TextContent);
     }
 
     [Fact]
@@ -40,8 +44,8 @@ public class EventKoans : BunitContext
         // A component can expose an EventCallback parameter that the parent can subscribe to.
         // This enables child components to communicate with their parents.
 
-        // TODO: The EventDemo component has an EventCallback parameter called OnButtonClick.
-        // When the "Click Me" button is clicked, what message is displayed?
+        // TODO: Look at the EventDemo component's HandleButtonClick method.
+        // When the "Click Me" button is clicked, what message is displayed in <p class="message">?
         // Replace "__" with the expected message.
 
         var wasClicked = false;
@@ -52,12 +56,10 @@ public class EventKoans : BunitContext
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedMessage = "Button was clicked!"; // SOLUTION: "Button was clicked!"
+        var expectedMessage = "Button was clicked!";
 
         Assert.True(wasClicked);
-        // Check the message text
-        var messageText = cut.Find("p.message").TextContent;
-        Assert.Equal(expectedMessage, messageText);
+        Assert.Equal(expectedMessage, cut.Find("p.message").TextContent);
     }
 
     [Fact]
@@ -83,7 +85,7 @@ public class EventKoans : BunitContext
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedValue = "test"; // SOLUTION: "test"
+        var expectedValue = "test";
 
         Assert.Equal(expectedValue, submittedValue);
     }
@@ -104,7 +106,7 @@ public class EventKoans : BunitContext
 
         var submitButton = cut.Find("button.submit-button");
 
-        var preventsDefault = true; // SOLUTION: true
+        var preventsDefault = true;
 
         // The button should have @onclick:preventDefault attribute
         Assert.True(preventsDefault);
