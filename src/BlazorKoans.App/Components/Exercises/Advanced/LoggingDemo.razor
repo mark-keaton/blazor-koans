@@ -1,0 +1,16 @@
+@inject ILogger<LoggingDemo> Logger
+
+<div>
+    <button @onclick="LogMessage">Log Message</button>
+    <div>Messages logged: @messageCount</div>
+</div>
+
+@code {
+    private int messageCount = 0;
+
+    private void LogMessage()
+    {
+        Logger.LogInformation("Test message {Count}", messageCount);
+        messageCount++;
+    }
+}

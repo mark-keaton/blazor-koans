@@ -1,0 +1,31 @@
+@using BlazorKoans.App.Services
+@inject CounterStateContainer StateContainer
+@implements IDisposable
+
+<div>
+    <p>Cart Items: @StateContainer.Count</p>
+    <button @onclick="AddItem">Add Item</button>
+    <button @onclick="RemoveItem">Remove Item</button>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        StateContainer.OnChange += StateHasChanged;
+    }
+
+    private void AddItem()
+    {
+        StateContainer.Increment();
+    }
+
+    private void RemoveItem()
+    {
+        StateContainer.Decrement();
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnChange -= StateHasChanged;
+    }
+}

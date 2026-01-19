@@ -1,0 +1,22 @@
+@using BlazorKoans.App.Services
+@inject IWeatherService WeatherService
+
+<h3>Weather Display</h3>
+
+@if (forecasts == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>Count: @forecasts.Count</div>
+}
+
+@code {
+    private List<Models.WeatherForecast>? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await WeatherService.GetForecastAsync();
+    }
+}

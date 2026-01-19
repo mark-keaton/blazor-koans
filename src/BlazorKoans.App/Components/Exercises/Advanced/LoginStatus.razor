@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <div>Logged in as: @context.User.Identity?.Name</div>
+        @if (context.User.IsInRole("Admin"))
+        {
+            <div>Role: Admin</div>
+        }
+        else
+        {
+            <div>Role: User</div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <div>Not logged in</div>
+    </NotAuthorized>
+</AuthorizeView>

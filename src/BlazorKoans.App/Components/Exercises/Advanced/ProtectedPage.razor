@@ -1,0 +1,11 @@
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <div>Welcome, @context.User.Identity?.Name!</div>
+    </Authorized>
+    <NotAuthorized>
+        <div>Please log in.</div>
+    </NotAuthorized>
+</AuthorizeView>

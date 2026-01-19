@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<ErrorBoundary>
+    <ChildContent>
+        @if (shouldThrow)
+        {
+            @ThrowError()
+        }
+        else
+        {
+            <div>No error</div>
+        }
+        <button @onclick="CauseError">Cause Error</button>
+    </ChildContent>
+    <ErrorContent Context="exception">
+        <div class="error">Error: @exception.Message</div>
+        <button @onclick="Recover">Recover</button>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    private bool shouldThrow = false;
+    private ErrorBoundary? errorBoundary;
+
+    private void CauseError()
+    {
+        shouldThrow = true;
+    }
+
+    private void Recover()
+    {
+        shouldThrow = false;
+        errorBoundary?.Recover();
+    }
+
+    private RenderFragment ThrowError() => builder =>
+    {
+        throw new InvalidOperationException("Test error");
+    };
+}

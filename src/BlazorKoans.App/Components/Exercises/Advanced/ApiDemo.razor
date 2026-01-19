@@ -1,0 +1,40 @@
+@inject HttpClient Http
+
+<h3>API Demo</h3>
+
+@if (result != null)
+{
+    <div>Result: @result</div>
+}
+
+<button @onclick="LoadData">Load Data</button>
+<button @onclick="PostData">Post Data</button>
+
+@code {
+    private string? result;
+
+    private async Task LoadData()
+    {
+        try
+        {
+            result = await Http.GetStringAsync("api/data");
+        }
+        catch (HttpRequestException ex)
+        {
+            result = $"Error: {ex.Message}";
+        }
+    }
+
+    private async Task PostData()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/data", new { value = "test" });
+            result = response.IsSuccessStatusCode ? "Success" : "Failed";
+        }
+        catch (HttpRequestException ex)
+        {
+            result = $"Error: {ex.Message}";
+        }
+    }
+}

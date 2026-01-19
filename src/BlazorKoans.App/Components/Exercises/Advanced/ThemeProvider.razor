@@ -1,0 +1,16 @@
+<CascadingValue Value="@theme">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string theme = "light";
+
+    public void SetTheme(string newTheme)
+    {
+        theme = newTheme;
+        StateHasChanged();
+    }
+}
