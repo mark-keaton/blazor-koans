@@ -1,0 +1,17 @@
+<div>
+    <input @bind="text" @bind:after="UpdateCharacterCount" />
+    <p class="display">@text</p>
+    <p>Characters: @characterCount</p>
+    <input type="datetime-local" @bind="selectedDate" @bind:format="yyyy-MM-ddTHH:mm" />
+</div>
+
+@code {
+    private string text = string.Empty;
+    private int characterCount = 0;
+    private DateTime selectedDate = DateTime.Now;
+
+    private void UpdateCharacterCount()
+    {
+        characterCount = text.Length;
+    }
+}

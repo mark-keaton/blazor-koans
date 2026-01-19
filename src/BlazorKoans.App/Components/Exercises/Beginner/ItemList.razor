@@ -1,0 +1,16 @@
+@typeparam TItem
+
+<ul>
+    @foreach (var item in Items)
+    {
+        @ItemTemplate?.Invoke(item)
+    }
+</ul>
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = Array.Empty<TItem>();
+
+    [Parameter]
+    public RenderFragment<TItem>? ItemTemplate { get; set; }
+}

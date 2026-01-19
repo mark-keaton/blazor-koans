@@ -1,0 +1,43 @@
+<div>
+    <p class="status">@status</p>
+    <p class="render-count">Renders: @renderCount</p>
+    <p class="param-value">Value: @Value</p>
+</div>
+
+@code {
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+
+    private string status = string.Empty;
+    private int renderCount = 0;
+
+    protected override void OnInitialized()
+    {
+        status = "Initialized";
+    }
+
+    protected override void OnParametersSet()
+    {
+        // This is called every time parameters are set
+        base.OnParametersSet();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            renderCount = 1;
+        }
+        else
+        {
+            renderCount++;
+        }
+    }
+
+    public void Dispose()
+    {
+        // Cleanup logic here
+    }
+}
+
+@implements IDisposable

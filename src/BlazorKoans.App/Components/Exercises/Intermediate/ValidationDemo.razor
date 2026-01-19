@@ -1,0 +1,55 @@
+@using BlazorKoans.App.Models
+@using System.ComponentModel.DataAnnotations
+
+<h3>Validation Demo</h3>
+
+<EditForm Model="@person" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="person.Name" />
+        <ValidationMessage For="@(() => person.Name)" />
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="person.Email" type="email" />
+        <ValidationMessage For="@(() => person.Email)" />
+    </div>
+
+    <div>
+        <label>Age:</label>
+        <InputNumber @bind-Value="person.Age" />
+        <ValidationMessage For="@(() => person.Age)" />
+    </div>
+
+    <ValidationSummary />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+<p>Valid: @IsValid</p>
+<p>Invalid: @IsInvalid</p>
+<p>Error Count: @ErrorCount</p>
+
+@code {
+    private Person person = new();
+    public bool IsValid { get; private set; }
+    public bool IsInvalid { get; private set; }
+    public int ErrorCount { get; private set; }
+
+    private void HandleValidSubmit()
+    {
+        IsValid = true;
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        IsInvalid = true;
+        var context = new ValidationContext(person);
+        var results = new List<ValidationResult>();
+        Validator.TryValidateObject(person, context, results, true);
+        ErrorCount = results.Count;
+    }
+}

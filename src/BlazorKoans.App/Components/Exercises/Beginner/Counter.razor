@@ -1,0 +1,13 @@
+<div>
+    <p>Count: @count</p>
+    <button @onclick="IncrementCount">Increment</button>
+</div>
+
+@code {
+    private int count = 0;
+
+    private void IncrementCount()
+    {
+        count++;
+    }
+}

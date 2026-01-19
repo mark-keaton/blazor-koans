@@ -1,0 +1,38 @@
+<div>
+    <button class="click-counter" @onclick="IncrementClickCount">Clicked: @clickCount</button>
+    <button class="event-callback-button" @onclick="HandleButtonClick">Click Me</button>
+    <p class="message">@message</p>
+    <input type="text" @bind="inputValue" />
+    <button class="submit-button" @onclick="HandleSubmit" @onclick:preventDefault="true">Submit</button>
+    <p class="submitted-value">@submittedValue</p>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnButtonClick { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnSubmit { get; set; }
+
+    private int clickCount = 0;
+    private string message = string.Empty;
+    private string inputValue = string.Empty;
+    private string submittedValue = string.Empty;
+
+    private void IncrementClickCount()
+    {
+        clickCount++;
+    }
+
+    private async Task HandleButtonClick()
+    {
+        message = "Button was clicked!";
+        await OnButtonClick.InvokeAsync();
+    }
+
+    private async Task HandleSubmit()
+    {
+        submittedValue = inputValue;
+        await OnSubmit.InvokeAsync(inputValue);
+    }
+}
