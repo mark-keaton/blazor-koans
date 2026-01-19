@@ -14,20 +14,14 @@ public class LifecycleKoans : BunitContext
         // Use this to initialize data, load resources, or set up the component.
 
         // TODO: The LifecycleDemo component sets an initial message in OnInitialized.
-        // What message is displayed after initialization?
+        // What message is displayed in the status paragraph after initialization?
         // Replace "__" with the expected message.
 
         var cut = Render<LifecycleDemo>();
 
-        var expectedMessage = "Initialized"; // SOLUTION: "Initialized"
+        var expectedMessage = "Initialized";
 
-        cut.MarkupMatches($@"
-            <div>
-                <p class=""status"">{expectedMessage}</p>
-                <p class=""render-count"">Renders: 1</p>
-                <p class=""param-value"">Value: </p>
-            </div>
-        ");
+        Assert.Equal(expectedMessage, cut.Find("p.status").TextContent);
     }
 
     [Fact]
@@ -36,24 +30,19 @@ public class LifecycleKoans : BunitContext
     {
         // ABOUT: OnParametersSet is called when parameters are set or changed.
         // This happens after OnInitialized and every time parameters change.
-        // Use this to respond to parameter changes and update derived state.
+        // Use this to compute derived state from parameters.
 
-        // TODO: The LifecycleDemo component updates its state when the Value parameter changes.
-        // When Value is set to "test", what does the param-value paragraph display?
-        // Replace "__" with the expected display text (hint: it includes the value).
+        // TODO: Look at LifecycleDemo's OnParametersSet method.
+        // It transforms the Value parameter into a formatted string.
+        // When Value is set to "blazor", what does the param-value paragraph display?
+        // Replace "__" with the expected formatted text.
 
         var cut = Render<LifecycleDemo>(parameters => parameters
-            .Add(p => p.Value, "test"));
+            .Add(p => p.Value, "blazor"));
 
-        var expectedDisplay = "Value: test"; // SOLUTION: "Value: test"
+        var expectedDisplay = "Received: BLAZOR";
 
-        cut.MarkupMatches($@"
-            <div>
-                <p class=""status"">Initialized</p>
-                <p class=""render-count"">Renders: 1</p>
-                <p class=""param-value"">{expectedDisplay}</p>
-            </div>
-        ");
+        Assert.Equal(expectedDisplay, cut.Find("p.param-value").TextContent);
     }
 
     [Fact]
@@ -65,20 +54,14 @@ public class LifecycleKoans : BunitContext
         // Use this for JavaScript interop or DOM manipulation after rendering.
 
         // TODO: The LifecycleDemo component counts how many times it has rendered.
-        // After the first render, how many renders have occurred?
-        // Replace 0 with the expected count.
+        // Look at OnAfterRenderAsync - what render count is displayed after the first render?
+        // Replace "__" with the expected count as a string.
 
         var cut = Render<LifecycleDemo>();
 
-        var expectedRenderCount = 1; // SOLUTION: 1
+        var expectedRenderCount = "1";
 
-        cut.MarkupMatches($@"
-            <div>
-                <p class=""status"">Initialized</p>
-                <p class=""render-count"">Renders: {expectedRenderCount}</p>
-                <p class=""param-value"">Value: </p>
-            </div>
-        ");
+        Assert.Equal($"Renders: {expectedRenderCount}", cut.Find("p.render-count").TextContent);
     }
 
     [Fact]
@@ -98,7 +81,7 @@ public class LifecycleKoans : BunitContext
         // Dispose the component
         cut.Dispose();
 
-        var wasDisposed = true; // SOLUTION: true
+        var wasDisposed = true;
 
         // The component should implement IDisposable and call Dispose
         Assert.True(wasDisposed);
