@@ -80,7 +80,7 @@ public class DataBindingKoans : BunitContext
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormattedValue = "__";
+        var expectedFormattedValue = "2024-06-15T08:30";
 
         Assert.Equal(expectedFormattedValue, dateInput.GetAttribute("value"));
     }
