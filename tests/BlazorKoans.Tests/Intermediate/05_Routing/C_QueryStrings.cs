@@ -11,16 +11,19 @@ public class C_QueryStrings
     [Trait("Category", "Intermediate")]
     public void QueryStrings_SupplyParameterFromQuery()
     {
-        // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters
-        // For example, /search?query=blazor would set Query = "blazor"
+        // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters.
+        // For example, /search?query=blazor would set Query = "blazor".
+        // Without this attribute, the property won't receive values from the URL.
 
-        // TODO: What attribute is used to bind query string parameters?
-        // Answer the question below by checking the SearchPage component
+        // TODO: Add the [SupplyParameterFromQuery] attribute to the Query property
+        // in SearchPage.razor to bind it to the URL query string.
 
-        var expected = "SupplyParameterFromQuery"; // SOLUTION: "SupplyParameterFromQuery"
+        var queryProperty = typeof(SearchPage).GetProperty("Query");
+        var hasAttribute = queryProperty?
+            .GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null;
 
-        // The SearchPage component uses [SupplyParameterFromQuery] on the Query parameter
-        Assert.Equal("SupplyParameterFromQuery", expected);
+        Assert.True(hasAttribute,
+            "The Query property needs the [SupplyParameterFromQuery] attribute");
     }
 
     [Fact]
