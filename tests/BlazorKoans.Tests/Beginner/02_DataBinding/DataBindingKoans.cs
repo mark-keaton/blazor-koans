@@ -13,17 +13,22 @@ public class DataBindingKoans : BunitContext
         // The syntax @variableName renders the value into the HTML.
         // When the variable changes and the component re-renders, the display updates.
 
-        // TODO: The Counter component displays a count value.
-        // What is the initial count value shown when the component first renders?
-        // Replace "__" with the initial count as a string.
+        // TODO: Look at the Counter component to understand how it works.
+        // After clicking the button 3 times, what count value is displayed?
+        // Replace "__" with the expected count as a string.
 
         var cut = Render<Counter>();
 
-        var initialCount = "__";
+        var button = cut.Find("button");
+        button.Click();
+        button.Click();
+        button.Click();
+
+        var expectedCount = "__";
 
         cut.MarkupMatches($@"
             <div>
-                <p>Count: {initialCount}</p>
+                <p>Count: {expectedCount}</p>
                 <button>Increment</button>
             </div>
         ");
