@@ -95,16 +95,40 @@ public class C_QueryStrings : BunitContext
         // bUnit's NavigationManager lets us set the URL before rendering.
         // When we navigate to /search?Query=blazor, the Query property gets the value.
 
-        // TODO: Once you've added [SupplyParameterFromQuery] to Query and made it nullable,
-        // the component will receive the query string value from the URL.
+        // TODO: Replace "__" with the value that Query will receive from the URL.
+        // Look at the query string in the NavigateTo call below.
 
         var navMan = Services.GetRequiredService<NavigationManager>();
         navMan.NavigateTo("/search?Query=blazor");
 
         var cut = Render<SearchPage>();
 
+        var expected = "blazor";
+
         // The Query property should have received the value from the URL
-        Assert.Equal("blazor", cut.Instance.Query);
+        Assert.Equal(expected, cut.Instance.Query);
+    }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void QueryStrings_AreCaseInsensitive()
+    {
+        // ABOUT: Query string keys are case-insensitive in Blazor.
+        // ?query=value, ?Query=value, and ?QUERY=value all bind to the Query property.
+        // This matches standard URL conventions.
+
+        // TODO: Replace "__" with the value Query receives.
+        // Notice the URL uses lowercase "query" but the property is "Query".
+
+        var navMan = Services.GetRequiredService<NavigationManager>();
+        navMan.NavigateTo("/search?query=case-test");
+
+        var cut = Render<SearchPage>();
+
+        var expected = "case-test";
+
+        // Even with lowercase "query" in the URL, Query property gets the value
+        Assert.Equal(expected, cut.Instance.Query);
     }
 
     [Fact]
@@ -114,15 +138,16 @@ public class C_QueryStrings : BunitContext
         // ABOUT: Custom query keys work the same way.
         // With [SupplyParameterFromQuery(Name = "q")], the URL ?q=test binds to SearchTerm.
 
-        // TODO: Once you've added Name = "q" to SearchTerm's attribute,
-        // the component will receive the value from ?q=... in the URL.
+        // TODO: Replace "__" with the value that SearchTerm will receive from ?q=test.
 
         var navMan = Services.GetRequiredService<NavigationManager>();
         navMan.NavigateTo("/search?q=test");
 
         var cut = Render<SearchPage>();
 
+        var expected = "test";
+
         // The SearchTerm property should have received the value from ?q=test
-        Assert.Equal("test", cut.Instance.SearchTerm);
+        Assert.Equal(expected, cut.Instance.SearchTerm);
     }
 }
