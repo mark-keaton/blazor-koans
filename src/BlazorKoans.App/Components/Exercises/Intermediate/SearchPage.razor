@@ -14,7 +14,8 @@
     // TODO: Add the attribute that binds this property to the URL query string.
     // HINT: The attribute name starts with "SupplyParameter..."
     // [???]
-    public string? Query { get; set; }
+    // TODO: Make this property nullable (optional) so the page works without a query string.
+    public string Query { get; set; } = "";
 
     [Parameter]
     // TODO: Add the attribute that binds this property to ?q=value in the URL.
