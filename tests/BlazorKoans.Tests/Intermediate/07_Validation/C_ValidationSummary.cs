@@ -21,7 +21,7 @@ public class C_ValidationSummary : BunitContext
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = 0; // SOLUTION: 3 (Name required, Email required, Age range)
+        var expected = 3; // SOLUTION: 3 (Name required, Email required, Age range)
 
         Assert.Equal(expected, cut.Instance.ErrorCount);
     }
@@ -37,13 +37,13 @@ public class C_ValidationSummary : BunitContext
 
         var cut = Render<ValidationDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input.valid");
         nameInput.Change("Alice");
 
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = 0; // SOLUTION: 2 (Email required, Age range)
+        var expected = 2; // SOLUTION: 2 (Email required, Age range)
 
         Assert.Equal(expected, cut.Instance.ErrorCount);
     }

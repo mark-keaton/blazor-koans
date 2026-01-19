@@ -45,7 +45,7 @@ public class C_ScopedInBlazor : BunitContext
         var button = cut.Find("button");
         button.Click();
 
-        var expected = 0; // SOLUTION: 1
+        var expected = 1; // SOLUTION: 1
 
         Assert.Contains($"Counter: {expected}", cut.Markup);
     }

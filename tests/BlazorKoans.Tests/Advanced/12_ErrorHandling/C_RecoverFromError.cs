@@ -18,7 +18,7 @@ public class C_RecoverFromError : BunitContext
         // TODO: What method resets an ErrorBoundary after an error?
         // Replace "__" with the method name
 
-        var expected = "__"; // SOLUTION: "Recover"
+        var expected = "Recover"; // SOLUTION: "Recover"
 
         Assert.Equal("Recover", expected);
     }
@@ -49,7 +49,7 @@ public class C_RecoverFromError : BunitContext
         cut.WaitForAssertion(() =>
             Assert.Contains("Error:", cut.Markup), timeout: TimeSpan.FromSeconds(2));
 
-        var expected = "__"; // SOLUTION: "yes"
+        var expected = "yes"; // SOLUTION: "yes"
 
         // Recover would reset it (implementation-dependent)
         Assert.Equal("yes", expected);
@@ -64,7 +64,7 @@ public class C_RecoverFromError : BunitContext
 
         // TODO: Should you fix the error condition before calling Recover()?
 
-        var expected = "__"; // SOLUTION: "yes"
+        var expected = "yes"; // SOLUTION: "yes"
 
         Assert.Equal("yes", expected);
     }
@@ -78,7 +78,7 @@ public class C_RecoverFromError : BunitContext
 
         // TODO: Can you have ErrorBoundary inside ErrorBoundary?
 
-        var expected = "__"; // SOLUTION: "yes"
+        var expected = "yes"; // SOLUTION: "yes"
 
         Assert.Equal("yes", expected);
     }

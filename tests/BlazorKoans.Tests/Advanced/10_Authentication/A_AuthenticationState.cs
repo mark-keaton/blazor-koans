@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorKoans.App.Components.Exercises.Advanced;
 using BlazorKoans.Tests.Mocks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 using Xunit;
 
@@ -10,6 +11,16 @@ namespace BlazorKoans.Tests.Advanced.Authentication;
 
 public class A_AuthenticationState : BunitContext
 {
+    public A_AuthenticationState()
+    {
+        // Register required services for AuthorizeView
+        Services.AddAuthorizationCore();
+        Services.AddLogging();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationService, Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory, Microsoft.AspNetCore.Authorization.DefaultAuthorizationHandlerContextFactory>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator, Microsoft.AspNetCore.Authorization.DefaultAuthorizationEvaluator>();
+    }
+
     [Fact]
     [Trait("Category", "Advanced")]
     public async Task AuthenticationStateProvider_provides_user_identity()
@@ -43,7 +54,7 @@ public class A_AuthenticationState : BunitContext
 
         var state = await authProvider.GetAuthenticationStateAsync();
 
-        var expected = "__"; // SOLUTION: "TestUser"
+        var expected = "TestUser"; // SOLUTION: "TestUser"
 
         Assert.Equal(expected, state.User.Identity?.Name);
     }
@@ -65,7 +76,7 @@ public class A_AuthenticationState : BunitContext
         var principal = new ClaimsPrincipal(identity);
         var state = new AuthenticationState(principal);
 
-        var expected = "__"; // SOLUTION: "ClaimsPrincipal"
+        var expected = "ClaimsPrincipal"; // SOLUTION: "ClaimsPrincipal"
 
         Assert.IsType<ClaimsPrincipal>(state.User);
         Assert.Equal("ClaimsPrincipal", expected);
@@ -86,9 +97,19 @@ public class A_AuthenticationState : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        // Wrap in CascadingAuthenticationState to provide authentication context
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Markup.Contains("Logged in as: Bob"));
     }

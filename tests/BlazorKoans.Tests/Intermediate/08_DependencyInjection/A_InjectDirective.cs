@@ -23,7 +23,7 @@ public class A_InjectDirective : BunitContext
 
         var cut = Render<ServiceDemo>();
 
-        var expected = "__"; // SOLUTION: "Hello, Student!"
+        var expected = "Hello, Student!"; // SOLUTION: "Hello, Student!"
 
         Assert.Contains($"Greeting: {expected}", cut.Markup);
     }
@@ -42,7 +42,7 @@ public class A_InjectDirective : BunitContext
 
         var cut = Render<ServiceDemo>();
 
-        var expected = "__"; // SOLUTION: "Scoped"
+        var expected = "Scoped"; // SOLUTION: "Scoped"
 
         Assert.Contains($"Service Type: {expected}", cut.Markup);
     }

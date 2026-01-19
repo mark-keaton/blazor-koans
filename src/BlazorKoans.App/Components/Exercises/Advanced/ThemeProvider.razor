@@ -11,6 +11,6 @@
     public void SetTheme(string newTheme)
     {
         theme = newTheme;
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 }

@@ -21,7 +21,7 @@ public class A_DataAnnotations : BunitContext
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         // Should trigger OnInvalidSubmit
         Assert.Equal(expected, cut.Instance.IsInvalid);
@@ -45,7 +45,7 @@ public class A_DataAnnotations : BunitContext
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Instance.IsInvalid);
     }
@@ -62,13 +62,13 @@ public class A_DataAnnotations : BunitContext
 
         var cut = Render<ValidationDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input.valid");
         nameInput.Change("A");
 
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Instance.IsInvalid);
     }

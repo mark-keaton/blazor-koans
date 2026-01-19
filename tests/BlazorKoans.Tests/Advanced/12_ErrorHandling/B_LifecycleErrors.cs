@@ -17,7 +17,7 @@ public class B_LifecycleErrors : BunitContext
         // TODO: Wrap async operations in try-catch.
         // Does this prevent ErrorBoundary from triggering?
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         // When errors are caught in lifecycle methods,
         // ErrorBoundary is not triggered
@@ -45,7 +45,7 @@ public class B_LifecycleErrors : BunitContext
             errorMessage = ex.Message;
         }
 
-        var expected = "__"; // SOLUTION: "Something failed"
+        var expected = "Something failed"; // SOLUTION: "Something failed"
 
         Assert.Equal(expected, errorMessage);
     }
@@ -59,7 +59,7 @@ public class B_LifecycleErrors : BunitContext
 
         // TODO: What happens to unhandled exceptions in OnInitializedAsync?
 
-        var expected = "__"; // SOLUTION: "caught"
+        var expected = "caught"; // SOLUTION: "caught"
 
         // Unhandled exceptions bubble up to ErrorBoundary
         Assert.Equal("caught", expected);
@@ -90,7 +90,7 @@ public class B_LifecycleErrors : BunitContext
             finallyRan = true;
         }
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, finallyRan);
     }

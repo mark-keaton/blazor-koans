@@ -45,7 +45,7 @@ public class B_StateContainer : BunitContext
 
         stateContainer.Increment();
 
-        var expected = 0; // SOLUTION: 1
+        var expected = 1; // SOLUTION: 1
 
         cut.WaitForAssertion(() =>
             Assert.Contains($"Cart Items: {expected}", cut.Markup));
@@ -69,7 +69,7 @@ public class B_StateContainer : BunitContext
         stateContainer.Increment();
         stateContainer.Increment();
 
-        var expected = 0; // SOLUTION: 2
+        var expected = 2; // SOLUTION: 2
 
         Assert.Equal(expected, eventCount);
     }
@@ -91,7 +91,7 @@ public class B_StateContainer : BunitContext
 
         cut.Find("button").Click(); // Clicks "Add Item"
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Markup.Contains("Cart Items: 1"));
     }

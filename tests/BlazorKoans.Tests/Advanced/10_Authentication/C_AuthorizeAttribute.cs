@@ -3,12 +3,23 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorKoans.App.Components.Exercises.Advanced;
 using BlazorKoans.Tests.Mocks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
 public class C_AuthorizeAttribute : BunitContext
 {
+    public C_AuthorizeAttribute()
+    {
+        // Register required services for AuthorizeView
+        Services.AddAuthorizationCore();
+        Services.AddLogging();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationService, Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory, Microsoft.AspNetCore.Authorization.DefaultAuthorizationHandlerContextFactory>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator, Microsoft.AspNetCore.Authorization.DefaultAuthorizationEvaluator>();
+    }
+
     [Fact]
     [Trait("Category", "Advanced")]
     public void Authorize_attribute_restricts_page_access()
@@ -24,9 +35,18 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         // If [Authorize] is present and user is authenticated, content should render
         Assert.Equal(expected, cut.Markup.Contains("Welcome"));
@@ -46,9 +66,18 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = "__"; // SOLUTION: "Grace"
+        var expected = "Grace"; // SOLUTION: "Grace"
 
         Assert.Contains($"Welcome, {expected}!", cut.Markup);
     }
@@ -67,9 +96,18 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Markup.Contains("Welcome"));
     }
@@ -89,9 +127,18 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = "__"; // SOLUTION: "Please log in"
+        var expected = "Please log in"; // SOLUTION: "Please log in"
 
         Assert.Contains(expected, cut.Markup);
     }

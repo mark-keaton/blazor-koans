@@ -17,13 +17,13 @@ public class C_FormSubmission : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input.valid");
         nameInput.Change("Charlie");
 
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Contains($"Submitted: {expected}", cut.Markup);
     }
@@ -39,13 +39,13 @@ public class C_FormSubmission : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input.valid");
         nameInput.Change("David");
 
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = false; // SOLUTION: true
+        var expected = true; // SOLUTION: true
 
         Assert.Equal(expected, cut.Instance.IsSubmitted);
     }

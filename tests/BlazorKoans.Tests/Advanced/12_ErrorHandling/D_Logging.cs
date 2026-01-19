@@ -18,7 +18,7 @@ public class D_Logging : BunitContext
         // TODO: What interface is injected for logging?
         // Replace "__" with the interface name (without generic parameter)
 
-        var expected = "__"; // SOLUTION: "ILogger"
+        var expected = "ILogger"; // SOLUTION: "ILogger"
 
         Assert.Equal("ILogger", expected);
     }
@@ -34,7 +34,7 @@ public class D_Logging : BunitContext
 
         var cut = Render<LoggingDemo>();
 
-        var expected = 0; // SOLUTION: 6
+        var expected = 6; // SOLUTION: 6
 
         Assert.Equal(expected, 6); // 6 standard log levels
     }
@@ -55,7 +55,7 @@ public class D_Logging : BunitContext
 
         cut.Find("button").Click();
 
-        var expected = 0; // SOLUTION: 1
+        var expected = 1; // SOLUTION: 1
 
         Assert.Contains("Messages logged: 1", cut.Markup);
         Assert.Equal(expected, 1);
@@ -70,7 +70,7 @@ public class D_Logging : BunitContext
 
         // TODO: Should log messages include context for debugging?
 
-        var expected = "__"; // SOLUTION: "yes"
+        var expected = "yes"; // SOLUTION: "yes"
 
         Assert.Equal("yes", expected);
     }

@@ -18,10 +18,10 @@ public class B_InputComponents : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input.valid");
         nameInput.Change("Bob");
 
-        var expected = "__"; // SOLUTION: "Bob"
+        var expected = "Bob"; // SOLUTION: "Bob"
 
         Assert.Contains($"Name: {expected}", cut.Markup);
     }
@@ -38,7 +38,7 @@ public class B_InputComponents : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var expected = "__"; // SOLUTION: "number"
+        var expected = "number"; // SOLUTION: "number"
 
         var ageInput = cut.Find("input[type='number']");
         Assert.Equal(expected, ageInput.GetAttribute("type"));
@@ -56,7 +56,7 @@ public class B_InputComponents : BunitContext
 
         var cut = Render<RegistrationForm>();
 
-        var expected = "__"; // SOLUTION: "date"
+        var expected = "date"; // SOLUTION: "date"
 
         var dateInput = cut.Find("input[type='date']");
         Assert.Equal(expected, dateInput.GetAttribute("type"));

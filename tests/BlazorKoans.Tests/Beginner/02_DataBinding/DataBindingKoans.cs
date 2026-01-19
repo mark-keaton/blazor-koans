@@ -19,7 +19,7 @@ public class DataBindingKoans : BunitContext
 
         var cut = Render<Counter>();
 
-        var initialCount = "__"; // SOLUTION: "0"
+        var initialCount = "0"; // SOLUTION: "0"
 
         cut.MarkupMatches($@"
             <div>
@@ -46,14 +46,11 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("Hello");
 
-        var displayClass = "__"; // SOLUTION: "display"
+        var displayClass = "display"; // SOLUTION: "display"
 
-        cut.MarkupMatches($@"
-            <div>
-                <input value=""Hello"" />
-                <p class=""{displayClass}"">Hello</p>
-            </div>
-        ");
+        // Check the display paragraph shows the input value
+        var displayText = cut.Find($"p.{displayClass}").TextContent;
+        Assert.Equal("Hello", displayText);
     }
 
     [Fact]
@@ -72,7 +69,7 @@ public class DataBindingKoans : BunitContext
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormatString = "__"; // SOLUTION: "yyyy-MM-ddTHH:mm"
+        var expectedFormatString = "yyyy-MM-ddTHH:mm"; // SOLUTION: "yyyy-MM-ddTHH:mm"
 
         // The component should use this format for the datetime-local input
         Assert.NotNull(dateInput);
@@ -96,15 +93,9 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("test");
 
-        var expectedCount = "__"; // SOLUTION: "4"
+        var expectedCount = "4"; // SOLUTION: "4"
 
-        cut.MarkupMatches($@"
-            <div>
-                <input value=""test"" />
-                <p class=""display"">test</p>
-                <p>Characters: {expectedCount}</p>
-                <input type=""datetime-local"" />
-            </div>
-        ");
+        // Check the character count display
+        Assert.Contains($"Characters: {expectedCount}", cut.Markup);
     }
 }

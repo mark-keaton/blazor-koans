@@ -9,9 +9,12 @@
 </div>
 
 @code {
+    private Action? _stateChangedHandler;
+
     protected override void OnInitialized()
     {
-        StateContainer.OnChange += StateHasChanged;
+        _stateChangedHandler = () => InvokeAsync(StateHasChanged);
+        StateContainer.OnChange += _stateChangedHandler;
     }
 
     private void AddItem()
@@ -26,6 +29,9 @@
 
     public void Dispose()
     {
-        StateContainer.OnChange -= StateHasChanged;
+        if (_stateChangedHandler != null)
+        {
+            StateContainer.OnChange -= _stateChangedHandler;
+        }
     }
 }

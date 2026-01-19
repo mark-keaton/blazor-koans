@@ -19,7 +19,7 @@ public class A_InjectingHttpClient : BunitContext
         // TODO: What directive is used to inject HttpClient in a Blazor component?
         // Replace "__" with the correct directive (without the @ symbol)
 
-        var expected = "__"; // SOLUTION: "inject"
+        var expected = "inject"; // SOLUTION: "inject"
 
         Assert.Equal("inject", expected);
     }
@@ -38,7 +38,7 @@ public class A_InjectingHttpClient : BunitContext
 
         var cut = Render<WeatherDisplay>();
 
-        var expected = 0; // SOLUTION: 3
+        var expected = 3; // SOLUTION: 3
 
         cut.WaitForAssertion(() =>
             cut.MarkupMatches($"<h3>Weather Display</h3><div>Count: {expected}</div>"));
@@ -57,7 +57,7 @@ public class A_InjectingHttpClient : BunitContext
         var httpClient = new HttpClient();
         httpClient.BaseAddress = new Uri("https://api.example.com/");
 
-        var expected = "__"; // SOLUTION: "BaseAddress"
+        var expected = "BaseAddress"; // SOLUTION: "BaseAddress"
 
         Assert.Equal("https://api.example.com/", httpClient.BaseAddress?.ToString());
         Assert.Equal("BaseAddress", expected);
@@ -77,7 +77,7 @@ public class A_InjectingHttpClient : BunitContext
         var httpClient = new HttpClient(fakeHandler);
         var weatherService = new WeatherService(httpClient);
 
-        var expected = "__"; // SOLUTION: "IWeatherService"
+        var expected = "IWeatherService"; // SOLUTION: "IWeatherService"
 
         Assert.IsAssignableFrom(typeof(IWeatherService), weatherService);
         Assert.Equal("IWeatherService", expected);

@@ -21,7 +21,7 @@ public class B_ValidationMessage : BunitContext
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = "__"; // SOLUTION: "Name is required"
+        var expected = "Name is required"; // SOLUTION: "Name is required"
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -43,7 +43,7 @@ public class B_ValidationMessage : BunitContext
         var form = cut.Find("form");
         form.Submit();
 
-        var expected = "__"; // SOLUTION: "Invalid email address"
+        var expected = "Invalid email address"; // SOLUTION: "Invalid email address"
 
         Assert.Contains(expected, cut.Markup);
     }

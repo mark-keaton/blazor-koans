@@ -19,7 +19,7 @@ public class LifecycleKoans : BunitContext
 
         var cut = Render<LifecycleDemo>();
 
-        var expectedMessage = "__"; // SOLUTION: "Initialized"
+        var expectedMessage = "Initialized"; // SOLUTION: "Initialized"
 
         cut.MarkupMatches($@"
             <div>
@@ -45,7 +45,7 @@ public class LifecycleKoans : BunitContext
         var cut = Render<LifecycleDemo>(parameters => parameters
             .Add(p => p.Value, "test"));
 
-        var expectedDisplay = "__"; // SOLUTION: "Value: test"
+        var expectedDisplay = "Value: test"; // SOLUTION: "Value: test"
 
         cut.MarkupMatches($@"
             <div>
@@ -70,7 +70,7 @@ public class LifecycleKoans : BunitContext
 
         var cut = Render<LifecycleDemo>();
 
-        var expectedRenderCount = 0; // SOLUTION: 1
+        var expectedRenderCount = 1; // SOLUTION: 1
 
         cut.MarkupMatches($@"
             <div>
@@ -98,7 +98,7 @@ public class LifecycleKoans : BunitContext
         // Dispose the component
         cut.Dispose();
 
-        var wasDisposed = false; // SOLUTION: true
+        var wasDisposed = true; // SOLUTION: true
 
         // The component should implement IDisposable and call Dispose
         Assert.True(wasDisposed);

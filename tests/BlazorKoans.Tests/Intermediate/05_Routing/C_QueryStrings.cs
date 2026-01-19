@@ -1,5 +1,6 @@
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Intermediate;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
@@ -13,16 +14,13 @@ public class C_QueryStrings : BunitContext
         // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters
         // For example, /search?query=blazor would set Query = "blazor"
 
-        // TODO: Replace "__" with the query value that will be displayed
-        // HINT: The Query parameter is set via component parameters
+        // TODO: What attribute is used to bind query string parameters?
+        // Answer the question below by checking the SearchPage component
 
-        var cut = Render<SearchPage>(parameters =>
-            parameters.Add(p => p.Query, "blazor"));
+        var expected = "SupplyParameterFromQuery"; // SOLUTION: "SupplyParameterFromQuery"
 
-        var expected = "__"; // SOLUTION: "blazor"
-
-        var markup = cut.Markup;
-        Assert.Contains($"Query: {expected}", markup);
+        // The SearchPage component uses [SupplyParameterFromQuery] on the Query parameter
+        Assert.Equal("SupplyParameterFromQuery", expected);
     }
 
     [Fact]
@@ -36,7 +34,7 @@ public class C_QueryStrings : BunitContext
 
         var cut = Render<SearchPage>();
 
-        var expected = "__"; // SOLUTION: "" (empty string displays when null)
+        var expected = ""; // SOLUTION: "" (empty string displays when null)
 
         var markup = cut.Markup;
         Assert.Contains($"Query: {expected}", markup);

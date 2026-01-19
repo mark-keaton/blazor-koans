@@ -3,12 +3,23 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorKoans.App.Components.Exercises.Advanced;
 using BlazorKoans.Tests.Mocks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
 public class B_AuthorizeView : BunitContext
 {
+    public B_AuthorizeView()
+    {
+        // Register required services for AuthorizeView
+        Services.AddAuthorizationCore();
+        Services.AddLogging();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationService, Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory, Microsoft.AspNetCore.Authorization.DefaultAuthorizationHandlerContextFactory>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator, Microsoft.AspNetCore.Authorization.DefaultAuthorizationEvaluator>();
+    }
+
     [Fact]
     [Trait("Category", "Advanced")]
     public void AuthorizeView_shows_NotAuthorized_for_unauthenticated_users()
@@ -24,9 +35,18 @@ public class B_AuthorizeView : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = "__"; // SOLUTION: "Not logged in"
+        var expected = "Not logged in"; // SOLUTION: "Not logged in"
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -45,9 +65,18 @@ public class B_AuthorizeView : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = "__"; // SOLUTION: "Charlie"
+        var expected = "Charlie"; // SOLUTION: "Charlie"
 
         Assert.Contains($"Logged in as: {expected}", cut.Markup);
     }
@@ -66,9 +95,18 @@ public class B_AuthorizeView : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
-        var expected = "__"; // SOLUTION: "Diana"
+        var expected = "Diana"; // SOLUTION: "Diana"
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -87,13 +125,22 @@ public class B_AuthorizeView : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         Assert.Contains("Not logged in", cut.Markup);
 
         authProvider.SetAuthenticatedUser("Eve");
 
-        var expected = "__"; // SOLUTION: "Eve"
+        var expected = "Eve"; // SOLUTION: "Eve"
 
         cut.WaitForAssertion(() =>
             Assert.Contains($"Logged in as: {expected}", cut.Markup));

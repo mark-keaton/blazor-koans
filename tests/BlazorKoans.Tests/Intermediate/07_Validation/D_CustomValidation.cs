@@ -30,7 +30,7 @@ public class D_CustomValidation : BunitContext
         var results = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(model, context, results, true);
 
-        var expected = false; // SOLUTION: true (should fail - person is too young)
+        var expected = true; // SOLUTION: true (should fail - person is too young)
 
         Assert.Equal(expected, !isValid);
     }
@@ -57,7 +57,7 @@ public class D_CustomValidation : BunitContext
         var results = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(model, context, results, true);
 
-        var expected = false; // SOLUTION: true (should pass - person is old enough)
+        var expected = true; // SOLUTION: true (should pass - person is old enough)
 
         Assert.Equal(expected, isValid);
     }
