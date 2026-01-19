@@ -1,11 +1,11 @@
-using Bunit;
+using System.Reflection;
 using BlazorKoans.App.Components.Exercises.Intermediate;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
-public class C_QueryStrings : BunitContext
+public class C_QueryStrings
 {
     [Fact]
     [Trait("Category", "Intermediate")]
@@ -25,18 +25,40 @@ public class C_QueryStrings : BunitContext
 
     [Fact]
     [Trait("Category", "Intermediate")]
-    public void QueryStrings_OptionalParameter()
+    public void QueryStrings_PropertyNameBecomesQueryKey()
     {
-        // ABOUT: Query parameters can be optional (nullable types)
+        // ABOUT: By default, the property name becomes the query string key.
+        // A property named "Query" matches ?query=value in the URL.
 
-        // TODO: Replace "__" with what displays when no query is provided
-        // HINT: Look at the Query parameter type in SearchPage.razor
+        // TODO: What is the name of the property that has [SupplyParameterFromQuery]?
+        // Replace "__" with the property name from SearchPage.razor
 
-        var cut = Render<SearchPage>();
+        var properties = typeof(SearchPage).GetProperties();
+        var queryProperty = Array.Find(properties, p =>
+            p.GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null);
 
-        var expected = ""; // SOLUTION: "" (empty string displays when null)
+        var expectedPropertyName = "Query"; // SOLUTION: "Query"
 
-        var markup = cut.Markup;
-        Assert.Contains($"Query: {expected}", markup);
+        Assert.Equal(expectedPropertyName, queryProperty?.Name);
+    }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void QueryStrings_NullableTypeMeansOptional()
+    {
+        // ABOUT: Query parameters are optional when the property type is nullable.
+        // A nullable string (string?) means the parameter doesn't have to be in the URL.
+
+        // TODO: Is the Query property nullable (optional)?
+        // Replace false with true if the property is nullable
+
+        var queryProperty = typeof(SearchPage).GetProperty("Query");
+        var nullabilityContext = new NullabilityInfoContext();
+        var nullabilityInfo = nullabilityContext.Create(queryProperty!);
+        var isNullable = nullabilityInfo.WriteState == NullabilityState.Nullable;
+
+        var expectedIsNullable = true; // SOLUTION: true
+
+        Assert.Equal(expectedIsNullable, isNullable);
     }
 }
