@@ -1,10 +1,15 @@
 using BlazorKoans.App.Components;
+using BlazorKoans.App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Register services for DI koans
+builder.Services.AddScoped<IGreetingService, GreetingService>();
+builder.Services.AddScoped<ICounterService, CounterService>();
 
 var app = builder.Build();
 

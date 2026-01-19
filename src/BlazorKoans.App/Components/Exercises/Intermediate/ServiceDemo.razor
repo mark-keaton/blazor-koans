@@ -1,0 +1,27 @@
+@using BlazorKoans.App.Services
+@inject IGreetingService GreetingService
+@inject ICounterService CounterService
+
+<h3>Service Demo</h3>
+
+<p>Greeting: @Greeting</p>
+<p>Service Type: @ServiceType</p>
+<p>Counter: @CounterService.Count</p>
+
+<button @onclick="IncrementCounter">Increment</button>
+
+@code {
+    public string Greeting { get; private set; } = string.Empty;
+    public string ServiceType { get; private set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        Greeting = GreetingService.Greet("Student");
+        ServiceType = GreetingService.GetServiceType();
+    }
+
+    private void IncrementCounter()
+    {
+        CounterService.Increment();
+    }
+}

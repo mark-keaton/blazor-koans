@@ -1,0 +1,20 @@
+@page "/search"
+@inject NavigationManager Navigation
+
+<h3>Search Page</h3>
+
+<p>Query: @Query</p>
+<p>Current URL: @Navigation.Uri</p>
+
+<button @onclick="NavigateToHome">Go to Home</button>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Query { get; set; }
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

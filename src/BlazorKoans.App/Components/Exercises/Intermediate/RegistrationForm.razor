@@ -1,0 +1,58 @@
+@using BlazorKoans.App.Models
+
+<h3>Registration Form</h3>
+
+<EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div>
+        <label>Username:</label>
+        <InputText @bind-Value="model.Username" />
+    </div>
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="model.Email" type="email" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="model.Password" type="password" />
+    </div>
+    <div>
+        <label>Birth Date:</label>
+        <InputDate @bind-Value="model.BirthDate" />
+    </div>
+
+    <button type="submit">Register</button>
+</EditForm>
+
+<p>Field Changed: @FieldChanged</p>
+
+@code {
+    private RegistrationModel model = new();
+    private EditContext? editContext;
+    public string FieldChanged { get; private set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(model);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        FieldChanged = e.FieldIdentifier.FieldName;
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Handle registration
+    }
+
+    public void Dispose()
+    {
+        if (editContext != null)
+        {
+            editContext.OnFieldChanged -= HandleFieldChanged;
+        }
+    }
+}

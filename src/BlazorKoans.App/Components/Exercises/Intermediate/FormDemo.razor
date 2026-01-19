@@ -1,0 +1,28 @@
+@using BlazorKoans.App.Models
+
+<h3>Form Demo</h3>
+
+<EditForm Model="@person" OnValidSubmit="HandleValidSubmit">
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="person.Name" />
+    </div>
+    <div>
+        <label>Age:</label>
+        <InputNumber @bind-Value="person.Age" />
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+<p>Submitted: @IsSubmitted</p>
+<p>Name: @person.Name</p>
+
+@code {
+    private Person person = new();
+    public bool IsSubmitted { get; private set; }
+
+    private void HandleValidSubmit()
+    {
+        IsSubmitted = true;
+    }
+}
