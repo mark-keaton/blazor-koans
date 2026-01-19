@@ -1,5 +1,7 @@
 <div>
-    <button class="click-counter" @onclick="IncrementClickCount">Clicked: @clickCount</button>
+    <button class="increment" @onclick="IncrementClickCount">+</button>
+    <span class="click-count">@clickCount</span>
+    <button class="decrement" @onclick="DecrementClickCount">-</button>
     <button class="event-callback-button" @onclick="HandleButtonClick">Click Me</button>
     <p class="message">@message</p>
     <input type="text" @bind="inputValue" />
@@ -22,6 +24,11 @@
     private void IncrementClickCount()
     {
         clickCount++;
+    }
+
+    private void DecrementClickCount()
+    {
+        clickCount--;
     }
 
     private async Task HandleButtonClick()

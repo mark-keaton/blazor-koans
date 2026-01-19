@@ -14,29 +14,26 @@ public class EventKoans : BunitContext
         // When a user clicks an element, the handler method executes.
         // This is how you make your UI interactive.
 
-        // TODO: The EventDemo component has a button that increments a click count.
-        // Click the button 3 times. What is the final click count?
-        // Replace 0 with the expected count.
+        // TODO: Look at the EventDemo component. It has increment (+) and decrement (-) buttons.
+        // After these clicks, what is the final count displayed?
+        // Replace "__" with the expected count as a string.
 
         var cut = Render<EventDemo>();
 
-        var button = cut.Find("button.click-counter");
-        button.Click();
-        button.Click();
-        button.Click();
+        var increment = cut.Find("button.increment");
+        var decrement = cut.Find("button.decrement");
 
-        var expectedCount = 0;
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        increment.Click();
+        decrement.Click();
+        decrement.Click();
 
-        cut.MarkupMatches($@"
-            <div>
-                <button class=""click-counter"">Clicked: {expectedCount}</button>
-                <button class=""event-callback-button"">Click Me</button>
-                <p class=""message""></p>
-                <input type=""text"" />
-                <button class=""submit-button"">Submit</button>
-                <p class=""submitted-value""></p>
-            </div>
-        ");
+        var expectedCount = "__";
+
+        Assert.Equal(expectedCount, cut.Find("span.click-count").TextContent);
     }
 
     [Fact]
@@ -47,8 +44,8 @@ public class EventKoans : BunitContext
         // A component can expose an EventCallback parameter that the parent can subscribe to.
         // This enables child components to communicate with their parents.
 
-        // TODO: The EventDemo component has an EventCallback parameter called OnButtonClick.
-        // When the "Click Me" button is clicked, what message is displayed?
+        // TODO: Look at the EventDemo component's HandleButtonClick method.
+        // When the "Click Me" button is clicked, what message is displayed in <p class="message">?
         // Replace "__" with the expected message.
 
         var wasClicked = false;
@@ -62,16 +59,7 @@ public class EventKoans : BunitContext
         var expectedMessage = "__";
 
         Assert.True(wasClicked);
-        cut.MarkupMatches($@"
-            <div>
-                <button class=""click-counter"">Clicked: 0</button>
-                <button class=""event-callback-button"">Click Me</button>
-                <p class=""message"">{expectedMessage}</p>
-                <input type=""text"" />
-                <button class=""submit-button"">Submit</button>
-                <p class=""submitted-value""></p>
-            </div>
-        ");
+        Assert.Equal(expectedMessage, cut.Find("p.message").TextContent);
     }
 
     [Fact]
