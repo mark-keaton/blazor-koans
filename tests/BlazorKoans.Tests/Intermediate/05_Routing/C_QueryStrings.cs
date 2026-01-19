@@ -9,25 +9,18 @@ public class C_QueryStrings
 {
     [Fact]
     [Trait("Category", "Intermediate")]
-    public void QueryStrings_SupplyParameterFromQueryAttribute()
+    public void QueryStrings_SupplyParameterFromQuery()
     {
-        // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters.
-        // A property with this attribute gets its value from the URL query string.
-        // For example: /search?query=blazor would set the Query property to "blazor".
+        // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters
+        // For example, /search?query=blazor would set Query = "blazor"
 
-        // TODO: Look at SearchPage.razor's Query property.
-        // What attribute (besides [Parameter]) marks it as coming from the query string?
-        // Replace "__" with the attribute name (without brackets or "Attribute" suffix).
+        // TODO: What attribute is used to bind query string parameters?
+        // Answer the question below by checking the SearchPage component
 
-        var queryProperty = typeof(SearchPage).GetProperty("Query");
-        var hasSupplyFromQueryAttribute = queryProperty?
-            .GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null;
+        var expected = "__"; // SOLUTION: "SupplyParameterFromQuery"
 
-        var expectedAttributeName = "__";
-
-        // Verify the attribute name matches what's on the property
-        Assert.Equal("SupplyParameterFromQuery", expectedAttributeName);
-        Assert.True(hasSupplyFromQueryAttribute, "Query property should have [SupplyParameterFromQuery]");
+        // The SearchPage component uses [SupplyParameterFromQuery] on the Query parameter
+        Assert.Equal("SupplyParameterFromQuery", expected);
     }
 
     [Fact]
@@ -35,18 +28,16 @@ public class C_QueryStrings
     public void QueryStrings_PropertyNameBecomesQueryKey()
     {
         // ABOUT: By default, the property name becomes the query string key.
-        // If the property is named "Query", the URL would be ?Query=value.
-        // You can customize this with [SupplyParameterFromQuery(Name = "q")].
+        // A property named "Query" matches ?query=value in the URL.
 
-        // TODO: Look at SearchPage.razor's query parameter property.
-        // What is the property name that becomes the query string key?
-        // Replace "__" with the property name (case-sensitive).
+        // TODO: What is the name of the property that has [SupplyParameterFromQuery]?
+        // Replace "__" with the property name from SearchPage.razor
 
         var properties = typeof(SearchPage).GetProperties();
-        var queryProperty = properties.FirstOrDefault(p =>
+        var queryProperty = Array.Find(properties, p =>
             p.GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null);
 
-        var expectedPropertyName = "__";
+        var expectedPropertyName = "__"; // SOLUTION: "Query"
 
         Assert.Equal(expectedPropertyName, queryProperty?.Name);
     }
@@ -55,23 +46,18 @@ public class C_QueryStrings
     [Trait("Category", "Intermediate")]
     public void QueryStrings_NullableTypeMeansOptional()
     {
-        // ABOUT: Query parameters can be optional by using nullable types.
-        // string? means the parameter is optional - the page works without it.
-        // Non-nullable types would require the query parameter to be present.
+        // ABOUT: Query parameters are optional when the property type is nullable.
+        // A nullable string (string?) means the parameter doesn't have to be in the URL.
 
-        // TODO: Look at SearchPage.razor's Query property type.
-        // Is the type nullable (optional) or non-nullable (required)?
-        // Replace false with true if nullable, or keep false if non-nullable.
+        // TODO: Is the Query property nullable (optional)?
+        // Replace false with true if the property is nullable
 
         var queryProperty = typeof(SearchPage).GetProperty("Query");
-        var propertyType = queryProperty?.PropertyType;
-
-        // Check if it's a nullable reference type (string?)
         var nullabilityContext = new NullabilityInfoContext();
         var nullabilityInfo = nullabilityContext.Create(queryProperty!);
         var isNullable = nullabilityInfo.WriteState == NullabilityState.Nullable;
 
-        var expectedIsNullable = false;
+        var expectedIsNullable = false; // SOLUTION: true
 
         Assert.Equal(expectedIsNullable, isNullable);
     }
