@@ -18,6 +18,7 @@ public class RegistrationModel
 
     [Required(ErrorMessage = "Birth date is required")]
     [DataType(DataType.Date)]
+    [MinimumAge(18)]
     public DateTime BirthDate { get; set; } = DateTime.Today.AddYears(-18);
 
     [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms")]

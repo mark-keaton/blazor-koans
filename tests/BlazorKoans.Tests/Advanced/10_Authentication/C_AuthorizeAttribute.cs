@@ -3,12 +3,23 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorKoans.App.Components.Exercises.Advanced;
 using BlazorKoans.Tests.Mocks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
 public class C_AuthorizeAttribute : BunitContext
 {
+    public C_AuthorizeAttribute()
+    {
+        // Register required services for AuthorizeView
+        Services.AddAuthorizationCore();
+        Services.AddLogging();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationService, Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory, Microsoft.AspNetCore.Authorization.DefaultAuthorizationHandlerContextFactory>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator, Microsoft.AspNetCore.Authorization.DefaultAuthorizationEvaluator>();
+    }
+
     [Fact]
     [Trait("Category", "Advanced")]
     public void Authorize_attribute_restricts_page_access()
@@ -24,7 +35,16 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         var expected = false; // SOLUTION: true
 
@@ -46,7 +66,16 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         var expected = "__"; // SOLUTION: "Grace"
 
@@ -67,7 +96,16 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         var expected = false; // SOLUTION: true
 
@@ -89,7 +127,16 @@ public class C_AuthorizeAttribute : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<ProtectedPage>();
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<ProtectedPage>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         var expected = "__"; // SOLUTION: "Please log in"
 

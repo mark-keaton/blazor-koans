@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BlazorKoans.App.Components.Exercises.Advanced;
 using BlazorKoans.Tests.Mocks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 using Xunit;
 
@@ -10,6 +11,16 @@ namespace BlazorKoans.Tests.Advanced.Authentication;
 
 public class A_AuthenticationState : BunitContext
 {
+    public A_AuthenticationState()
+    {
+        // Register required services for AuthorizeView
+        Services.AddAuthorizationCore();
+        Services.AddLogging();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationService, Microsoft.AspNetCore.Authorization.DefaultAuthorizationService>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationHandlerContextFactory, Microsoft.AspNetCore.Authorization.DefaultAuthorizationHandlerContextFactory>();
+        Services.AddSingleton<Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator, Microsoft.AspNetCore.Authorization.DefaultAuthorizationEvaluator>();
+    }
+
     [Fact]
     [Trait("Category", "Advanced")]
     public async Task AuthenticationStateProvider_provides_user_identity()
@@ -86,7 +97,17 @@ public class A_AuthenticationState : BunitContext
 
         Services.AddSingleton<AuthenticationStateProvider>(authProvider);
 
-        var cut = Render<LoginStatus>();
+        // Wrap in CascadingAuthenticationState to provide authentication context
+        var cut = Render(builder =>
+        {
+            builder.OpenComponent<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>(0);
+            builder.AddAttribute(1, "ChildContent", (RenderFragment)(childBuilder =>
+            {
+                childBuilder.OpenComponent<LoginStatus>(0);
+                childBuilder.CloseComponent();
+            }));
+            builder.CloseComponent();
+        });
 
         var expected = false; // SOLUTION: true
 
