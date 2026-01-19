@@ -18,7 +18,7 @@ public class ComponentKoans : BunitContext
 
         var cut = Render<HelloWorld>();
 
-        var expected = "__";
+        var expected = "Hello, Blazor!";
 
         cut.MarkupMatches($"<h1>{expected}</h1>");
     }
@@ -35,7 +35,7 @@ public class ComponentKoans : BunitContext
         // Pass "World" as the Name parameter to make this test pass.
         // Replace "__" with the correct parameter value.
 
-        var parameterValue = "__";
+        var parameterValue = "World";
 
         var cut = Render<Greeting>(parameters => parameters
             .Add(p => p.Name, parameterValue));
@@ -58,7 +58,7 @@ public class ComponentKoans : BunitContext
         var cut = Render<Card>(parameters => parameters
             .AddChildContent("<p>This is card content</p>"));
 
-        var expectedMarkup = "__";
+        var expectedMarkup = @"<div class=""card""><p>This is card content</p></div>";
 
         cut.MarkupMatches(expectedMarkup);
     }
@@ -71,9 +71,9 @@ public class ComponentKoans : BunitContext
         // This is useful for creating template components like lists where each
         // item needs to be rendered with custom markup.
 
-        // TODO: The ItemList component uses RenderFragment<string> to render each item.
-        // It renders a list of fruits. What HTML tag surrounds each item?
-        // Replace "__" with the tag name (e.g., "li", "div", "span").
+        // TODO: Look at the ItemList component. You provide the ItemTemplate for each item,
+        // but the component wraps all rendered items in an outer HTML tag.
+        // What tag does ItemList use? Replace "__" with the tag name (e.g., "div", "span", "ul").
 
         var items = new[] { "Apple", "Banana", "Orange" };
 
