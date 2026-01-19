@@ -1,48 +1,71 @@
-using Bunit;
+using System.Reflection;
 using BlazorKoans.App.Components.Exercises.Intermediate;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
-public class B_RouteParameters : BunitContext
+public class B_RouteParameters
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void RouteParameters_CaptureValueFromUrl()
     {
-        // ABOUT: Route parameters like {Id:int} capture values from the URL
-        // The :int constraint ensures only integer values are accepted
+        // ABOUT: Route parameters use {ParameterName} syntax in the @page directive.
+        // For example: @page "/product/{Id}" captures the URL segment into the Id parameter.
+        // The parameter name in the route must match a [Parameter] property on the component.
 
-        // TODO: Replace 0 with the ID value that will be displayed
-        // HINT: Look at how the Id parameter is used in ProductPage.razor
+        // TODO: Look at ProductPage.razor's @page directive.
+        // What is the name of the route parameter (the part inside the curly braces)?
+        // Replace "__" with the parameter name (without braces or constraints).
 
-        var cut = Render<ProductPage>(parameters =>
-            parameters.Add(p => p.Id, 42));
+        var routeAttribute = typeof(ProductPage).GetCustomAttribute<RouteAttribute>();
+        var routeTemplate = routeAttribute?.Template ?? "";
 
-        var expected = 0;
+        var expectedParameterName = "__";
 
-        cut.MarkupMatches($@"
-            <h3>Product Details</h3>
-            <p>Product ID: {expected}</p>
-        ");
+        // The route template should contain {ParameterName} or {ParameterName:constraint}
+        Assert.Contains($"{{{expectedParameterName}", routeTemplate);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
-    public void RouteParameters_DifferentValues()
+    public void RouteParameters_TypeConstraints()
     {
-        // ABOUT: Route parameters can receive different values for each request
+        // ABOUT: Route parameters can have type constraints like :int, :guid, :bool, etc.
+        // For example: {Id:int} only matches integer values in the URL.
+        // If the URL doesn't match the constraint, the route won't match.
 
-        // TODO: Replace 0 with the ID value being passed
+        // TODO: Look at ProductPage.razor's @page directive.
+        // What type constraint is applied to the Id parameter?
+        // Replace "__" with the constraint type (just the type name, e.g., "int", "guid").
 
-        var cut = Render<ProductPage>(parameters =>
-            parameters.Add(p => p.Id, 123));
+        var routeAttribute = typeof(ProductPage).GetCustomAttribute<RouteAttribute>();
+        var routeTemplate = routeAttribute?.Template ?? "";
 
-        var expected = 0;
+        var expectedConstraint = "__";
 
-        cut.MarkupMatches($@"
-            <h3>Product Details</h3>
-            <p>Product ID: {expected}</p>
-        ");
+        // The route template should contain :constraint}
+        Assert.Contains($":{expectedConstraint}}}", routeTemplate);
+    }
+
+    [Fact]
+    [Trait("Category", "Intermediate")]
+    public void RouteParameters_MatchComponentProperty()
+    {
+        // ABOUT: The route parameter name must match a [Parameter] property on the component.
+        // Blazor uses this to automatically populate the property from the URL.
+        // The property type should match the route constraint (e.g., :int means int property).
+
+        // TODO: Look at ProductPage.razor's @code section.
+        // The Id property has the [Parameter] attribute. What is its C# type?
+        // Replace "typeof(string)" with the correct type (e.g., typeof(int), typeof(Guid)).
+
+        var idProperty = typeof(ProductPage).GetProperty("Id");
+        var actualType = idProperty?.PropertyType;
+
+        var expectedType = typeof(string);
+
+        Assert.Equal(expectedType, actualType);
     }
 }
