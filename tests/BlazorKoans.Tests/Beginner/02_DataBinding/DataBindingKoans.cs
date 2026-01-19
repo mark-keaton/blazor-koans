@@ -25,7 +25,7 @@ public class DataBindingKoans : BunitContext
         button.Click();
         button.Click();
 
-        var expectedCount = "__";
+        var expectedCount = "3";
 
         cut.MarkupMatches($@"
             <div>
@@ -55,7 +55,7 @@ public class DataBindingKoans : BunitContext
         input.Change("World");
         input.Change("Blazor!");
 
-        var paragraphText = "__";
+        var paragraphText = "Blazor!";
 
         Assert.Equal(paragraphText, cut.Find("p.display").TextContent);
     }
