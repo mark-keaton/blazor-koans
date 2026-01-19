@@ -1,7 +1,7 @@
 <div>
     <p class="status">@status</p>
     <p class="render-count">Renders: @renderCount</p>
-    <p class="param-value">Value: @Value</p>
+    <p class="param-value">@formattedValue</p>
 </div>
 
 @code {
@@ -9,6 +9,7 @@
     public string Value { get; set; } = string.Empty;
 
     private string status = string.Empty;
+    private string formattedValue = string.Empty;
     private int renderCount = 0;
 
     protected override void OnInitialized()
@@ -18,8 +19,10 @@
 
     protected override void OnParametersSet()
     {
-        // This is called every time parameters are set
-        base.OnParametersSet();
+        // Compute derived state from parameter
+        formattedValue = string.IsNullOrEmpty(Value)
+            ? "No value set"
+            : $"Received: {Value.ToUpper()}";
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
