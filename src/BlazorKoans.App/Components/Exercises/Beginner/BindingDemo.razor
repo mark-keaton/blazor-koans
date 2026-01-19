@@ -6,9 +6,17 @@
 </div>
 
 @code {
+    [Parameter]
+    public TimeProvider Time { get; set; } = TimeProvider.System;
+
     private string text = string.Empty;
     private int characterCount = 0;
-    private DateTime selectedDate = DateTime.Now;
+    private DateTime selectedDate;
+
+    protected override void OnInitialized()
+    {
+        selectedDate = Time.GetLocalNow().DateTime;
+    }
 
     private void UpdateCharacterCount()
     {

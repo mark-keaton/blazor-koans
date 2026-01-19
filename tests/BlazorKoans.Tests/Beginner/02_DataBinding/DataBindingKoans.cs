@@ -1,5 +1,6 @@
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Beginner;
+using BlazorKoans.Tests.Mocks;
 
 namespace BlazorKoans.Tests.Beginner.DataBinding;
 
@@ -67,19 +68,21 @@ public class DataBindingKoans : BunitContext
         // - @bind:event changes when the binding updates (default is "onchange")
         // - @bind:format specifies how to format the value (useful for dates/numbers)
 
-        // TODO: The BindingDemo component has a datetime input with formatting.
-        // What format string is used for displaying the date?
-        // Replace "__" with the format string (e.g., "yyyy-MM-dd").
+        // TODO: The BindingDemo component uses @bind:format on a datetime input.
+        // Given the date June 15, 2024 at 2:30 PM, what value appears in the input?
+        // Look at the format string in the component to figure out the output.
+        // Replace "__" with the formatted datetime string.
 
-        var cut = Render<BindingDemo>();
+        var fakeTime = new FakeTimeProvider(2024, 6, 15, 14, 30);
+
+        var cut = Render<BindingDemo>(parameters => parameters
+            .Add(p => p.Time, fakeTime));
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormatString = "yyyy-MM-ddTHH:mm";
+        var expectedFormattedValue = "2024-06-15T14:30";
 
-        // The component should use this format for the datetime-local input
-        Assert.NotNull(dateInput);
-        Assert.Equal(expectedFormatString, "yyyy-MM-ddTHH:mm");
+        Assert.Equal(expectedFormattedValue, dateInput.GetAttribute("value"));
     }
 
     [Fact]
@@ -90,18 +93,20 @@ public class DataBindingKoans : BunitContext
         // This is useful for performing actions when a value changes,
         // like validation, logging, or triggering other updates.
 
-        // TODO: The BindingDemo component updates a character count after text changes.
-        // When you type "test" (4 characters), what is the character count displayed?
-        // Replace "__" with the expected count.
+        // TODO: The BindingDemo component uses @bind:after to run UpdateCharacterCount.
+        // Look at how that method works. When you type "test", what count is displayed?
+        // Replace "__" with the expected character count.
 
-        var cut = Render<BindingDemo>();
+        var fakeTime = new FakeTimeProvider(2024, 6, 15, 14, 30);
+
+        var cut = Render<BindingDemo>(parameters => parameters
+            .Add(p => p.Time, fakeTime));
 
         var input = cut.Find("input");
         input.Change("test");
 
         var expectedCount = "4";
 
-        // Check the character count display
         Assert.Contains($"Characters: {expectedCount}", cut.Markup);
     }
 }
