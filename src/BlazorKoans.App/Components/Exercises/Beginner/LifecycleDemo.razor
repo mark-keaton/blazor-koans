@@ -1,3 +1,6 @@
+@using BlazorKoans.App.Services
+@inject DisposalTracker Tracker
+
 <div>
     <p class="status">@status</p>
     <p class="render-count">Renders: @renderCount</p>
@@ -15,6 +18,7 @@
     protected override void OnInitialized()
     {
         status = "Initialized";
+        Tracker.Register(this);
     }
 
     protected override void OnParametersSet()
@@ -40,8 +44,9 @@
 
     public void Dispose()
     {
-        // Cleanup logic here
+        Tracker.Unregister(this);
     }
 }
 
-@implements IDisposable
+@* TODO: This component has a Dispose() method but Blazor won't call it automatically.
+   Add the directive that tells Blazor this component implements IDisposable. *@
