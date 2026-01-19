@@ -18,7 +18,7 @@ public class ComponentKoans : BunitContext
 
         var cut = Render<HelloWorld>();
 
-        var expected = "Hello, Blazor!";
+        var expected = "__";
 
         cut.MarkupMatches($"<h1>{expected}</h1>");
     }
