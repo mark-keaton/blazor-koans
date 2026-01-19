@@ -51,15 +51,16 @@ public class ComponentKoans : BunitContext
         // The ChildContent parameter is a special convention that lets you
         // pass markup between the component's opening and closing tags.
 
-        // TODO: The Card component wraps its ChildContent in a div with class "card".
-        // Replace "__" with the HTML that will be rendered inside the card.
+        // TODO: Look at the Card component. It wraps its ChildContent in something.
+        // What is the FULL HTML output when Card receives "<p>This is card content</p>"?
+        // Replace "__" with the complete expected markup.
 
         var cut = Render<Card>(parameters => parameters
             .AddChildContent("<p>This is card content</p>"));
 
-        var expectedContent = "<p>This is card content</p>"; // SOLUTION: "<p>This is card content</p>"
+        var expectedMarkup = @"<div class=""card""><p>This is card content</p></div>";
 
-        cut.MarkupMatches($@"<div class=""card"">{expectedContent}</div>");
+        cut.MarkupMatches(expectedMarkup);
     }
 
     [Fact]
