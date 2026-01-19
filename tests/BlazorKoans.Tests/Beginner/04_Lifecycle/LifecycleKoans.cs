@@ -1,5 +1,7 @@
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Beginner;
+using BlazorKoans.App.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorKoans.Tests.Beginner.Lifecycle;
 
@@ -17,6 +19,7 @@ public class LifecycleKoans : BunitContext
         // What message is displayed in the status paragraph after initialization?
         // Replace "__" with the expected message.
 
+        Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>();
 
         var expectedMessage = "Initialized";
@@ -37,6 +40,7 @@ public class LifecycleKoans : BunitContext
         // When Value is set to "blazor", what does the param-value paragraph display?
         // Replace "__" with the expected formatted text.
 
+        Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>(parameters => parameters
             .Add(p => p.Value, "blazor"));
 
@@ -57,6 +61,7 @@ public class LifecycleKoans : BunitContext
         // Look at OnAfterRenderAsync - what render count is displayed after the first render?
         // Replace "__" with the expected count as a string.
 
+        Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>();
 
         var expectedRenderCount = "1";
@@ -66,24 +71,49 @@ public class LifecycleKoans : BunitContext
 
     [Fact]
     [Trait("Category", "Beginner")]
-    public void D_Disposing()
+    public void D_ImplementsIDisposable()
     {
-        // ABOUT: Components can implement IDisposable to clean up resources.
-        // The Dispose method is called when the component is removed from the UI.
-        // Use this to unsubscribe from events, dispose timers, or release resources.
+        // ABOUT: To enable disposal in Blazor, a component must implement IDisposable.
+        // In Razor components, you do this with the @implements directive.
+        // Without @implements IDisposable, Blazor won't call your Dispose() method!
 
-        // TODO: The LifecycleDemo component implements IDisposable.
-        // Does it properly clean up when disposed?
-        // Replace false with true if Dispose is called, or keep false otherwise.
+        // TODO: Look at LifecycleDemo.razor - it has a Dispose() method but something is missing.
+        // The component needs a directive to tell Blazor it implements IDisposable.
+        // Add the missing directive to the component, then this test will pass.
+
+        // This checks if LifecycleDemo implements the IDisposable interface
+        var implementsIDisposable = typeof(LifecycleDemo).IsAssignableTo(typeof(IDisposable));
+
+        Assert.True(implementsIDisposable, "Add @implements IDisposable to LifecycleDemo.razor");
+    }
+
+    [Fact]
+    [Trait("Category", "Beginner")]
+    public void E_DisposeIsCalled()
+    {
+        // ABOUT: When a component is removed from the UI, Blazor calls Dispose().
+        // This is where you clean up resources like event subscriptions or timers.
+        // The DisposalTracker service helps verify that cleanup actually happens.
+
+        // TODO: Look at LifecycleDemo's OnInitialized and Dispose methods.
+        // The component registers with the tracker on init and unregisters on dispose.
+        // After disposing the component, is it still registered with the tracker?
+        // Replace true with false if the component properly unregisters, or keep true.
+
+        var tracker = new DisposalTracker();
+        Services.AddSingleton(tracker);
 
         var cut = Render<LifecycleDemo>();
+
+        // Component should be registered after rendering
+        Assert.True(tracker.IsRegistered(cut.Instance));
 
         // Dispose the component
         cut.Dispose();
 
-        var wasDisposed = true;
+        // After disposal, is the component still registered?
+        var stillRegisteredAfterDispose = false;
 
-        // The component should implement IDisposable and call Dispose
-        Assert.True(wasDisposed);
+        Assert.False(stillRegisteredAfterDispose, "Component should unregister from tracker in Dispose()");
     }
 }
