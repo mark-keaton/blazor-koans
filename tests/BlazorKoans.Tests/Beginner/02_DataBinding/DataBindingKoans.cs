@@ -42,23 +42,21 @@ public class DataBindingKoans : BunitContext
         // Changes to the input update the property, and changes to the property
         // update the input. This creates a synchronized relationship.
 
-        // TODO: The BindingDemo component uses @bind on an input field.
-        // When you type in the input, what CSS class is used to display the text below it?
-        // Replace "__" with the class name.
+        // TODO: Look at the BindingDemo component. The input uses @bind="text" and
+        // a paragraph displays the same variable with @text.
+        // After these input changes, what text appears in the paragraph?
+        // Replace "__" with the final displayed text.
 
         var cut = Render<BindingDemo>();
 
         var input = cut.Find("input");
         input.Change("Hello");
+        input.Change("World");
+        input.Change("Blazor!");
 
-        var displayClass = "__";
+        var paragraphText = "__";
 
-        cut.MarkupMatches($@"
-            <div>
-                <input value=""Hello"" />
-                <p class=""{displayClass}"">Hello</p>
-            </div>
-        ");
+        Assert.Equal(paragraphText, cut.Find("p.display").TextContent);
     }
 
     [Fact]
