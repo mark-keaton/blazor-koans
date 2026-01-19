@@ -81,7 +81,7 @@ public class EventKoans : BunitContext
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedReceivedText = "__";
+        var expectedReceivedText = "Blazor";
 
         Assert.Equal(expectedReceivedText, cut.Find("p.received-value").TextContent);
     }
