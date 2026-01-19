@@ -44,22 +44,19 @@ public class EventKoans : BunitContext
         // A component can expose an EventCallback parameter that the parent can subscribe to.
         // This enables child components to communicate with their parents.
 
-        // TODO: Look at the EventDemo component's HandleButtonClick method.
-        // When the "Click Me" button is clicked, what message is displayed in <p class="message">?
-        // Replace "__" with the expected message.
+        // TODO: Look at ParentWithEventDemo - it contains EventDemo as a child.
+        // The parent passes HandleChildClick to the child's OnButtonClick parameter.
+        // When you click the "Click Me" button in the child, what message does the PARENT display?
+        // Replace "__" with the expected parent message.
 
-        var wasClicked = false;
-
-        var cut = Render<EventDemo>(parameters => parameters
-            .Add(p => p.OnButtonClick, EventCallback.Factory.Create(this, () => wasClicked = true)));
+        var cut = Render<ParentWithEventDemo>();
 
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedMessage = "Button was clicked!";
+        var expectedParentMessage = "Child was clicked!";
 
-        Assert.True(wasClicked);
-        Assert.Equal(expectedMessage, cut.Find("p.message").TextContent);
+        Assert.Equal(expectedParentMessage, cut.Find("p.parent-message").TextContent);
     }
 
     [Fact]
