@@ -52,9 +52,10 @@ public class C_QueryStrings
     {
         // ABOUT: Query parameters are optional when the property type is nullable.
         // A nullable string (string?) means the parameter doesn't have to be in the URL.
+        // Non-nullable types would cause issues when the query parameter is missing.
 
-        // TODO: Is the Query property nullable (optional)?
-        // Replace false with true if the property is nullable
+        // TODO: Change the Query property type from string to string? in SearchPage.razor
+        // to make it an optional query parameter.
 
         var queryProperty = typeof(SearchPage).GetProperty("Query");
         var nullabilityContext = new NullabilityInfoContext();
