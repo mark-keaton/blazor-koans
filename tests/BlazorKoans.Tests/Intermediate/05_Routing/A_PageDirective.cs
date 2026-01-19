@@ -1,5 +1,7 @@
+using System.Reflection;
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Intermediate;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
@@ -10,19 +12,21 @@ public class A_PageDirective : BunitContext
     [Trait("Category", "Intermediate")]
     public void PageDirective_DefinesRouteTemplate()
     {
-        // ABOUT: The @page directive defines the route template for a component
-        // It makes the component routable and accessible via URL
+        // ABOUT: The @page directive defines the route template for a component.
+        // It creates a RouteAttribute on the component class that the router uses.
+        // We can read this attribute to verify what route a component is registered at.
 
-        // TODO: Replace "__" with the correct route path defined in RoutingDemo.razor
-        // HINT: Look at the @page directive in RoutingDemo.razor
+        // TODO: Look at RoutingDemo.razor's @page directive.
+        // What route path is this component accessible at?
+        // Replace "__" with the route path (including the leading slash).
 
-        var cut = Render<RoutingDemo>();
+        // Get the actual route from the component's RouteAttribute
+        var routeAttribute = typeof(RoutingDemo).GetCustomAttribute<RouteAttribute>();
+        var actualRoute = routeAttribute?.Template;
 
-        var expected = "__";
+        var expectedRoute = "__";
 
-        // The component metadata should indicate its route
-        Assert.NotNull(cut.Instance);
-        Assert.Equal(expected, "/routing");
+        Assert.Equal(expectedRoute, actualRoute);
     }
 
     [Fact]
