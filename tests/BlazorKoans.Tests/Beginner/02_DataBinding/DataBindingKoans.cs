@@ -19,7 +19,7 @@ public class DataBindingKoans : BunitContext
 
         var cut = Render<Counter>();
 
-        var initialCount = "__"; // SOLUTION: "0"
+        var initialCount = "__";
 
         cut.MarkupMatches($@"
             <div>
@@ -46,7 +46,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("Hello");
 
-        var displayClass = "__"; // SOLUTION: "display"
+        var displayClass = "__";
 
         cut.MarkupMatches($@"
             <div>
@@ -72,7 +72,7 @@ public class DataBindingKoans : BunitContext
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormatString = "__"; // SOLUTION: "yyyy-MM-ddTHH:mm"
+        var expectedFormatString = "__";
 
         // The component should use this format for the datetime-local input
         Assert.NotNull(dateInput);
@@ -96,7 +96,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("test");
 
-        var expectedCount = "__"; // SOLUTION: "4"
+        var expectedCount = "__";
 
         cut.MarkupMatches($@"
             <div>

@@ -25,7 +25,7 @@ public class C_StateChanged : BunitContext
 
         stateContainer.Increment();
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         cut.WaitForAssertion(() =>
             Assert.Equal(expected, cut.Markup.Contains("Cart Items: 1")));
@@ -50,7 +50,7 @@ public class C_StateChanged : BunitContext
 
         stateContainer.Increment();
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         cut.WaitForAssertion(() =>
             Assert.NotEqual(initialMarkup, cut.Markup));
@@ -80,7 +80,7 @@ public class C_StateChanged : BunitContext
 
         stateContainer.Increment();
 
-        var expected = "__"; // SOLUTION: "1"
+        var expected = "__";
 
         // After dispose, ShoppingCart's handler should not increment the count
         // Only our test handler fires, so count should be 1
@@ -105,7 +105,7 @@ public class C_StateChanged : BunitContext
 
         cart1.Find("button").Click(); // Add item in first cart
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         cart2.WaitForAssertion(() =>
             Assert.Equal(expected, cart2.Markup.Contains("Cart Items: 1")));

@@ -19,7 +19,7 @@ public class A_CascadingValue : BunitContext
         // TODO: What parameter attribute receives a CascadingValue?
         // Replace "__" with the attribute name
 
-        var expected = "__"; // SOLUTION: "CascadingParameter"
+        var expected = "__";
 
         Assert.Equal("CascadingParameter", expected);
     }
@@ -37,7 +37,7 @@ public class A_CascadingValue : BunitContext
         var cut = Render<ThemeProvider>(parameters => parameters
             .AddChildContent<ThemeConsumer>());
 
-        var expected = "__"; // SOLUTION: "light"
+        var expected = "__";
 
         Assert.Contains($"Current theme: {expected}", cut.Markup);
     }
@@ -58,7 +58,7 @@ public class A_CascadingValue : BunitContext
 
         themeProvider.Instance.SetTheme("dark");
 
-        var expected = "__"; // SOLUTION: "dark"
+        var expected = "__";
 
         themeProvider.WaitForAssertion(() =>
             Assert.Contains($"Current theme: {expected}", themeProvider.Markup));
@@ -81,7 +81,7 @@ public class A_CascadingValue : BunitContext
                 builder.CloseComponent();
             }));
 
-        var expected = "__"; // SOLUTION: "light"
+        var expected = "__";
 
         Assert.Contains($"Current theme: {expected}", wrapper.Markup);
     }

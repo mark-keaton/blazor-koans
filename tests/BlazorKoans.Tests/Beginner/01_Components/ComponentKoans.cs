@@ -18,7 +18,7 @@ public class ComponentKoans : BunitContext
 
         var cut = Render<HelloWorld>();
 
-        var expected = "__"; // SOLUTION: "Hello, Blazor!"
+        var expected = "Hello, Blazor!";
 
         cut.MarkupMatches($"<h1>{expected}</h1>");
     }
@@ -35,7 +35,7 @@ public class ComponentKoans : BunitContext
         // Pass "World" as the Name parameter to make this test pass.
         // Replace "__" with the correct parameter value.
 
-        var parameterValue = "__"; // SOLUTION: "World"
+        var parameterValue = "__";
 
         var cut = Render<Greeting>(parameters => parameters
             .Add(p => p.Name, parameterValue));
@@ -57,7 +57,7 @@ public class ComponentKoans : BunitContext
         var cut = Render<Card>(parameters => parameters
             .AddChildContent("<p>This is card content</p>"));
 
-        var expectedContent = "__"; // SOLUTION: "<p>This is card content</p>"
+        var expectedContent = "__";
 
         cut.MarkupMatches($@"<div class=""card"">{expectedContent}</div>");
     }
@@ -80,7 +80,7 @@ public class ComponentKoans : BunitContext
             .Add(p => p.Items, items)
             .Add(p => p.ItemTemplate, item => $"<li>{item}</li>"));
 
-        var tagName = "__"; // SOLUTION: "ul"
+        var tagName = "__";
 
         cut.MarkupMatches($@"<{tagName}>
             <li>Apple</li>

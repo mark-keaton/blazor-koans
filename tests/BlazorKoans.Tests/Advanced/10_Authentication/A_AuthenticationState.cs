@@ -34,7 +34,7 @@ public class A_AuthenticationState : BunitContext
         var authProvider = new FakeAuthStateProvider();
         var state = await authProvider.GetAuthenticationStateAsync();
 
-        var expected = false; // SOLUTION: false
+        var expected = false;
 
         Assert.Equal(expected, state.User.Identity?.IsAuthenticated ?? false);
     }
@@ -54,7 +54,7 @@ public class A_AuthenticationState : BunitContext
 
         var state = await authProvider.GetAuthenticationStateAsync();
 
-        var expected = "__"; // SOLUTION: "TestUser"
+        var expected = "__";
 
         Assert.Equal(expected, state.User.Identity?.Name);
     }
@@ -76,7 +76,7 @@ public class A_AuthenticationState : BunitContext
         var principal = new ClaimsPrincipal(identity);
         var state = new AuthenticationState(principal);
 
-        var expected = "__"; // SOLUTION: "ClaimsPrincipal"
+        var expected = "__";
 
         Assert.IsType<ClaimsPrincipal>(state.User);
         Assert.Equal("ClaimsPrincipal", expected);
@@ -109,7 +109,7 @@ public class A_AuthenticationState : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         Assert.Equal(expected, cut.Markup.Contains("Logged in as: Bob"));
     }

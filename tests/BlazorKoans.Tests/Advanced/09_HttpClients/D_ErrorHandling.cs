@@ -31,7 +31,7 @@ public class D_ErrorHandling : BunitContext
 
         var service = new WeatherService(httpClient);
 
-        var expected = "__"; // SOLUTION: "HttpRequestException"
+        var expected = "__";
 
         await Assert.ThrowsAsync<HttpRequestException>(async () =>
         {
@@ -61,7 +61,7 @@ public class D_ErrorHandling : BunitContext
 
         var response = await httpClient.GetAsync("api/weather/999");
 
-        var expected = "__"; // SOLUTION: "throws"
+        var expected = "__";
 
         Assert.Throws<HttpRequestException>(() => response.EnsureSuccessStatusCode());
         Assert.Equal("throws", expected);
@@ -87,7 +87,7 @@ public class D_ErrorHandling : BunitContext
 
         var response = await httpClient.GetAsync("api/weather/999");
 
-        var expected = false; // SOLUTION: false
+        var expected = false;
 
         Assert.Equal(expected, response.IsSuccessStatusCode);
     }
@@ -121,7 +121,7 @@ public class D_ErrorHandling : BunitContext
             errorMessage = ex.Message;
         }
 
-        var expected = "__"; // SOLUTION: "503"
+        var expected = "__";
 
         Assert.Contains(expected, errorMessage);
     }

@@ -46,7 +46,7 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         // If [Authorize] is present and user is authenticated, content should render
         Assert.Equal(expected, cut.Markup.Contains("Welcome"));
@@ -77,7 +77,7 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Grace"
+        var expected = "__";
 
         Assert.Contains($"Welcome, {expected}!", cut.Markup);
     }
@@ -107,7 +107,7 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         Assert.Equal(expected, cut.Markup.Contains("Welcome"));
     }
@@ -138,7 +138,7 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Please log in"
+        var expected = "__";
 
         Assert.Contains(expected, cut.Markup);
     }

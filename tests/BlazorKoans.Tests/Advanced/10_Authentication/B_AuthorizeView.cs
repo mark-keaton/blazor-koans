@@ -46,7 +46,7 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Not logged in"
+        var expected = "__";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -76,7 +76,7 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Charlie"
+        var expected = "__";
 
         Assert.Contains($"Logged in as: {expected}", cut.Markup);
     }
@@ -106,7 +106,7 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Diana"
+        var expected = "__";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -140,7 +140,7 @@ public class B_AuthorizeView : BunitContext
 
         authProvider.SetAuthenticatedUser("Eve");
 
-        var expected = "__"; // SOLUTION: "Eve"
+        var expected = "__";
 
         cut.WaitForAssertion(() =>
             Assert.Contains($"Logged in as: {expected}", cut.Markup));

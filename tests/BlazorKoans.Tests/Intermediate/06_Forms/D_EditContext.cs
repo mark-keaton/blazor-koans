@@ -21,7 +21,7 @@ public class D_EditContext : BunitContext
         var usernameInput = cut.Find("input[type='text']");
         usernameInput.Change("testuser");
 
-        var expected = "__"; // SOLUTION: "Username"
+        var expected = "__";
 
         Assert.Contains($"Field Changed: {expected}", cut.Markup);
     }
@@ -40,7 +40,7 @@ public class D_EditContext : BunitContext
         var emailInput = cut.Find("input[type='email']");
         emailInput.Change("test@example.com");
 
-        var expected = "__"; // SOLUTION: "Email"
+        var expected = "__";
 
         Assert.Contains($"Field Changed: {expected}", cut.Markup);
     }

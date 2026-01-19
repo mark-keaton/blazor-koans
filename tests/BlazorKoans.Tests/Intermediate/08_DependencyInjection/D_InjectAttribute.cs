@@ -23,7 +23,7 @@ public class D_InjectAttribute : BunitContext
 
         var cut = Render<ServiceDemoCodeBehind>();
 
-        var expected = "__"; // SOLUTION: "Hello, Code-Behind User!"
+        var expected = "__";
 
         var actual = cut.Instance.GetGreetingFromCodeBehind();
         Assert.Equal(expected, actual);
@@ -47,7 +47,7 @@ public class D_InjectAttribute : BunitContext
         var greeting1 = cut.Instance.Greeting;
         var greeting2 = "Hello, Student!";
 
-        var expected = "__"; // SOLUTION: "same"
+        var expected = "__";
 
         var actual = greeting1 == greeting2 ? "same" : "different";
         Assert.Equal(expected, actual);

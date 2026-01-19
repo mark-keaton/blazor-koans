@@ -19,7 +19,7 @@ public class A_ErrorBoundary : BunitContext
         // TODO: What component is used to catch rendering errors in Blazor?
         // Replace "__" with the component name
 
-        var expected = "__"; // SOLUTION: "ErrorBoundary"
+        var expected = "__";
 
         Assert.Equal("ErrorBoundary", expected);
     }
@@ -45,7 +45,7 @@ public class A_ErrorBoundary : BunitContext
         // The button click will cause the component to throw
         Assert.Throws<InvalidOperationException>(() => causeErrorButton.Click());
 
-        var expected = "__"; // SOLUTION: "Error:"
+        var expected = "__";
 
         // After error, ErrorContent should be displayed
         cut.WaitForAssertion(() =>
@@ -61,7 +61,7 @@ public class A_ErrorBoundary : BunitContext
         // TODO: In ErrorDemo, the exception message is displayed.
         // What type is the context parameter?
 
-        var expected = "__"; // SOLUTION: "Exception"
+        var expected = "__";
 
         Assert.Equal("Exception", expected);
     }
@@ -88,7 +88,7 @@ public class A_ErrorBoundary : BunitContext
             // Expected - the error is thrown during render
         }
 
-        var expected = "__"; // SOLUTION: "yes"
+        var expected = "__";
 
         // Component still exists, just shows error UI
         Assert.NotNull(cut);

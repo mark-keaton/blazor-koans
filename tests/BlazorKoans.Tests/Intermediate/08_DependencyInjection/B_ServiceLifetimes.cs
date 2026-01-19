@@ -22,7 +22,7 @@ public class B_ServiceLifetimes : BunitContext
         var service1 = Services.GetRequiredService<ICounterService>();
         var service2 = Services.GetRequiredService<ICounterService>();
 
-        var expected = "__"; // SOLUTION: "same"
+        var expected = "__";
 
         var actual = ReferenceEquals(service1, service2) ? "same" : "different";
         Assert.Equal(expected, actual);
@@ -43,7 +43,7 @@ public class B_ServiceLifetimes : BunitContext
         var service1 = Services.GetRequiredService<ICounterService>();
         var service2 = Services.GetRequiredService<ICounterService>();
 
-        var expected = "__"; // SOLUTION: "different"
+        var expected = "__";
 
         var actual = ReferenceEquals(service1, service2) ? "same" : "different";
         Assert.Equal(expected, actual);

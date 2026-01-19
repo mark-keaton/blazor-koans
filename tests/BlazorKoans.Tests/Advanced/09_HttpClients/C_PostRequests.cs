@@ -39,7 +39,7 @@ public class C_PostRequests : BunitContext
 
         var response = await httpClient.PostAsJsonAsync("api/weather", newForecast);
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         Assert.Equal(expected, response.IsSuccessStatusCode);
     }
@@ -80,7 +80,7 @@ public class C_PostRequests : BunitContext
         var response = await httpClient.PostAsJsonAsync("api/weather", newForecast);
         var result = await response.Content.ReadFromJsonAsync<WeatherForecast>();
 
-        var expected = "__"; // SOLUTION: "Chilly"
+        var expected = "__";
 
         Assert.NotNull(result);
         Assert.Equal(expected, result.Summary);
@@ -115,7 +115,7 @@ public class C_PostRequests : BunitContext
         var service = new WeatherService(httpClient);
         var result = await service.CreateForecastAsync(createdForecast);
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         Assert.NotNull(result);
         Assert.Equal(expected, result.Summary == "Warm");
@@ -153,7 +153,7 @@ public class C_PostRequests : BunitContext
 
         var response = await httpClient.PostAsJsonAsync("api/complex", complexData);
 
-        var expected = false; // SOLUTION: true
+        var expected = false;
 
         Assert.Equal(expected, response.IsSuccessStatusCode);
     }

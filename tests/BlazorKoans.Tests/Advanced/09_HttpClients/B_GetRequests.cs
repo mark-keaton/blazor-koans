@@ -37,7 +37,7 @@ public class B_GetRequests : BunitContext
 
         var result = await httpClient.GetFromJsonAsync<List<WeatherForecast>>("api/weather");
 
-        var expected = 0; // SOLUTION: 2
+        var expected = 0;
 
         Assert.NotNull(result);
         Assert.Equal(expected, result.Count);
@@ -68,7 +68,7 @@ public class B_GetRequests : BunitContext
         var service = new WeatherService(httpClient);
         var result = await service.GetForecastAsync();
 
-        var expected = "__"; // SOLUTION: "Scorching"
+        var expected = "__";
 
         Assert.NotNull(result);
         Assert.Single(result);
@@ -95,7 +95,7 @@ public class B_GetRequests : BunitContext
 
         var result = await httpClient.GetFromJsonAsync<List<WeatherForecast>>("api/weather");
 
-        var expected = 0; // SOLUTION: 0
+        var expected = 0;
 
         Assert.NotNull(result);
         Assert.Equal(expected, result.Count);
@@ -127,7 +127,7 @@ public class B_GetRequests : BunitContext
 
         var result = await httpClient.GetFromJsonAsync<WeatherForecast>("api/weather/1");
 
-        var expected = 0; // SOLUTION: 18
+        var expected = 0;
 
         Assert.NotNull(result);
         Assert.Equal(expected, result.TemperatureC);

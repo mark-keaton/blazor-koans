@@ -19,7 +19,7 @@ public class B_RouteParameters : BunitContext
         var cut = Render<ProductPage>(parameters =>
             parameters.Add(p => p.Id, 42));
 
-        var expected = 0; // SOLUTION: 42
+        var expected = 0;
 
         cut.MarkupMatches($@"
             <h3>Product Details</h3>
@@ -38,7 +38,7 @@ public class B_RouteParameters : BunitContext
         var cut = Render<ProductPage>(parameters =>
             parameters.Add(p => p.Id, 123));
 
-        var expected = 0; // SOLUTION: 123
+        var expected = 0;
 
         cut.MarkupMatches($@"
             <h3>Product Details</h3>

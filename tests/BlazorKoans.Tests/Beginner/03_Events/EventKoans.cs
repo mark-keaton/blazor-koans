@@ -25,7 +25,7 @@ public class EventKoans : BunitContext
         button.Click();
         button.Click();
 
-        var expectedCount = 0; // SOLUTION: 3
+        var expectedCount = 0;
 
         cut.MarkupMatches($@"
             <div>
@@ -59,7 +59,7 @@ public class EventKoans : BunitContext
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedMessage = "__"; // SOLUTION: "Button was clicked!"
+        var expectedMessage = "__";
 
         Assert.True(wasClicked);
         cut.MarkupMatches($@"
@@ -97,7 +97,7 @@ public class EventKoans : BunitContext
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedValue = "__"; // SOLUTION: "test"
+        var expectedValue = "__";
 
         Assert.Equal(expectedValue, submittedValue);
     }
@@ -118,7 +118,7 @@ public class EventKoans : BunitContext
 
         var submitButton = cut.Find("button.submit-button");
 
-        var preventsDefault = false; // SOLUTION: true
+        var preventsDefault = false;
 
         // The button should have @onclick:preventDefault attribute
         Assert.True(preventsDefault);

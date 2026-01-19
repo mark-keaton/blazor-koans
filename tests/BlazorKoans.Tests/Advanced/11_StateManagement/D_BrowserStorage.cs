@@ -21,7 +21,7 @@ public class D_BrowserStorage : BunitContext
         await localStorage.SetItemAsync("username", "Alice");
         var retrieved = await localStorage.GetItemAsync<string>("username");
 
-        var expected = "__"; // SOLUTION: "Alice"
+        var expected = "__";
 
         Assert.Equal(expected, retrieved);
     }
@@ -42,7 +42,7 @@ public class D_BrowserStorage : BunitContext
 
         var retrieved = await localStorage.GetItemAsync<dynamic>("user");
 
-        var expected = "__"; // SOLUTION: "Bob"
+        var expected = "__";
 
         Assert.NotNull(retrieved);
         Assert.Equal(expected, retrieved.Name);
@@ -64,7 +64,7 @@ public class D_BrowserStorage : BunitContext
 
         var retrieved = await localStorage.GetItemAsync<string>("temp");
 
-        var expected = "__"; // SOLUTION: "null"
+        var expected = "__";
 
         Assert.Null(retrieved);
         Assert.Equal("null", expected);
@@ -90,7 +90,7 @@ public class D_BrowserStorage : BunitContext
         var item1 = await localStorage.GetItemAsync<string>("key1");
         var item2 = await localStorage.GetItemAsync<string>("key2");
 
-        var expected = "__"; // SOLUTION: "0"
+        var expected = "__";
 
         Assert.Null(item1);
         Assert.Null(item2);

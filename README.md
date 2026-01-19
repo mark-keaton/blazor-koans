@@ -9,7 +9,6 @@ Koans are small, focused exercises that teach programming concepts through faili
 Each koan includes:
 - **ABOUT**: Explanation of the concept
 - **TODO**: What you need to implement
-- **SOLUTION**: The answer (as a comment) if you get stuck
 
 ## Prerequisites
 
@@ -40,7 +39,6 @@ code .
 2. **Read the failing test** - it shows you exactly what to learn:
    - `ABOUT:` explains the concept
    - `TODO:` tells you what to fix
-   - `SOLUTION:` is available if you get stuck
 
 3. **Fix the placeholder** - replace `"__"` with the correct answer
 
@@ -161,8 +159,13 @@ Then open https://localhost:5001 in your browser.
 
 1. **Read the ABOUT section** in the test - it explains the concept
 2. **Check the TODO section** - it tells you exactly what to implement
-3. **Look at the SOLUTION comment** - it shows the expected answer
-4. **Run the app** - sometimes seeing the component helps
+3. **Run the app** - sometimes seeing the component in action helps
+4. **Check the solutions branch** - all answers are available there:
+   ```bash
+   git checkout solutions
+   # Compare the test file to see the answer
+   git checkout epic/blazor-koans  # Return to continue learning
+   ```
 
 ## Tips for Success
 

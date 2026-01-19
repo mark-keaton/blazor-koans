@@ -18,7 +18,7 @@ public class A_EditForm : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var expected = "__"; // SOLUTION: "" (empty string by default)
+        var expected = "__";
 
         var nameInput = cut.Find("input[type='text']");
         Assert.Equal(expected, nameInput.GetAttribute("value"));
@@ -38,7 +38,7 @@ public class A_EditForm : BunitContext
         var nameInput = cut.Find("input[type='text']");
         nameInput.Change("Alice");
 
-        var expected = "__"; // SOLUTION: "Alice"
+        var expected = "__";
 
         Assert.Contains($"Name: {expected}", cut.Markup);
     }

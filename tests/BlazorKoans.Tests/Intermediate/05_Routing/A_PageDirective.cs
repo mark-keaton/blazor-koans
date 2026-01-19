@@ -18,7 +18,7 @@ public class A_PageDirective : BunitContext
 
         var cut = Render<RoutingDemo>();
 
-        var expected = "__"; // SOLUTION: "/routing"
+        var expected = "__";
 
         // The component metadata should indicate its route
         Assert.NotNull(cut.Instance);
@@ -36,7 +36,7 @@ public class A_PageDirective : BunitContext
 
         var cut = Render<RoutingDemo>();
 
-        var expected = "__"; // SOLUTION: "This page is accessible at the /routing route."
+        var expected = "__";
 
         cut.MarkupMatches($@"
             <h3>Routing Demo</h3>

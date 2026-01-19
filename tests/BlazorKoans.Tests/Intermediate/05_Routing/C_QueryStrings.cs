@@ -19,7 +19,7 @@ public class C_QueryStrings : BunitContext
         var cut = Render<SearchPage>(parameters =>
             parameters.Add(p => p.Query, "blazor"));
 
-        var expected = "__"; // SOLUTION: "blazor"
+        var expected = "__";
 
         var markup = cut.Markup;
         Assert.Contains($"Query: {expected}", markup);
@@ -36,7 +36,7 @@ public class C_QueryStrings : BunitContext
 
         var cut = Render<SearchPage>();
 
-        var expected = "__"; // SOLUTION: "" (empty string displays when null)
+        var expected = "__";
 
         var markup = cut.Markup;
         Assert.Contains($"Query: {expected}", markup);

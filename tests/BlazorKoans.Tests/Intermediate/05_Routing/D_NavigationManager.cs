@@ -21,7 +21,7 @@ public class D_NavigationManager : BunitContext
         var cut = Render<SearchPage>();
         var navManager = Services.GetRequiredService<NavigationManager>();
 
-        var expected = "__"; // SOLUTION: "http"
+        var expected = "__";
 
         Assert.StartsWith(expected, navManager.Uri);
     }
@@ -41,7 +41,7 @@ public class D_NavigationManager : BunitContext
         var button = cut.Find("button");
         button.Click();
 
-        var expected = "__"; // SOLUTION: "/"
+        var expected = "__";
 
         Assert.EndsWith(expected, navManager.Uri);
     }

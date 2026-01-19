@@ -45,7 +45,7 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Admin"
+        var expected = "__";
 
         Assert.Contains($"Role: {expected}", cut.Markup);
     }
@@ -75,7 +75,7 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "User"
+        var expected = "__";
 
         Assert.Contains($"Role: {expected}", cut.Markup);
     }
@@ -94,7 +94,7 @@ public class D_Roles : BunitContext
 
         var state = authProvider.GetAuthenticationStateAsync().Result;
 
-        var expected = "__"; // SOLUTION: "true"
+        var expected = "__";
 
         Assert.Equal(expected, state.User.IsInRole("Admin").ToString().ToLower());
     }
@@ -124,7 +124,7 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__"; // SOLUTION: "Admin"
+        var expected = "__";
 
         Assert.Contains($"Role: {expected}", cut.Markup);
     }
