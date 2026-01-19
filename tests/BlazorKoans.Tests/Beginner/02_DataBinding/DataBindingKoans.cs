@@ -13,17 +13,22 @@ public class DataBindingKoans : BunitContext
         // The syntax @variableName renders the value into the HTML.
         // When the variable changes and the component re-renders, the display updates.
 
-        // TODO: The Counter component displays a count value.
-        // What is the initial count value shown when the component first renders?
-        // Replace "__" with the initial count as a string.
+        // TODO: Look at the Counter component to understand how it works.
+        // After clicking the button 3 times, what count value is displayed?
+        // Replace "__" with the expected count as a string.
 
         var cut = Render<Counter>();
 
-        var initialCount = "0"; // SOLUTION: "0"
+        var button = cut.Find("button");
+        button.Click();
+        button.Click();
+        button.Click();
+
+        var expectedCount = "3";
 
         cut.MarkupMatches($@"
             <div>
-                <p>Count: {initialCount}</p>
+                <p>Count: {expectedCount}</p>
                 <button>Increment</button>
             </div>
         ");
@@ -46,7 +51,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("Hello");
 
-        var displayClass = "display"; // SOLUTION: "display"
+        var displayClass = "display";
 
         // Check the display paragraph shows the input value
         var displayText = cut.Find($"p.{displayClass}").TextContent;
@@ -69,7 +74,7 @@ public class DataBindingKoans : BunitContext
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormatString = "yyyy-MM-ddTHH:mm"; // SOLUTION: "yyyy-MM-ddTHH:mm"
+        var expectedFormatString = "yyyy-MM-ddTHH:mm";
 
         // The component should use this format for the datetime-local input
         Assert.NotNull(dateInput);
@@ -93,7 +98,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("test");
 
-        var expectedCount = "4"; // SOLUTION: "4"
+        var expectedCount = "4";
 
         // Check the character count display
         Assert.Contains($"Characters: {expectedCount}", cut.Markup);
