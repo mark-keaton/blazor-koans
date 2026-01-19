@@ -31,18 +31,19 @@ public class C_QueryStrings
     public void QueryStrings_PropertyNameBecomesQueryKey()
     {
         // ABOUT: By default, the property name becomes the query string key.
-        // A property named "Query" matches ?query=value in the URL.
+        // A property named "Query" matches ?Query=value in the URL (case-insensitive).
+        // When no custom Name is specified, the attribute's Name property is null.
 
-        // TODO: What is the name of the property that has [SupplyParameterFromQuery]?
-        // Replace "__" with the property name from SearchPage.razor
+        // TODO: The Query property should use its name as the query key (no custom Name).
+        // After adding [SupplyParameterFromQuery] to Query, verify it has no custom Name.
 
-        var properties = typeof(SearchPage).GetProperties();
-        var queryProperty = Array.Find(properties, p =>
-            p.GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null);
+        var queryProperty = typeof(SearchPage).GetProperty("Query");
+        var attribute = queryProperty?.GetCustomAttribute<SupplyParameterFromQueryAttribute>();
 
-        var expectedPropertyName = "Query";
-
-        Assert.Equal(expectedPropertyName, queryProperty?.Name);
+        // Query should have the attribute
+        Assert.NotNull(attribute);
+        // And it should use the default (property name as key, so Name is null)
+        Assert.Null(attribute.Name);
     }
 
     [Fact]
