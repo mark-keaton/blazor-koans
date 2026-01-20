@@ -30,7 +30,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = "__";
+        var expected = "United States";
 
         Assert.Contains($"Selected Country: {expected}", cut.Markup);
     }
@@ -47,7 +47,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = "__";
+        var expected = "Name";
 
         Assert.Contains($"Text Property: {expected}", cut.Markup);
     }
@@ -64,7 +64,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = "__";
+        var expected = "Id";
 
         Assert.Contains($"Value Property: {expected}", cut.Markup);
     }
@@ -81,7 +81,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Allow Filtering: {expected}", cut.Markup);
     }
@@ -98,7 +98,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = "__";
+        var expected = "Select a status";
 
         var dropdown = cut.Find("select[name='Status']");
         Assert.Equal(expected, dropdown.GetAttribute("placeholder"));
@@ -116,7 +116,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Multiple Selection: {expected}", cut.Markup);
     }
@@ -137,7 +137,7 @@ public class D_Dropdowns : BunitContext
         var tagsButton = cut.Find("button.select-multiple-tags");
         tagsButton.Click();
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Contains($"Selected Tags Count: {expected}", cut.Markup);
     }
@@ -157,7 +157,7 @@ public class D_Dropdowns : BunitContext
         var autocomplete = cut.Find("input[name='City']");
         autocomplete.Input("Ca");
 
-        var expected = 0;
+        var expected = 4;
 
         Assert.Contains($"Filtered Cities: {expected}", cut.Markup);
     }
@@ -174,7 +174,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = 0;
+        var expected = 2;
 
         Assert.Contains($"Min Length: {expected}", cut.Markup);
     }
@@ -198,7 +198,7 @@ public class D_Dropdowns : BunitContext
         var clearButton = cut.Find("button.clear-city");
         clearButton.Click();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Selected City: {expected}", cut.Markup);
     }
@@ -215,7 +215,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Has Custom Template: {expected}", cut.Markup);
     }
@@ -235,7 +235,7 @@ public class D_Dropdowns : BunitContext
         var dropdown = cut.Find("select[name='Country']");
         dropdown.Change("2");
 
-        var expected = "__";
+        var expected = "CountryChange";
 
         Assert.Contains($"Event Fired: {expected}", cut.Markup);
     }
@@ -252,7 +252,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var dropdown = cut.Find("select[name='LockedField']");
         var isDisabled = dropdown.HasAttribute("disabled");
@@ -271,7 +271,7 @@ public class D_Dropdowns : BunitContext
 
         var cut = Render<DropdownsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Uses LoadData: {expected}", cut.Markup);
     }
@@ -294,7 +294,7 @@ public class D_Dropdowns : BunitContext
         var clearButton = cut.Find("button.clear-status");
         clearButton.Click();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Status: {expected}", cut.Markup);
     }

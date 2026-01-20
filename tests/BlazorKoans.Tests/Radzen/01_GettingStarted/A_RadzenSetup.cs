@@ -33,7 +33,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "Click Me!";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -53,7 +53,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "rz-button";
 
         Assert.Contains($"class=\"{expected}", cut.Markup);
     }
@@ -73,7 +73,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "rz-card";
 
         Assert.Contains($"class=\"{expected}", cut.Markup);
     }
@@ -92,7 +92,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "Welcome to Radzen Blazor";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -110,7 +110,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "Welcome to Radzen Blazor components! This card demonstrates basic Radzen setup.";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -134,7 +134,7 @@ public class A_RadzenSetup : BunitContext
         var button = cut.Find("button");
         button.Click();
 
-        var expected = 0;
+        var expected = 1;
 
         Assert.Contains($"Button clicked {expected} time", cut.Markup);
     }
@@ -156,7 +156,7 @@ public class A_RadzenSetup : BunitContext
         button.Click();
         button.Click();
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Contains($"Button clicked {expected} times", cut.Markup);
     }
@@ -174,7 +174,7 @@ public class A_RadzenSetup : BunitContext
         // TODO: What render mode attribute should be on components using Radzen?
         // Replace "__" with the attribute value (e.g., "InteractiveServer")
 
-        var expected = "__";
+        var expected = "InteractiveServer";
 
         Assert.Equal("InteractiveServer", expected);
     }
@@ -191,7 +191,7 @@ public class A_RadzenSetup : BunitContext
         // TODO: What extension method registers Radzen services?
         // Replace "__" with the method name
 
-        var expected = "__";
+        var expected = "AddRadzenComponents";
 
         Assert.Equal("AddRadzenComponents", expected);
     }
@@ -211,7 +211,7 @@ public class A_RadzenSetup : BunitContext
         // TODO: What is the base path for Radzen CSS files?
         // Replace "__" with the path prefix (e.g., "_content/PackageName")
 
-        var expected = "__";
+        var expected = "_content/Radzen.Blazor";
 
         Assert.Equal("_content/Radzen.Blazor", expected);
     }

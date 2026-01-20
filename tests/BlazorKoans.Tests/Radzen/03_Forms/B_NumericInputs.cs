@@ -28,7 +28,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = 0;
+        var expected = 10;
 
         var numericInput = cut.Find("input[name='Quantity']");
         Assert.Equal(expected.ToString(), numericInput.GetAttribute("value"));
@@ -46,7 +46,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = 0.00m;
+        var expected = 29.99m;
 
         Assert.Contains($"Price: {expected:C}", cut.Markup);
     }
@@ -63,7 +63,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = 0;
+        var expected = 1;
 
         var numericInput = cut.Find("input[name='Quantity']");
         Assert.Equal(expected.ToString(), numericInput.GetAttribute("min"));
@@ -81,7 +81,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = 0;
+        var expected = 100;
 
         var numericInput = cut.Find("input[name='Quantity']");
         Assert.Equal(expected.ToString(), numericInput.GetAttribute("max"));
@@ -99,7 +99,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = "0";
+        var expected = "0.01";
 
         var priceInput = cut.Find("input[name='Price']");
         Assert.Equal(expected, priceInput.GetAttribute("step"));
@@ -120,7 +120,7 @@ public class B_NumericInputs : BunitContext
         var priceInput = cut.Find("input[name='Price']");
         priceInput.Change("99.99");
 
-        var expected = "__";
+        var expected = "$99.99";
 
         Assert.Contains($"Price: {expected}", cut.Markup);
     }
@@ -137,7 +137,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = "__";
+        var expected = "P";
 
         // The component should show format in some way
         Assert.Contains($"Discount Format: {expected}", cut.Markup);
@@ -155,7 +155,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = 0;
+        var expected = 2;
 
         Assert.Contains($"Weight Decimals: {expected}", cut.Markup);
     }
@@ -172,7 +172,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Quantity ShowUpDown: {expected}", cut.Markup);
     }
@@ -192,7 +192,7 @@ public class B_NumericInputs : BunitContext
         var quantityInput = cut.Find("input[name='Quantity']");
         quantityInput.Change("50");
 
-        var expected = 0;
+        var expected = 50;
 
         Assert.Contains($"Quantity: {expected}", cut.Markup);
     }
@@ -209,7 +209,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Optional Count: {expected}", cut.Markup);
     }
@@ -230,7 +230,7 @@ public class B_NumericInputs : BunitContext
         optionalInput.Change("100");
         optionalInput.Change("");
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Optional Count: {expected}", cut.Markup);
     }
@@ -247,7 +247,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = "__";
+        var expected = "Enter a count (optional)";
 
         var optionalInput = cut.Find("input[name='OptionalCount']");
         Assert.Equal(expected, optionalInput.GetAttribute("placeholder"));
@@ -265,7 +265,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = "__";
+        var expected = "decimal";
 
         Assert.Contains($"Price Type: {expected}", cut.Markup);
     }
@@ -282,7 +282,7 @@ public class B_NumericInputs : BunitContext
 
         var cut = Render<NumericInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var totalInput = cut.Find("input[name='TotalAmount']");
         var isReadOnly = totalInput.HasAttribute("readonly");

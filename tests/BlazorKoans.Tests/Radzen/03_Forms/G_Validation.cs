@@ -35,7 +35,7 @@ public class G_Validation : BunitContext
         // Submit without filling required field
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Username is required";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -52,7 +52,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = "__";
+        var expected = "Username";
 
         Assert.Contains($"Username Component: {expected}", cut.Markup);
     }
@@ -70,7 +70,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Username is required";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -132,7 +132,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = 0;
+        var expected = 18;
 
         Assert.Contains($"Min Age: {expected}", cut.Markup);
     }
@@ -148,7 +148,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = 0;
+        var expected = 120;
 
         Assert.Contains($"Max Age: {expected}", cut.Markup);
     }
@@ -169,7 +169,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Age must be between 18 and 120";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -185,7 +185,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = 0;
+        var expected = 8;
 
         Assert.Contains($"Min Password Length: {expected}", cut.Markup);
     }
@@ -206,7 +206,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Password must be at least 8 characters";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -301,7 +301,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = false;
+        var expected = true;
 
         var hasError = cut.Markup.Contains("Invalid phone format");
         Assert.Equal(expected, hasError);
@@ -321,7 +321,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = 0;
+        var expected = 5;
 
         Assert.Contains($"Validation Errors: {expected}", cut.Markup);
     }
@@ -346,7 +346,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Valid submission";
 
         Assert.Contains($"Submit Status: {expected}", cut.Markup);
     }
@@ -364,7 +364,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Invalid submission";
 
         Assert.Contains($"Submit Status: {expected}", cut.Markup);
     }
@@ -381,7 +381,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Has Validation Summary: {expected}", cut.Markup);
     }
@@ -398,7 +398,7 @@ public class G_Validation : BunitContext
 
         var cut = Render<RadzenValidationDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Has Custom Validator: {expected}", cut.Markup);
     }
@@ -419,7 +419,7 @@ public class G_Validation : BunitContext
 
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Username 'admin' is reserved";
 
         Assert.Contains(expected, cut.Markup);
     }

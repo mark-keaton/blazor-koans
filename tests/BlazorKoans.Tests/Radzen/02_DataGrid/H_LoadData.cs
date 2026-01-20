@@ -24,7 +24,7 @@ public class H_LoadData : BunitContext
 
         // TODO: What event enables server-side data loading?
 
-        var expected = "__";
+        var expected = "LoadData";
 
         Assert.Equal("LoadData", expected);
     }
@@ -39,7 +39,7 @@ public class H_LoadData : BunitContext
 
         // TODO: What parameter type does LoadData receive?
 
-        var expected = "__";
+        var expected = "LoadDataArgs";
 
         Assert.Equal("LoadDataArgs", expected);
     }
@@ -53,7 +53,7 @@ public class H_LoadData : BunitContext
 
         // TODO: On page 2 with PageSize=10, what is Skip?
 
-        var expected = 0;
+        var expected = 10;
 
         Assert.Equal(10, expected);
     }
@@ -67,7 +67,7 @@ public class H_LoadData : BunitContext
 
         // TODO: If PageSize is 20, what is Top?
 
-        var expected = 0;
+        var expected = 20;
 
         Assert.Equal(20, expected);
     }
@@ -82,7 +82,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Does OrderBy include the sort direction (asc/desc)?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -97,7 +97,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Can you apply Filter directly to IQueryable?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -112,7 +112,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Is Count required when using LoadData?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -127,7 +127,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Where do you set the Data property when using LoadData?
 
-        var expected = "__"; // "OnInitialized" or "LoadData"
+        var expected = "LoadData"; // "OnInitialized" or "LoadData"
 
         Assert.Equal("LoadData", expected);
     }
@@ -142,7 +142,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Do Skip and Take execute in the database with IQueryable?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -157,7 +157,7 @@ public class H_LoadData : BunitContext
 
         // TODO: Is LoadData recommended for datasets with 1 million rows?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }

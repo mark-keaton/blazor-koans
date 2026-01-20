@@ -27,7 +27,7 @@ public class B_ColumnTypes : BunitContext
 
         var cut = Render<ColumnTypesDemo>();
 
-        var expected = "__";
+        var expected = "{0:C}";
 
         Assert.Equal("{0:C}", expected);
     }
@@ -44,7 +44,7 @@ public class B_ColumnTypes : BunitContext
         var cut = Render<ColumnTypesDemo>();
 
         var salaryCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[2];
-        var expected = "__"; // Should match the format used
+        var expected = "{0:d}"; // Should match the format used
 
         // The cell should contain a formatted dollar amount
         Assert.Contains("$", salaryCell?.TextContent ?? "");
@@ -64,7 +64,7 @@ public class B_ColumnTypes : BunitContext
         var cut = Render<ColumnTypesDemo>();
 
         var statusCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[4];
-        var expected = "__";
+        var expected = "Active";
 
         Assert.Contains(expected, statusCell?.TextContent ?? "");
     }
@@ -79,7 +79,7 @@ public class B_ColumnTypes : BunitContext
 
         // TODO: What is the context variable's type in a RadzenDataGridColumn<Employee>?
 
-        var expected = "__";
+        var expected = "Employee";
 
         Assert.Equal("Employee", expected);
     }
@@ -97,7 +97,7 @@ public class B_ColumnTypes : BunitContext
 
         var cut = Render<ColumnTypesDemo>();
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -117,7 +117,7 @@ public class B_ColumnTypes : BunitContext
             parameters.Add(p => p.ShowInactiveEmployee, true));
 
         var statusCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[4];
-        var expected = "__"; // "Success", "Danger", "Warning", etc.
+        var expected = "Danger"; // "Success", "Danger", "Warning", etc.
 
         // Should contain "Inactive" text
         Assert.Contains("Inactive", statusCell?.TextContent ?? "");
@@ -133,7 +133,7 @@ public class B_ColumnTypes : BunitContext
         // TODO: What unit does ColumnTypesDemo use for the Status column width?
         // HINT: Look at the Width parameter
 
-        var expected = "__"; // "px", "%", or "auto"
+        var expected = "px"; // "px", "%", or "auto"
 
         Assert.Equal("px", expected);
     }
@@ -148,7 +148,7 @@ public class B_ColumnTypes : BunitContext
 
         // TODO: How should a salary column be aligned for best readability?
 
-        var expected = "__"; // "Left", "Center", or "Right"
+        var expected = "Right"; // "Left", "Center", or "Right"
 
         Assert.Equal("Right", expected);
     }
@@ -164,7 +164,7 @@ public class B_ColumnTypes : BunitContext
         // TODO: Which column type is commonly frozen in data grids?
         // HINT: Think about which column you'd always want to see
 
-        var expected = "__"; // "First", "Last", or "Middle"
+        var expected = "First"; // "First", "Last", or "Middle"
 
         Assert.Equal("First", expected);
     }
@@ -182,7 +182,7 @@ public class B_ColumnTypes : BunitContext
         var cut = Render<ColumnTypesDemo>();
 
         var actionsCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[5];
-        var expected = "__";
+        var expected = "Edit";
 
         Assert.Contains(expected, actionsCell?.TextContent ?? "");
     }

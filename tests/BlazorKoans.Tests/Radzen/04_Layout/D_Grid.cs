@@ -29,7 +29,7 @@ public class D_Grid : BunitContext
         var cut = Render<GridLayoutDemo>();
 
         var columns = cut.FindAll(".rz-col");
-        var expected = 0;
+        var expected = 3;
 
         Assert.True(columns.Count >= expected);
     }
@@ -44,7 +44,7 @@ public class D_Grid : BunitContext
         // TODO: Replace 0 with the size that makes a column half-width
         // HINT: 12 columns total, so half is...
 
-        var expected = 0;
+        var expected = 6;
 
         // Half of 12 columns
         Assert.Equal(6, expected);
@@ -62,7 +62,7 @@ public class D_Grid : BunitContext
 
         var cut = Render<GridLayoutDemo>();
 
-        var expected = "__";
+        var expected = "rz-col-12";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -78,7 +78,7 @@ public class D_Grid : BunitContext
         // TODO: If a column has Size="12" SizeMD="6", what width on medium screens?
         // Replace 0 with the percentage (without the % symbol)
 
-        var expected = 0;
+        var expected = 50;
 
         // 6 out of 12 columns = 50%
         Assert.Equal(50, expected);
@@ -97,7 +97,7 @@ public class D_Grid : BunitContext
 
         var cut = Render<GridLayoutDemo>();
 
-        var hasWrapping = false;
+        var hasWrapping = true;
 
         // If total column sizes exceed 12, wrapping occurs
         Assert.True(hasWrapping == true || hasWrapping == false);
@@ -115,7 +115,7 @@ public class D_Grid : BunitContext
 
         var cut = Render<GridLayoutDemo>();
 
-        var hasOffset = false;
+        var hasOffset = true;
 
         Assert.True(hasOffset == cut.Markup.Contains("rz-offset") || hasOffset == false);
     }
@@ -130,7 +130,7 @@ public class D_Grid : BunitContext
         // TODO: Replace "__" with the CSS property used for gap
         // HINT: Modern CSS flexbox/grid use this property
 
-        var expected = "__";
+        var expected = "gap";
 
         Assert.Equal("gap", expected);
     }
@@ -145,7 +145,7 @@ public class D_Grid : BunitContext
         // TODO: Replace "__" with the default alignment value
         // HINT: Flexbox default stretches items to fill container height
 
-        var expected = "__";
+        var expected = "Stretch";
 
         Assert.Equal("Stretch", expected);
     }
@@ -162,7 +162,7 @@ public class D_Grid : BunitContext
 
         var cut = Render<GridLayoutDemo>();
 
-        var hasJustifyContent = false;
+        var hasJustifyContent = true;
 
         Assert.True(hasJustifyContent == cut.Markup.Contains("rz-justify") || hasJustifyContent == false);
     }
@@ -179,7 +179,7 @@ public class D_Grid : BunitContext
 
         var cut = Render<GridLayoutDemo>();
 
-        var hasNestedRows = false;
+        var hasNestedRows = true;
 
         Assert.True(hasNestedRows == true || hasNestedRows == false);
     }

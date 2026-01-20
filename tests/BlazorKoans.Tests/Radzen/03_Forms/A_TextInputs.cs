@@ -31,7 +31,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = "__";
+        var expected = "John Doe";
 
         var textBox = cut.Find("input[name='Name']");
         Assert.Equal(expected, textBox.GetAttribute("value"));
@@ -52,7 +52,7 @@ public class A_TextInputs : BunitContext
         var textBox = cut.Find("input[name='Name']");
         textBox.Change("Jane Doe");
 
-        var expected = "__";
+        var expected = "Jane Doe";
 
         Assert.Contains($"Name: {expected}", cut.Markup);
     }
@@ -69,7 +69,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = "__";
+        var expected = "Enter your name";
 
         var textBox = cut.Find("input[name='Name']");
         Assert.Equal(expected, textBox.GetAttribute("placeholder"));
@@ -87,7 +87,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = 0;
+        var expected = 50;
 
         var textBox = cut.Find("input[name='Name']");
         Assert.Equal(expected.ToString(), textBox.GetAttribute("maxlength"));
@@ -104,7 +104,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = "__";
+        var expected = "Initial description";
 
         var textArea = cut.Find("textarea[name='Description']");
         Assert.Contains(expected, textArea.TextContent);
@@ -122,7 +122,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = 0;
+        var expected = 4;
 
         var textArea = cut.Find("textarea[name='Description']");
         Assert.Equal(expected.ToString(), textArea.GetAttribute("rows"));
@@ -143,7 +143,7 @@ public class A_TextInputs : BunitContext
         var textArea = cut.Find("textarea[name='Description']");
         textArea.Change("This is a detailed description of the product.");
 
-        var expected = "__";
+        var expected = "This is a detailed description of the product.";
 
         Assert.Contains($"Description: {expected}", cut.Markup);
     }
@@ -160,7 +160,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = "__";
+        var expected = "password";
 
         var passwordInput = cut.Find("input[name='Password']");
         Assert.Equal(expected, passwordInput.GetAttribute("type"));
@@ -181,7 +181,7 @@ public class A_TextInputs : BunitContext
         var passwordInput = cut.Find("input[name='Password']");
         passwordInput.Change("SecretPassword123!");
 
-        var expected = 0;
+        var expected = 18;
 
         Assert.Contains($"Password Length: {expected}", cut.Markup);
     }
@@ -199,7 +199,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var emailInput = cut.Find("input[name='Email']");
         var isDisabled = emailInput.HasAttribute("disabled");
@@ -219,7 +219,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var readOnlyInput = cut.Find("input[name='ReadOnlyField']");
         var isReadOnly = readOnlyInput.HasAttribute("readonly");
@@ -238,7 +238,7 @@ public class A_TextInputs : BunitContext
 
         var cut = Render<TextInputsDemo>();
 
-        var expected = "__";
+        var expected = "Name";
 
         var textBox = cut.Find("input[name='Name']");
         Assert.Equal(expected, textBox.GetAttribute("name"));
@@ -264,7 +264,7 @@ public class A_TextInputs : BunitContext
         var clearButton = cut.Find("button.clear-name");
         clearButton.Click();
 
-        var expected = "__";
+        var expected = "";
 
         Assert.Contains($"Name: {expected}", cut.Markup);
     }

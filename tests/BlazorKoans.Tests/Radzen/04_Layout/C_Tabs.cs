@@ -27,7 +27,7 @@ public class C_Tabs : BunitContext
         var cut = Render<TabsDemo>();
 
         var tabs = cut.FindAll(".rz-tabview-nav li");
-        var expected = 0;
+        var expected = 4;
 
         Assert.Equal(expected, tabs.Count);
     }
@@ -44,7 +44,7 @@ public class C_Tabs : BunitContext
 
         var cut = Render<TabsDemo>();
 
-        var expected = "__";
+        var expected = "Overview";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -83,7 +83,7 @@ public class C_Tabs : BunitContext
         var secondTab = cut.FindAll(".rz-tabview-nav li")[1];
         secondTab.Click();
 
-        var expected = "__";
+        var expected = "This tab contains detailed information.";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -104,7 +104,7 @@ public class C_Tabs : BunitContext
         var secondTab = cut.FindAll(".rz-tabview-nav li")[1];
         secondTab.Click();
 
-        var expected = "__";
+        var expected = "Switched to tab 1";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -121,7 +121,7 @@ public class C_Tabs : BunitContext
 
         var cut = Render<TabsDemo>();
 
-        var expected = "__";
+        var expected = "This is the first tab showing an overview of the content.";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -138,7 +138,7 @@ public class C_Tabs : BunitContext
 
         var cut = Render<TabsDemo>();
 
-        var hasIcons = false;
+        var hasIcons = true;
 
         Assert.True(hasIcons == cut.Markup.Contains("rz-icon"));
     }
@@ -155,7 +155,7 @@ public class C_Tabs : BunitContext
 
         var cut = Render<TabsDemo>();
 
-        var hasDynamicTabs = false;
+        var hasDynamicTabs = true;
 
         Assert.True(hasDynamicTabs == cut.Markup.Contains("Add Tab") || hasDynamicTabs == false);
     }
@@ -170,7 +170,7 @@ public class C_Tabs : BunitContext
         // TODO: Replace "__" with the render mode used in TabsDemo
         // HINT: Check the @rendermode directive
 
-        var expected = "__";
+        var expected = "InteractiveServer";
 
         // The demo uses a specific render mode for interactivity
         Assert.Equal("InteractiveServer", expected);

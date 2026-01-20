@@ -30,7 +30,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "01/01/1990";
 
         Assert.Contains($"Birth Date: {expected}", cut.Markup);
     }
@@ -47,7 +47,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "MM/dd/yyyy";
 
         Assert.Contains($"Date Format: {expected}", cut.Markup);
     }
@@ -64,7 +64,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Show Time: {expected}", cut.Markup);
     }
@@ -81,7 +81,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "09:00";
 
         Assert.Contains($"Daily Reminder: {expected}", cut.Markup);
     }
@@ -98,7 +98,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "today";
 
         Assert.Contains($"Min Date: {expected}", cut.Markup);
     }
@@ -115,7 +115,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "today + 90 days";
 
         Assert.Contains($"Max Date: {expected}", cut.Markup);
     }
@@ -132,7 +132,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "DateOnly";
 
         Assert.Contains($"Event Date Type: {expected}", cut.Markup);
     }
@@ -149,7 +149,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Optional Date: {expected}", cut.Markup);
     }
@@ -173,7 +173,7 @@ public class C_DateInputs : BunitContext
         var clearButton = cut.Find("button.clear-date");
         clearButton.Click();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Optional Date: {expected}", cut.Markup);
     }
@@ -190,7 +190,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "Select a date (optional)";
 
         var dateInput = cut.Find("input[name='OptionalDate']");
         Assert.Equal(expected, dateInput.GetAttribute("placeholder"));
@@ -208,7 +208,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Inline Calendar: {expected}", cut.Markup);
     }
@@ -225,7 +225,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = "__";
+        var expected = "Month/Year";
 
         Assert.Contains($"Expiry View: {expected}", cut.Markup);
     }
@@ -245,7 +245,7 @@ public class C_DateInputs : BunitContext
         var dateInput = cut.Find("input[name='BirthDate']");
         dateInput.Change("2024-06-15");
 
-        var expected = "__";
+        var expected = "06/15/2024";
 
         Assert.Contains($"Birth Date: {expected}", cut.Markup);
     }
@@ -262,7 +262,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Has Footer Template: {expected}", cut.Markup);
     }
@@ -279,7 +279,7 @@ public class C_DateInputs : BunitContext
 
         var cut = Render<DateInputsDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var confirmedInput = cut.Find("input[name='ConfirmedDate']");
         var isReadOnly = confirmedInput.HasAttribute("readonly");

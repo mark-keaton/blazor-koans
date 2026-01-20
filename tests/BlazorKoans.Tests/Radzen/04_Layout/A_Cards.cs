@@ -27,7 +27,7 @@ public class A_Cards : BunitContext
 
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        var expected = "rz-card";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -44,7 +44,7 @@ public class A_Cards : BunitContext
 
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        var expected = "Simple Card";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -61,7 +61,7 @@ public class A_Cards : BunitContext
 
         var cut = Render<CardsDemo>();
 
-        var hasCustomStyle = false;
+        var hasCustomStyle = true;
 
         // Custom styles typically include properties like background-color, border, etc.
         Assert.True(hasCustomStyle == cut.Markup.Contains("style="));
@@ -86,7 +86,7 @@ public class A_Cards : BunitContext
         var clickButton = cut.Find("button");
         clickButton.Click();
 
-        var expected = "__";
+        var expected = "Card Clicked!";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -104,7 +104,7 @@ public class A_Cards : BunitContext
         var cut = Render<CardsDemo>();
 
         var cardElements = cut.FindAll(".rz-card");
-        var expected = 0;
+        var expected = 4;
 
         Assert.Equal(expected, cardElements.Count);
     }
@@ -122,7 +122,7 @@ public class A_Cards : BunitContext
 
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        var expected = "This is a basic RadzenCard with some content inside.";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -139,7 +139,7 @@ public class A_Cards : BunitContext
 
         var cut = Render<CardsDemo>();
 
-        var hasIcon = false;
+        var hasIcon = true;
 
         Assert.True(hasIcon == cut.Markup.Contains("icon"));
     }
@@ -155,7 +155,7 @@ public class A_Cards : BunitContext
         // TODO: Replace "__" with the HTML element type that RadzenCard renders
         // HINT: Radzen cards are typically div elements with CSS classes
 
-        var expected = "__";
+        var expected = "div";
 
         // RadzenCard renders as a specific HTML element
         Assert.Equal("div", expected);

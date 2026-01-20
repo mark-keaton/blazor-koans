@@ -23,7 +23,7 @@ public class C_Sorting : BunitContext
 
         // TODO: What property enables sorting on the entire DataGrid?
 
-        var expected = "__";
+        var expected = "AllowSorting";
 
         Assert.Equal("AllowSorting", expected);
     }
@@ -38,7 +38,7 @@ public class C_Sorting : BunitContext
 
         // TODO: How many clicks to cycle through: unsorted -> ascending -> descending -> unsorted?
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(3, expected);
     }
@@ -61,7 +61,7 @@ public class C_Sorting : BunitContext
 
         var firstRow = cut.FindAll("tbody tr")[0];
         var firstName = firstRow.QuerySelector("td")?.TextContent ?? "";
-        var expected = "__";
+        var expected = "Alice";
 
         Assert.Contains(expected, firstName);
     }
@@ -84,7 +84,7 @@ public class C_Sorting : BunitContext
 
         var firstRow = cut.FindAll("tbody tr")[0];
         var firstEmployee = firstRow.QuerySelector("td")?.TextContent ?? "";
-        var expected = "__";
+        var expected = "Carol";
 
         Assert.Contains(expected, firstEmployee);
     }
@@ -99,7 +99,7 @@ public class C_Sorting : BunitContext
         // TODO: Does RadzenDataGrid support multi-column sorting by default?
         // HINT: Yes, when AllowSorting is enabled
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -115,7 +115,7 @@ public class C_Sorting : BunitContext
         // TODO: In SortingDemo, which column has Sortable="false"?
         // HINT: Look for the Actions or Status column
 
-        var expected = "__";
+        var expected = "Actions";
 
         Assert.Equal("Actions", expected);
     }
@@ -130,7 +130,7 @@ public class C_Sorting : BunitContext
         // TODO: What type is SortOrder (it's an enum)?
         // HINT: Ascending, Descending...
 
-        var expected = "__";
+        var expected = "SortOrder";
 
         Assert.Contains("SortOrder", expected);
     }
@@ -147,7 +147,7 @@ public class C_Sorting : BunitContext
 
         var cut = Render<SortingDemo>();
 
-        var expected = "__";
+        var expected = "Department";
 
         Assert.Equal("Department", expected);
     }
@@ -162,7 +162,7 @@ public class C_Sorting : BunitContext
 
         // TODO: After sorting ascending, which direction does the arrow point?
 
-        var expected = "__"; // "Up" or "Down"
+        var expected = "Up"; // "Up" or "Down"
 
         Assert.Equal("Up", expected);
     }

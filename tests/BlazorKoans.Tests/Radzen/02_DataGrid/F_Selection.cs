@@ -24,7 +24,7 @@ public class F_Selection : BunitContext
 
         // TODO: What SelectionMode allows selecting only one row?
 
-        var expected = "__";
+        var expected = "Single";
 
         Assert.Equal("Single", expected);
     }
@@ -38,7 +38,7 @@ public class F_Selection : BunitContext
 
         // TODO: In Single mode, can you have 2 rows selected simultaneously?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "No"; // "Yes" or "No"
 
         Assert.Equal("No", expected);
     }
@@ -52,7 +52,7 @@ public class F_Selection : BunitContext
 
         // TODO: What UI element appears in Multiple mode for selection?
 
-        var expected = "__";
+        var expected = "checkbox";
 
         Assert.Equal("checkbox", expected);
     }
@@ -70,7 +70,7 @@ public class F_Selection : BunitContext
 
         var cut = Render<SelectionDemo>();
 
-        var expected = "__";
+        var expected = "Employee";
 
         Assert.Equal("Employee", expected);
     }
@@ -91,7 +91,7 @@ public class F_Selection : BunitContext
         var firstRow = cut.FindAll("tbody tr")[0];
         firstRow.Click();
 
-        var expected = "__";
+        var expected = "Alice Johnson";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -105,7 +105,7 @@ public class F_Selection : BunitContext
 
         // TODO: Does SelectionChanged fire when clicking a row?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -119,7 +119,7 @@ public class F_Selection : BunitContext
 
         // TODO: In Multiple mode, what does the header checkbox do?
 
-        var expected = "__"; // "SelectsAll" or "SelectsPage"
+        var expected = "SelectsPage"; // "SelectsAll" or "SelectsPage"
 
         Assert.Equal("SelectsPage", expected);
     }
@@ -133,7 +133,7 @@ public class F_Selection : BunitContext
 
         // TODO: Can you select a row in code without user interaction?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -153,7 +153,7 @@ public class F_Selection : BunitContext
         var firstRow = cut.FindAll("tbody tr")[0];
         firstRow.Click();
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -168,7 +168,7 @@ public class F_Selection : BunitContext
         // TODO: For Multiple selection, what type should the bound property be?
         // HINT: A collection of TItem
 
-        var expected = "__";
+        var expected = "IEnumerable<Employee>";
 
         Assert.Contains("IEnumerable", expected);
     }

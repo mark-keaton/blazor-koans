@@ -24,7 +24,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: What EditMode allows editing only one row at a time?
 
-        var expected = "__";
+        var expected = "Single";
 
         Assert.Equal("Single", expected);
     }
@@ -38,7 +38,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: What event fires when a row enters edit mode?
 
-        var expected = "__";
+        var expected = "RowEdit";
 
         Assert.Equal("RowEdit", expected);
     }
@@ -53,7 +53,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: What event fires when saving changes?
 
-        var expected = "__";
+        var expected = "RowUpdate";
 
         Assert.Equal("RowUpdate", expected);
     }
@@ -68,7 +68,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: Are changes saved when clicking Cancel?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "No"; // "Yes" or "No"
 
         Assert.Equal("No", expected);
     }
@@ -83,7 +83,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: Can you use RadzenDropDown in an EditTemplate?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -98,7 +98,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: Can you save a row with empty required fields?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "TEMP_PLACEHOLDER"; // "Yes" or "No"
 
         Assert.Equal("No", expected);
     }
@@ -113,7 +113,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: What icon is commonly used for the Edit button?
 
-        var expected = "__";
+        var expected = "edit";
 
         Assert.Equal("edit", expected);
     }
@@ -128,7 +128,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: What event fires when creating a new row?
 
-        var expected = "__";
+        var expected = "RowCreate";
 
         Assert.Equal("RowCreate", expected);
     }
@@ -142,7 +142,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: Is a new row immediately in edit mode?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -156,7 +156,7 @@ public class G_InlineEditing : BunitContext
 
         // TODO: In Single mode, can two rows be in edit mode simultaneously?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "No"; // "Yes" or "No"
 
         Assert.Equal("No", expected);
     }

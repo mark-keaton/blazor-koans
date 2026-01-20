@@ -26,7 +26,7 @@ public class B_Panels : BunitContext
 
         var cut = Render<PanelsDemo>();
 
-        var expected = "__";
+        var expected = "Collapsible Panel";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -72,7 +72,7 @@ public class B_Panels : BunitContext
         var toggleButton = cut.Find(".rz-panel-header");
         toggleButton.Click();
 
-        var expected = "__";
+        var expected = "hidden";
 
         // When collapsed, content should be hidden (not removed from DOM)
         Assert.Equal("hidden", expected);
@@ -90,7 +90,7 @@ public class B_Panels : BunitContext
 
         var cut = Render<PanelsDemo>();
 
-        var expected = "__";
+        var expected = "This panel can be collapsed by clicking the header.";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -107,7 +107,7 @@ public class B_Panels : BunitContext
 
         var cut = Render<PanelsDemo>();
 
-        var expected = "__";
+        var expected = "User Information";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -122,7 +122,7 @@ public class B_Panels : BunitContext
         // TODO: Replace "__" with the HTML element RadzenFieldset renders
         // HINT: It's a standard HTML form grouping element
 
-        var expected = "__";
+        var expected = "fieldset";
 
         Assert.Equal("fieldset", expected);
     }
@@ -141,7 +141,7 @@ public class B_Panels : BunitContext
 
         var fieldset = cut.Find("fieldset");
         var inputs = fieldset.QuerySelectorAll("input");
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(expected, inputs.Length);
     }
@@ -159,7 +159,7 @@ public class B_Panels : BunitContext
         var cut = Render<PanelsDemo>();
 
         var panels = cut.FindAll(".rz-panel");
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(expected, panels.Count);
     }
@@ -176,7 +176,7 @@ public class B_Panels : BunitContext
 
         var cut = Render<PanelsDemo>();
 
-        var hasCustomStyle = false;
+        var hasCustomStyle = true;
 
         Assert.True(hasCustomStyle == cut.Markup.Contains("style="));
     }
@@ -193,7 +193,7 @@ public class B_Panels : BunitContext
 
         var cut = Render<PanelsDemo>();
 
-        var expected = "__";
+        var expected = "Collapsed";
 
         Assert.Contains(expected, cut.Markup);
     }

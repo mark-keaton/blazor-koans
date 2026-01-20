@@ -23,7 +23,7 @@ public class E_Paging : BunitContext
 
         // TODO: What property enables paging on the DataGrid?
 
-        var expected = "__";
+        var expected = "AllowPaging";
 
         Assert.Equal("AllowPaging", expected);
     }
@@ -40,7 +40,7 @@ public class E_Paging : BunitContext
 
         var cut = Render<PagingDemo>();
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(expected, 3);
     }
@@ -56,7 +56,7 @@ public class E_Paging : BunitContext
 
         var cut = Render<PagingDemo>();
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
@@ -70,7 +70,7 @@ public class E_Paging : BunitContext
 
         // TODO: After clicking "Next" from page 1, which page are you on?
 
-        var expected = 0;
+        var expected = 2;
 
         Assert.Equal(2, expected);
     }
@@ -84,7 +84,7 @@ public class E_Paging : BunitContext
 
         // TODO: With 10 employees and PageSize=3, how many rows on the last page?
 
-        var expected = 0;
+        var expected = 1;
 
         Assert.Equal(1, expected);
     }
@@ -98,7 +98,7 @@ public class E_Paging : BunitContext
 
         // TODO: Can users change the page size if PageSizeOptions is set?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -112,7 +112,7 @@ public class E_Paging : BunitContext
 
         // TODO: What is the default PagerPosition?
 
-        var expected = "__";
+        var expected = "Bottom";
 
         Assert.Equal("Bottom", expected);
     }
@@ -126,7 +126,7 @@ public class E_Paging : BunitContext
 
         // TODO: Does ShowPagingSummary show the total number of records?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -141,7 +141,7 @@ public class E_Paging : BunitContext
         // TODO: What parameter type does PageChanged event receive?
         // HINT: It's a PageChangedEventArgs
 
-        var expected = "__";
+        var expected = "PageChangedEventArgs";
 
         Assert.Equal("PageChangedEventArgs", expected);
     }
@@ -156,7 +156,7 @@ public class E_Paging : BunitContext
         // TODO: Is Count required for client-side paging (Data parameter)?
         // HINT: No, the grid counts the IEnumerable automatically
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "No"; // "Yes" or "No"
 
         Assert.Equal("No", expected);
     }
@@ -170,7 +170,7 @@ public class E_Paging : BunitContext
 
         // TODO: After filtering and paging, are filters still active on page 2?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }

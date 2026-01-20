@@ -23,7 +23,7 @@ public class D_Filtering : BunitContext
 
         // TODO: What property enables filtering on the entire DataGrid?
 
-        var expected = "__";
+        var expected = "AllowFiltering";
 
         Assert.Equal("AllowFiltering", expected);
     }
@@ -39,7 +39,7 @@ public class D_Filtering : BunitContext
         // TODO: What is the most common FilterMode for basic text filtering?
         // HINT: It's the simplest option
 
-        var expected = "__";
+        var expected = "Simple";
 
         Assert.Equal("Simple", expected);
     }
@@ -60,7 +60,7 @@ public class D_Filtering : BunitContext
         var filterInput = cut.Find("input[placeholder*='Department']");
         filterInput.Change("Engineering");
 
-        var expected = 0;
+        var expected = 2;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
@@ -74,7 +74,7 @@ public class D_Filtering : BunitContext
 
         // TODO: In FilteringDemo, which column has Filterable="false"?
 
-        var expected = "__";
+        var expected = "Actions";
 
         Assert.Equal("Actions", expected);
     }
@@ -95,7 +95,7 @@ public class D_Filtering : BunitContext
         filterInput.Change("sales");
 
         var rowCount = cut.FindAll("tbody tr").Count;
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }
@@ -117,7 +117,7 @@ public class D_Filtering : BunitContext
         var nameFilter = cut.Find("input[placeholder*='Name']");
         nameFilter.Change("Alice");
 
-        var expected = 0;
+        var expected = 1;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
@@ -140,7 +140,7 @@ public class D_Filtering : BunitContext
         filterInput.Change("Engineering");
         filterInput.Change(""); // Clear filter
 
-        var expected = 0;
+        var expected = 5;
 
         Assert.Equal(initialCount, cut.FindAll("tbody tr").Count);
     }
@@ -155,7 +155,7 @@ public class D_Filtering : BunitContext
 
         // TODO: What is the default filter operator in Simple mode?
 
-        var expected = "__";
+        var expected = "contains";
 
         Assert.Equal("contains", expected);
     }
@@ -171,7 +171,7 @@ public class D_Filtering : BunitContext
         // TODO: Does typing "95000" in Salary filter find exact matches or ranges?
         // HINT: Default is contains/equals
 
-        var expected = "__"; // "Exact" or "Range"
+        var expected = "Exact"; // "Exact" or "Range"
 
         Assert.Equal("Exact", expected);
     }
@@ -185,7 +185,7 @@ public class D_Filtering : BunitContext
 
         // TODO: Can you replace the default text input with a dropdown filter?
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }

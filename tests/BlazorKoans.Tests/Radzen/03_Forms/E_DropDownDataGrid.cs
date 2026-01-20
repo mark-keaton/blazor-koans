@@ -29,7 +29,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = 0;
+        var expected = 4;
 
         Assert.Contains($"Column Count: {expected}", cut.Markup);
     }
@@ -46,7 +46,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = "__";
+        var expected = "Employee";
 
         Assert.Contains($"Employee Type: {expected}", cut.Markup);
     }
@@ -66,7 +66,7 @@ public class E_DropDownDataGrid : BunitContext
         var filterInput = cut.Find("input[name='DepartmentFilter']");
         filterInput.Change("Engineering");
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Contains($"Filtered Count: {expected}", cut.Markup);
     }
@@ -83,7 +83,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = "__";
+        var expected = "FullName";
 
         Assert.Contains($"Text Property: {expected}", cut.Markup);
     }
@@ -100,7 +100,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Allow Filtering: {expected}", cut.Markup);
     }
@@ -120,7 +120,7 @@ public class E_DropDownDataGrid : BunitContext
         var lastNameHeader = cut.Find("th.lastname-header");
         lastNameHeader.Click();
 
-        var expected = "__";
+        var expected = "Brown";
 
         Assert.Contains($"First Employee: {expected}", cut.Markup);
     }
@@ -137,7 +137,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Status Template: {expected}", cut.Markup);
     }
@@ -154,7 +154,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = 0;
+        var expected = 5;
 
         Assert.Contains($"Page Size: {expected}", cut.Markup);
     }
@@ -170,7 +170,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = "__";
+        var expected = "Select an employee";
 
         var dropdown = cut.Find("input[name='Employee']");
         Assert.Equal(expected, dropdown.GetAttribute("placeholder"));
@@ -191,7 +191,7 @@ public class E_DropDownDataGrid : BunitContext
         var row = cut.Find("tr[data-employee-id='3']");
         row.Click();
 
-        var expected = "__";
+        var expected = "Bob Johnson";
 
         Assert.Contains($"Selected: {expected}", cut.Markup);
     }
@@ -208,7 +208,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Multiple Projects: {expected}", cut.Markup);
     }
@@ -228,7 +228,7 @@ public class E_DropDownDataGrid : BunitContext
         var selectButton = cut.Find("button.select-projects");
         selectButton.Click();
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Contains($"Selected Chips: {expected}", cut.Markup);
     }
@@ -245,7 +245,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Uses LoadData: {expected}", cut.Markup);
     }
@@ -268,7 +268,7 @@ public class E_DropDownDataGrid : BunitContext
         var clearButton = cut.Find("button.clear-employee");
         clearButton.Click();
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Selected Employee: {expected}", cut.Markup);
     }
@@ -284,7 +284,7 @@ public class E_DropDownDataGrid : BunitContext
 
         var cut = Render<DropDownDataGridDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var dropdown = cut.Find("input[name='LockedEmployee']");
         var isDisabled = dropdown.HasAttribute("disabled");

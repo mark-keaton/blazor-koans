@@ -27,7 +27,7 @@ public class A_BasicDataGrid : BunitContext
 
         var cut = Render<BasicDataGridDemo>();
 
-        var expected = "__";
+        var expected = "table";
 
         Assert.NotNull(cut.Find(expected));
     }
@@ -45,7 +45,7 @@ public class A_BasicDataGrid : BunitContext
 
         var cut = Render<BasicDataGridDemo>();
 
-        var expected = 0;
+        var expected = 5;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
@@ -63,7 +63,7 @@ public class A_BasicDataGrid : BunitContext
 
         var cut = Render<BasicDataGridDemo>();
 
-        var expected = 0;
+        var expected = 4;
 
         Assert.Equal(expected, cut.FindAll("th").Count);
     }
@@ -80,7 +80,7 @@ public class A_BasicDataGrid : BunitContext
 
         var cut = Render<BasicDataGridDemo>();
 
-        var expected = "__";
+        var expected = "Employee Name";
 
         Assert.Contains(expected, cut.Find("th").TextContent);
     }
@@ -99,7 +99,7 @@ public class A_BasicDataGrid : BunitContext
         var cut = Render<BasicDataGridDemo>();
 
         var firstCell = cut.FindAll("tbody tr")[0].QuerySelector("td");
-        var expected = "__";
+        var expected = "Alice";
 
         Assert.Contains(expected, firstCell?.TextContent ?? "");
     }
@@ -115,7 +115,7 @@ public class A_BasicDataGrid : BunitContext
         // TODO: What is TItem set to in BasicDataGridDemo?
         // HINT: Look at the RadzenDataGrid declaration
 
-        var expected = "__";
+        var expected = "Employee";
 
         Assert.Equal("Employee", expected);
     }
@@ -152,7 +152,7 @@ public class A_BasicDataGrid : BunitContext
         var cut = Render<BasicDataGridDemo>();
 
         var secondHeader = cut.FindAll("th")[1];
-        var expected = "__";
+        var expected = "Department";
 
         Assert.Contains(expected, secondHeader.TextContent);
     }
@@ -176,7 +176,7 @@ public class A_BasicDataGrid : BunitContext
         // Add an employee
         cut.Find("button.add-employee").Click();
 
-        var expected = 0;
+        var expected = 6;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
@@ -191,7 +191,7 @@ public class A_BasicDataGrid : BunitContext
         // TODO: Does BasicDataGridDemo set a width on the DataGrid?
         // HINT: Look for a Style parameter
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "Yes"; // "Yes" or "No"
 
         Assert.Equal("Yes", expected);
     }

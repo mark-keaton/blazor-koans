@@ -28,7 +28,7 @@ public class E_Navigation : BunitContext
         var cut = Render<NavigationDemo>();
 
         var menuItems = cut.FindAll(".rz-panel-menu-item");
-        var expected = 0;
+        var expected = 5;
 
         Assert.True(menuItems.Count >= expected);
     }
@@ -44,7 +44,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var expected = "__";
+        var expected = "Home";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -61,7 +61,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var expected = "__";
+        var expected = "/";
 
         Assert.Contains($"href=\"{expected}\"", cut.Markup);
     }
@@ -78,7 +78,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var hasNestedItems = false;
+        var hasNestedItems = true;
 
         Assert.True(hasNestedItems == true || hasNestedItems == false);
     }
@@ -93,7 +93,7 @@ public class E_Navigation : BunitContext
         // TODO: Replace "__" with the CSS class for expanded items
         // HINT: Radzen uses specific classes to indicate state
 
-        var expected = "__";
+        var expected = "rz-panel-menu-item-expanded";
 
         // Expanded items have a specific class
         Assert.Contains("rz-", expected);
@@ -111,7 +111,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var hasIcons = false;
+        var hasIcons = true;
 
         Assert.True(hasIcons == cut.Markup.Contains("rz-icon"));
     }
@@ -129,7 +129,7 @@ public class E_Navigation : BunitContext
         var cut = Render<NavigationDemo>();
 
         var breadcrumbItems = cut.FindAll(".rz-breadcrumb-item");
-        var expected = 0;
+        var expected = 3;
 
         Assert.True(breadcrumbItems.Count >= expected);
     }
@@ -145,7 +145,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var expected = "__";
+        var expected = "Home";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -162,7 +162,7 @@ public class E_Navigation : BunitContext
 
         var cut = Render<NavigationDemo>();
 
-        var hasClickableItems = false;
+        var hasClickableItems = true;
 
         Assert.True(hasClickableItems == cut.Markup.Contains("href="));
     }
@@ -177,7 +177,7 @@ public class E_Navigation : BunitContext
         // TODO: Replace "__" with the typical state of the last breadcrumb
         // Options: "active", "disabled", "plain"
 
-        var expected = "__";
+        var expected = "active";
 
         // Last item is usually marked as active/current
         Assert.Equal("active", expected);
@@ -193,7 +193,7 @@ public class E_Navigation : BunitContext
         // TODO: Replace "__" with the Blazor service used for navigation
         // HINT: It's the core Blazor routing service
 
-        var expected = "__";
+        var expected = "NavigationManager";
 
         Assert.Equal("NavigationManager", expected);
     }

@@ -48,7 +48,7 @@ public class F_Checkboxes : BunitContext
         var checkbox = cut.Find("input[name='AcceptTerms']");
         checkbox.Change(true);
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Accept Terms: {expected}", cut.Markup);
     }
@@ -65,7 +65,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Tri-State: {expected}", cut.Markup);
     }
@@ -85,7 +85,7 @@ public class F_Checkboxes : BunitContext
         checkbox.Change(true);  // First click
         checkbox.Change(null);  // Second click
 
-        var expected = "__";
+        var expected = "null";
 
         Assert.Contains($"Newsletter: {expected}", cut.Markup);
     }
@@ -119,7 +119,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = "__";
+        var expected = "Name";
 
         Assert.Contains($"Interests Text: {expected}", cut.Markup);
     }
@@ -136,7 +136,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = "__";
+        var expected = "Id";
 
         Assert.Contains($"Interests Value: {expected}", cut.Markup);
     }
@@ -156,7 +156,7 @@ public class F_Checkboxes : BunitContext
         var readingCheckbox = cut.Find("input[value='reading']");
         readingCheckbox.Change(true);
 
-        var expected = 0;
+        var expected = 1;
 
         Assert.Contains($"Selected Interests: {expected}", cut.Markup);
     }
@@ -173,7 +173,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = "__";
+        var expected = "Horizontal";
 
         Assert.Contains($"Orientation: {expected}", cut.Markup);
     }
@@ -209,7 +209,7 @@ public class F_Checkboxes : BunitContext
         var switchInput = cut.Find("input[name='Notifications']");
         switchInput.Change(true);
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Notifications: {expected}", cut.Markup);
     }
@@ -229,7 +229,7 @@ public class F_Checkboxes : BunitContext
         var checkbox = cut.Find("input[name='AcceptTerms']");
         checkbox.Change(true);
 
-        var expected = "__";
+        var expected = "AcceptTermsChange";
 
         Assert.Contains($"Event Fired: {expected}", cut.Markup);
     }
@@ -245,7 +245,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = false;
+        var expected = true;
 
         var checkbox = cut.Find("input[name='LockedOption']");
         var isDisabled = checkbox.HasAttribute("disabled");
@@ -263,7 +263,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = false;
+        var expected = true;
 
         Assert.Contains($"Features Disabled: {expected}", cut.Markup);
     }
@@ -279,7 +279,7 @@ public class F_Checkboxes : BunitContext
 
         var cut = Render<CheckboxesDemo>();
 
-        var expected = "__";
+        var expected = "Enable Dark Mode";
 
         Assert.Contains($"Dark Mode Label: {expected}", cut.Markup);
     }
@@ -302,7 +302,7 @@ public class F_Checkboxes : BunitContext
         var checkbox2 = cut.Find("input[value='music']");
         checkbox2.Change(true);
 
-        var expected = 0;
+        var expected = 2;
 
         Assert.Contains($"Change Count: {expected}", cut.Markup);
     }
