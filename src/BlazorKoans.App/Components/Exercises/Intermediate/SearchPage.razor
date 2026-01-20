@@ -11,17 +11,8 @@
 
 @code {
     [Parameter]
-    // TODO: Add the attribute that binds this property to the URL query string.
-    // HINT: The attribute name starts with "SupplyParameter..."
-    // [???]
-    // TODO: Make this property nullable (optional) so the page works without a query string.
-    public string Query { get; set; } = "";
-
-    [Parameter]
-    // TODO: Add the attribute that binds this property to ?q=value in the URL.
-    // HINT: Use the Name parameter to customize the query key: (Name = "q")
     [SupplyParameterFromQuery]
-    public string? SearchTerm { get; set; }
+    public string? Query { get; set; }
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "q")]
@@ -29,7 +20,6 @@
 
     private void NavigateToHome()
     {
-        // TODO: Use NavigationManager to navigate to the home page ("/")
-        // HINT: Navigation.NavigateTo(path)
+        Navigation.NavigateTo("/");
     }
 }
