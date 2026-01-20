@@ -3,9 +3,9 @@
 <h3>Radzen Validation Demo</h3>
 
 <div class="demo-section">
-    <RadzenTemplateForm Data="@Model" Submit="@OnSubmit" InvalidSubmit="@OnInvalidSubmit">
+    <RadzenTemplateForm TItem="RegistrationModel" Data="@Model" Submit="@(() => OnSubmit())" InvalidSubmit="@(() => OnInvalidSubmit())">
         <RadzenStack Gap="1rem">
-            <RadzenValidationSummary />
+            <ValidationSummary />
 
             <RadzenFormField Text="Username" Variant="Variant.Outlined">
                 <RadzenTextBox @bind-Value="@Model.Username" Name="Username" />
