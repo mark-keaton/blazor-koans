@@ -7,7 +7,7 @@
         <RadzenFormField Text="Accept Terms" Variant="Variant.Outlined">
             <RadzenCheckBox @bind-Value="@AcceptTerms"
                             Name="AcceptTerms"
-                            Change="@OnAcceptTermsChange" />
+                            Change="@((bool value) => OnAcceptTermsChange(value))" />
         </RadzenFormField>
 
         <RadzenFormField Text="Newsletter (Tri-State)" Variant="Variant.Outlined">
@@ -23,7 +23,7 @@
                                 TextProperty="Name"
                                 ValueProperty="Id"
                                 Orientation="Orientation.Horizontal"
-                                Change="@OnInterestsChange" />
+                                Change="@((IEnumerable<int> value) => OnInterestsChange(value))" />
         </RadzenFormField>
 
         <RadzenFormField Text="Features" Variant="Variant.Outlined">
