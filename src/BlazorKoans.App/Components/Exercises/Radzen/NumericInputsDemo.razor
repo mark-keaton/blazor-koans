@@ -1,0 +1,81 @@
+@rendermode InteractiveServer
+
+<h3>Numeric Inputs Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Quantity" Variant="Variant.Outlined">
+            <RadzenNumeric @bind-Value="@Quantity"
+                           TValue="int"
+                           Name="Quantity"
+                           Min="1"
+                           Max="100"
+                           Step="1"
+                           ShowUpDown="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Price" Variant="Variant.Outlined">
+            <RadzenNumeric @bind-Value="@Price"
+                           TValue="decimal"
+                           Name="Price"
+                           Format="c"
+                           Step="0.01m"
+                           Min="0.00m" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Discount" Variant="Variant.Outlined">
+            <RadzenNumeric @bind-Value="@Discount"
+                           TValue="double"
+                           Name="Discount"
+                           Format="P"
+                           Step="0.01"
+                           Min="0"
+                           Max="1" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Weight (kg)" Variant="Variant.Outlined">
+            <RadzenNumeric @bind-Value="@Weight"
+                           TValue="decimal"
+                           Name="Weight"
+                           Format="N2"
+                           Step="0.01m" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Optional Count" Variant="Variant.Outlined">
+            <RadzenNumeric @bind-Value="@OptionalCount"
+                           TValue="int?"
+                           Name="OptionalCount"
+                           Placeholder="Enter a count (optional)" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Total Amount (Read Only)" Variant="Variant.Outlined">
+            <RadzenNumeric Value="@TotalAmount"
+                           TValue="decimal"
+                           Name="TotalAmount"
+                           Format="c"
+                           ReadOnly="true" />
+        </RadzenFormField>
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Quantity: @Quantity</p>
+    <p>Quantity ShowUpDown: true</p>
+    <p>Price: @Price.ToString("C")</p>
+    <p>Price Type: decimal</p>
+    <p>Discount Format: P</p>
+    <p>Weight Decimals: 2</p>
+    <p>Optional Count: @(OptionalCount?.ToString() ?? "null")</p>
+    <p>Total Amount: @TotalAmount.ToString("C")</p>
+</div>
+
+@code {
+    private int Quantity { get; set; } = 10;
+    private decimal Price { get; set; } = 29.99m;
+    private double Discount { get; set; } = 0.15;
+    private decimal Weight { get; set; } = 1.5m;
+    private int? OptionalCount { get; set; } = null;
+    private decimal TotalAmount => Price * Quantity * (1 - (decimal)Discount);
+    private decimal TotalAmountDisplay => TotalAmount;
+}

@@ -1,0 +1,71 @@
+@using BlazorKoans.App.Models
+@using global::Radzen.Blazor
+@using global::Radzen
+@rendermode InteractiveServer
+
+<h3>Column Types Demo</h3>
+
+<RadzenDataGrid Data="@employees" TItem="Employee" Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Employee Name" />
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right" />
+        <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="Employee" Title="Status" Width="120px">
+            <Template Context="employee">
+                @if (employee.IsActive)
+                {
+                    <RadzenBadge BadgeStyle="BadgeStyle.Success" Text="Active" />
+                }
+                else
+                {
+                    <RadzenBadge BadgeStyle="BadgeStyle.Danger" Text="Inactive" />
+                }
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="150px" Sortable="false">
+            <Template Context="employee">
+                <RadzenButton Text="Edit" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Small"
+                              Click="@(() => EditEmployee(employee.Id))" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<div class="status-panel">
+    <p>Last Action: @LastAction</p>
+</div>
+
+@code {
+    [Parameter]
+    public bool ShowInactiveEmployee { get; set; }
+
+    private List<Employee> employees = new();
+    public string LastAction { get; private set; } = "None";
+
+    protected override void OnInitialized()
+    {
+        if (ShowInactiveEmployee)
+        {
+            employees = new List<Employee>
+            {
+                new Employee { Id = 1, Name = "Inactive User", Department = "Former", Salary = 50000, HireDate = new DateTime(2018, 1, 1), IsActive = false }
+            };
+        }
+        else
+        {
+            employees = new List<Employee>
+            {
+                new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15), IsActive = true },
+                new Employee { Id = 2, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1), IsActive = true },
+                new Employee { Id = 3, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10), IsActive = true }
+            };
+        }
+    }
+
+    private void EditEmployee(int id)
+    {
+        LastAction = $"Edit clicked for employee {id}";
+        StateHasChanged();
+    }
+}
