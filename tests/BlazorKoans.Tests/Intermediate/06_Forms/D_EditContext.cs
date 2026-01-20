@@ -76,7 +76,7 @@ public class D_EditContext : BunitContext
         var usernameInput = cut.Find("input[name='model.Username']");
         usernameInput.Change("newuser");
 
-        var expected = false;
+        var expected = true; // SOLUTION: true (form is modified after field change)
 
         Assert.Contains($"Is Form Modified: {expected}", cut.Markup);
     }
@@ -97,7 +97,7 @@ public class D_EditContext : BunitContext
         var usernameInput = cut.Find("input[name='model.Username']");
         usernameInput.Change("changeduser");
 
-        var expected = false;
+        var expected = true; // SOLUTION: true (Username is modified)
 
         Assert.Contains($"Is Username Modified: {expected}", cut.Markup);
     }
@@ -117,7 +117,7 @@ public class D_EditContext : BunitContext
         var emailInput = cut.Find("input[type='email']");
         emailInput.Change("test@example.com");
 
-        var expected = "__";
+        var expected = "False"; // SOLUTION: "False" (Username not modified, only Email was)
 
         // Username should NOT be modified since we only changed email
         Assert.Contains($"Is Username Modified: {expected}", cut.Markup);
@@ -146,7 +146,7 @@ public class D_EditContext : BunitContext
         var resetButton = cut.Find("button[type='button']:last-of-type");
         resetButton.Click();
 
-        var expected = false;
+        var expected = "False"; // SOLUTION: "False" (reset clears modified state)
 
         Assert.Contains($"Is Form Modified: {expected}", cut.Markup);
     }
@@ -168,7 +168,7 @@ public class D_EditContext : BunitContext
         validateButton.Click();
 
         // Form has required fields that are empty
-        var expected = true;
+        var expected = "False"; // SOLUTION: "False" (empty required fields = invalid)
 
         Assert.Contains($"Is Form Valid: {expected}", cut.Markup);
     }
@@ -190,7 +190,7 @@ public class D_EditContext : BunitContext
         var validateButton = cut.FindAll("button[type='button']")[0];
         validateButton.Click();
 
-        var expected = 0;
+        var expected = 4; // SOLUTION: 4 (Username, Email, Password, AcceptTerms are required)
 
         Assert.Contains($"Validation Message Count: {expected}", cut.Markup);
     }
@@ -212,7 +212,7 @@ public class D_EditContext : BunitContext
         var validateButton = cut.FindAll("button[type='button']")[0];
         validateButton.Click();
 
-        var expected = "__";
+        var expected = "Username is required"; // SOLUTION: "Username is required"
 
         Assert.Contains($"Username Errors: {expected}", cut.Markup);
     }
@@ -237,7 +237,7 @@ public class D_EditContext : BunitContext
         var validateButton = cut.FindAll("button[type='button']")[0];
         validateButton.Click();
 
-        var expected = 0;
+        var expected = 1; // SOLUTION: 1 (validation state changed once after Validate())
 
         Assert.Contains($"Validation State Changed Count: {expected}", cut.Markup);
     }
@@ -253,7 +253,7 @@ public class D_EditContext : BunitContext
         // TODO: What method on EditContext creates a FieldIdentifier?
         // Replace "__" with the method name
 
-        var expected = "__";
+        var expected = "Field"; // SOLUTION: "Field"
 
         // The method is editContext.Field(propertyName)
         Assert.Equal("Field", expected);
@@ -279,7 +279,7 @@ public class D_EditContext : BunitContext
         // Submit the form
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Valid submission!"; // SOLUTION: "Valid submission!"
 
         Assert.Contains($"Submit Status: {expected}", cut.Markup);
     }
@@ -300,7 +300,7 @@ public class D_EditContext : BunitContext
         // Submit without filling required fields
         cut.Find("form").Submit();
 
-        var expected = "__";
+        var expected = "Invalid submission - check errors"; // SOLUTION: "Invalid submission - check errors"
 
         Assert.Contains($"Submit Status: {expected}", cut.Markup);
     }
