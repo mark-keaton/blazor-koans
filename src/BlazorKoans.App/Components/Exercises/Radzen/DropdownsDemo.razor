@@ -1,0 +1,213 @@
+@rendermode InteractiveServer
+
+<h3>Dropdowns Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Country" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="@SelectedCountryId"
+                            Data="@Countries"
+                            TextProperty="Name"
+                            ValueProperty="Id"
+                            Name="Country"
+                            AllowFiltering="true"
+                            Change="@OnCountryChange" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Status" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="@SelectedStatus"
+                            Data="@StatusOptions"
+                            Name="Status"
+                            Placeholder="Select a status"
+                            AllowClear="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Tags" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="@SelectedTags"
+                            Data="@Tags"
+                            Name="Tags"
+                            Multiple="true"
+                            AllowFiltering="true"
+                            Placeholder="Select tags" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Priority" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="@SelectedPriority"
+                            Data="@Priorities"
+                            TextProperty="Name"
+                            ValueProperty="Value"
+                            Name="Priority">
+                <Template Context="item">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="@GetPriorityClass(item.Value)">●</span>
+                        <span>@item.Name</span>
+                    </div>
+                </Template>
+            </RadzenDropDown>
+        </RadzenFormField>
+
+        <RadzenFormField Text="City (AutoComplete)" Variant="Variant.Outlined">
+            <RadzenAutoComplete @bind-Value="@SelectedCity"
+                                Data="@FilteredCities"
+                                Name="City"
+                                Placeholder="Start typing..."
+                                Change="@OnCityInput"
+                                AllowClear="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Product (AutoComplete with LoadData)" Variant="Variant.Outlined">
+            <RadzenAutoComplete @bind-Value="@SelectedProduct"
+                                Data="@Products"
+                                LoadData="@LoadProductData"
+                                Name="Product"
+                                Placeholder="Search products..." />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Locked Field" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="@LockedValue"
+                            Data="@StatusOptions"
+                            Name="LockedField"
+                            Disabled="true" />
+        </RadzenFormField>
+
+        <RadzenButton Text="Select Multiple Tags"
+                      Click="@SelectMultipleTags"
+                      class="select-multiple-tags" />
+
+        <RadzenButton Text="Clear City"
+                      Click="@ClearCity"
+                      class="clear-city" />
+
+        <RadzenButton Text="Clear Status"
+                      Click="@ClearStatus"
+                      class="clear-status" />
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Selected Country: @GetCountryName(SelectedCountryId)</p>
+    <p>Text Property: Name</p>
+    <p>Value Property: Id</p>
+    <p>Allow Filtering: true</p>
+    <p>Status: @(SelectedStatus ?? "null")</p>
+    <p>Multiple Selection: true</p>
+    <p>Selected Tags Count: @(SelectedTags?.Count() ?? 0)</p>
+    <p>Filtered Cities: @FilteredCities.Count()</p>
+    <p>Min Length: 2</p>
+    <p>Selected City: @(SelectedCity ?? "null")</p>
+    <p>Has Custom Template: true</p>
+    <p>Event Fired: @LastEvent</p>
+    <p>Uses LoadData: true</p>
+</div>
+
+@code {
+    private int SelectedCountryId { get; set; } = 1;
+    private string? SelectedStatus { get; set; } = null;
+    private IEnumerable<string> SelectedTags { get; set; } = new List<string>();
+    private int SelectedPriority { get; set; } = 1;
+    private string? SelectedCity { get; set; } = null;
+    private string? SelectedProduct { get; set; } = null;
+    private string LockedValue { get; set; } = "Locked";
+    private string LastEvent { get; set; } = "None";
+
+    private List<Country> Countries { get; set; } = new()
+    {
+        new Country { Id = 1, Name = "United States" },
+        new Country { Id = 2, Name = "Canada" },
+        new Country { Id = 3, Name = "Mexico" }
+    };
+
+    private List<string> StatusOptions { get; set; } = new() { "Active", "Inactive", "Pending" };
+    private List<string> Tags { get; set; } = new() { "Important", "Urgent", "Review", "Approved", "Draft" };
+
+    private List<Priority> Priorities { get; set; } = new()
+    {
+        new Priority { Value = 1, Name = "Low" },
+        new Priority { Value = 2, Name = "Medium" },
+        new Priority { Value = 3, Name = "High" }
+    };
+
+    private List<string> AllCities { get; set; } = new()
+    {
+        "Chicago", "Charlotte", "Columbus", "Cincinnati",
+        "New York", "Los Angeles", "Houston", "Phoenix"
+    };
+
+    private List<string> FilteredCities { get; set; } = new();
+    private List<string> Products { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        FilteredCities = AllCities;
+    }
+
+    private string GetCountryName(int id)
+    {
+        return Countries.FirstOrDefault(c => c.Id == id)?.Name ?? "Unknown";
+    }
+
+    private void OnCountryChange(object value)
+    {
+        LastEvent = "CountryChange";
+    }
+
+    private void OnCityInput(object value)
+    {
+        var searchTerm = value?.ToString() ?? "";
+        if (searchTerm.Length >= 2)
+        {
+            FilteredCities = AllCities.Where(c => c.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        else
+        {
+            FilteredCities = AllCities;
+        }
+    }
+
+    private void LoadProductData(LoadDataArgs args)
+    {
+        var searchTerm = args.Filter ?? "";
+        Products = new List<string> { "Product A", "Product B", "Product C" }
+            .Where(p => p.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+    }
+
+    private void SelectMultipleTags()
+    {
+        SelectedTags = new List<string> { "Important", "Urgent", "Review" };
+    }
+
+    private void ClearCity()
+    {
+        SelectedCity = null;
+    }
+
+    private void ClearStatus()
+    {
+        SelectedStatus = null;
+    }
+
+    private string GetPriorityClass(int value)
+    {
+        return value switch
+        {
+            1 => "priority-low",
+            2 => "priority-medium",
+            3 => "priority-high",
+            _ => ""
+        };
+    }
+
+    public class Country
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+
+    public class Priority
+    {
+        public int Value { get; set; }
+        public string Name { get; set; } = "";
+    }
+}
