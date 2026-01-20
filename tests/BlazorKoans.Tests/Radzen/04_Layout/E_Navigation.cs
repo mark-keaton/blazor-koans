@@ -1,5 +1,5 @@
 using Bunit;
-using BlazorKoans.App.Components.Exercises.Radzen;
+using BlazorKoans.App.Components.Exercises.RadzenKoans;
 using Xunit;
 
 namespace BlazorKoans.Tests.Radzen._04_Layout;

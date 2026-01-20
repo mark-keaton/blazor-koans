@@ -6,7 +6,7 @@
 <h3>Inline Editing Demo</h3>
 
 <RadzenDataGrid @ref="grid" Data="@employees" TItem="Employee"
-                EditMode="DataGridEditMode.Single"
+                EditMode="global::Radzen.DataGridEditMode.Single"
                 RowUpdate="@OnUpdateRow"
                 RowCreate="@OnCreateRow"
                 Style="width: 100%">
@@ -21,7 +21,7 @@
                 <RadzenTextBox @bind-Value="employee.Department" Style="width: 100%" />
             </EditTemplate>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right">
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="global::Radzen.TextAlign.Right">
             <EditTemplate Context="employee">
                 <RadzenNumeric @bind-Value="employee.Salary" Style="width: 100%" />
             </EditTemplate>
@@ -33,13 +33,13 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="200px" Sortable="false" Filterable="false">
             <Template Context="employee">
-                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                <RadzenButton Icon="edit" ButtonStyle="global::Radzen.ButtonStyle.Light" Size="global::Radzen.ButtonSize.Small"
                               Click="@(() => EditRow(employee))" Text="Edit" />
             </Template>
             <EditTemplate Context="employee">
-                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small"
+                <RadzenButton Icon="check" ButtonStyle="global::Radzen.ButtonStyle.Success" Size="global::Radzen.ButtonSize.Small"
                               Click="@(() => SaveRow(employee))" Text="Save" />
-                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                <RadzenButton Icon="close" ButtonStyle="global::Radzen.ButtonStyle.Light" Size="global::Radzen.ButtonSize.Small"
                               Click="@(() => CancelEdit(employee))" Text="Cancel" />
             </EditTemplate>
         </RadzenDataGridColumn>

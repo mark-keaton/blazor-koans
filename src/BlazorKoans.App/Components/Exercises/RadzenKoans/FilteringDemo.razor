@@ -1,0 +1,48 @@
+@using BlazorKoans.App.Models
+@rendermode InteractiveServer
+
+<h3>Filtering Demo</h3>
+
+<p>Filter Mode: <strong>@filterMode</strong></p>
+
+<div class="mb-3">
+    <RadzenButton Text="Simple Filter" Click="@(() => filterMode = FilterMode.Simple)" />
+    <RadzenButton Text="Advanced Filter" Click="@(() => filterMode = FilterMode.Advanced)" />
+</div>
+
+<RadzenDataGrid @ref="grid" Data="@employees" TItem="Employee"
+                AllowFiltering="true"
+                FilterMode="@filterMode"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name" />
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right" />
+        <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="Employee" Title="Active" Width="100px">
+            <Template Context="employee">
+                @(employee.IsActive ? "Yes" : "No")
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<div class="mt-3">
+    <p><strong>Last Filter:</strong> @lastFilter</p>
+</div>
+
+@code {
+    private RadzenDataGrid<Employee>? grid;
+    private FilterMode filterMode = FilterMode.Simple;
+    private string lastFilter = "None";
+
+    private List<Employee> employees = new()
+    {
+        new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15), IsActive = true },
+        new Employee { Id = 2, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1), IsActive = true },
+        new Employee { Id = 3, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10), IsActive = false },
+        new Employee { Id = 4, Name = "David Brown", Department = "Sales", Salary = 85000, HireDate = new DateTime(2022, 5, 20), IsActive = true },
+        new Employee { Id = 5, Name = "Eve Davis", Department = "HR", Salary = 70000, HireDate = new DateTime(2023, 2, 14), IsActive = true }
+    };
+}
