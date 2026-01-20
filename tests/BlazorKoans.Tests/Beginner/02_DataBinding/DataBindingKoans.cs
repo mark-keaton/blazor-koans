@@ -25,7 +25,7 @@ public class DataBindingKoans : BunitContext
         button.Click();
         button.Click();
 
-        var expectedCount = "__";
+        var expectedCount = "3";
 
         cut.MarkupMatches($@"
             <div>
@@ -55,7 +55,7 @@ public class DataBindingKoans : BunitContext
         input.Change("World");
         input.Change("Blazor!");
 
-        var paragraphText = "__";
+        var paragraphText = "Blazor!";
 
         Assert.Equal(paragraphText, cut.Find("p.display").TextContent);
     }
@@ -80,7 +80,7 @@ public class DataBindingKoans : BunitContext
 
         var dateInput = cut.Find("input[type='datetime-local']");
 
-        var expectedFormattedValue = "__";
+        var expectedFormattedValue = "2024-06-15T08:30";
 
         Assert.Equal(expectedFormattedValue, dateInput.GetAttribute("value"));
     }
@@ -105,7 +105,7 @@ public class DataBindingKoans : BunitContext
         var input = cut.Find("input");
         input.Change("test");
 
-        var expectedCount = "__";
+        var expectedCount = "4";
 
         Assert.Contains($"Characters: {expectedCount}", cut.Markup);
     }

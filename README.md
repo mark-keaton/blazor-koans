@@ -40,6 +40,8 @@ code .
    - `ABOUT:` explains the concept
    - `TODO:` tells you what to fix
 
+<!-- TODO: It doesn't seem that the actual XUnit output does has either ABOUT or TODO entries. -->
+
 3. **Fix the placeholder** - replace `"__"` with the correct answer
 
 4. **Run tests again** - when it passes, you'll see the next koan
@@ -66,28 +68,28 @@ Failed BlazorKoans.Tests.Beginner.Components.ComponentKoans.B_ComponentParameter
 ## Learning Path
 
 ### Week 1: Beginner (16 koans)
-| Topic | Concepts |
-|-------|----------|
-| 01_Components | Creating components, parameters, child content, render fragments |
-| 02_DataBinding | One-way binding, two-way binding, bind modifiers, bind:after |
-| 03_Events | onclick, EventCallback, EventCallback<T>, preventDefault |
-| 04_Lifecycle | OnInitialized, OnParametersSet, OnAfterRender, IDisposable |
+| Topic          | Concepts                                                         |
+| -------------- | ---------------------------------------------------------------- |
+| 01_Components  | Creating components, parameters, child content, render fragments |
+| 02_DataBinding | One-way binding, two-way binding, bind modifiers, bind:after     |
+| 03_Events      | onclick, EventCallback, EventCallback<T>, preventDefault         |
+| 04_Lifecycle   | OnInitialized, OnParametersSet, OnAfterRender, IDisposable       |
 
 ### Week 2: Intermediate (16 koans)
-| Topic | Concepts |
-|-------|----------|
-| 05_Routing | @page directive, route parameters, query strings, NavigationManager |
-| 06_Forms | EditForm, input components, form submission, EditContext |
-| 07_Validation | DataAnnotations, ValidationMessage, ValidationSummary, custom validators |
-| 08_DependencyInjection | @inject, service lifetimes, scoped services, [Inject] attribute |
+| Topic                  | Concepts                                                                 |
+| ---------------------- | ------------------------------------------------------------------------ |
+| 05_Routing             | @page directive, route parameters, query strings, NavigationManager      |
+| 06_Forms               | EditForm, input components, form submission, EditContext                 |
+| 07_Validation          | DataAnnotations, ValidationMessage, ValidationSummary, custom validators |
+| 08_DependencyInjection | @inject, service lifetimes, scoped services, [Inject] attribute          |
 
 ### Week 3: Advanced (16+ koans)
-| Topic | Concepts |
-|-------|----------|
-| 09_HttpClients | HttpClient injection, GET/POST requests, error handling |
-| 10_Authentication | AuthenticationStateProvider, AuthorizeView, [Authorize], roles |
+| Topic              | Concepts                                                              |
+| ------------------ | --------------------------------------------------------------------- |
+| 09_HttpClients     | HttpClient injection, GET/POST requests, error handling               |
+| 10_Authentication  | AuthenticationStateProvider, AuthorizeView, [Authorize], roles        |
 | 11_StateManagement | CascadingValue, state containers, NotifyStateChanged, browser storage |
-| 12_ErrorHandling | ErrorBoundary, lifecycle errors, recovery, ILogger |
+| 12_ErrorHandling   | ErrorBoundary, lifecycle errors, recovery, ILogger                    |
 
 ## Running Specific Tests
 

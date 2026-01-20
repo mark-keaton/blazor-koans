@@ -27,10 +27,11 @@ public class EventKoans : BunitContext
         increment.Click();
         increment.Click();
         increment.Click();
+
         decrement.Click();
         decrement.Click();
 
-        var expectedCount = "__";
+        var expectedCount = "3";
 
         Assert.Equal(expectedCount, cut.Find("span.click-count").TextContent);
     }
@@ -53,7 +54,7 @@ public class EventKoans : BunitContext
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedParentMessage = "__";
+        var expectedParentMessage = "Child was clicked!";
 
         Assert.Equal(expectedParentMessage, cut.Find("p.parent-message").TextContent);
     }
@@ -80,7 +81,7 @@ public class EventKoans : BunitContext
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedReceivedText = "__";
+        var expectedReceivedText = "Received: Blazor";
 
         Assert.Equal(expectedReceivedText, cut.Find("p.received-value").TextContent);
     }
@@ -104,7 +105,16 @@ public class EventKoans : BunitContext
 
         // Hint: The rendered HTML looks like:
         // <button class="submit-button" blazor:onclick="5" ???="">Submit</button>
-        var preventDefaultAttribute = "__";
+        var preventDefaultAttribute = "blazor:onclick:preventdefault";
+
+        // TODO: This one gets a bit confusing. I'm reading the actual EventDemo button and looking
+        // specifically at Line 8:
+        //
+        // `<button class="submit-button" @onclick="HandleSubmit" @onclick:preventDefault="true">Submit</button>`
+        //
+        // My assumption on this is that it's the `@onclick:preventDefault="true"` that's the indicator,
+        // but the `@` is being transformed into `blazor:`. I'm not sure if this is the point of the exercise,
+        // learning that the @ is... a shorthand for `blazor:`?
 
         Assert.True(submitButton.HasAttribute(preventDefaultAttribute));
     }

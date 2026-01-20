@@ -22,7 +22,7 @@ public class LifecycleKoans : BunitContext
         Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>();
 
-        var expectedMessage = "__";
+        var expectedMessage = "";
 
         Assert.Equal(expectedMessage, cut.Find("p.status").TextContent);
     }
