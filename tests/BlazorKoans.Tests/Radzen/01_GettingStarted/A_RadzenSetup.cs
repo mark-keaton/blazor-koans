@@ -33,7 +33,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "Click Me!";
 
         Assert.Contains(expected, cut.Markup);
     }
@@ -53,7 +53,7 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "rz-button";
 
         Assert.Contains($"class=\"{expected}", cut.Markup);
     }
@@ -73,22 +73,23 @@ public class A_RadzenSetup : BunitContext
 
         var cut = Render<RadzenSetupDemo>();
 
-        var expected = "__";
+        var expected = "rz-card";
 
         Assert.Contains($"class=\"{expected}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void RadzenCard_DisplaysHeader()
+    public void RadzenCard_DisplaysContent()
     {
-        // ABOUT: RadzenCard can have a header section using the CardHeader
-        // RenderFragment parameter. This creates a visually distinct title area.
+        // ABOUT: RadzenCard displays content within a styled container.
+        // You can add any HTML or Blazor components inside it, including
+        // headings, paragraphs, and other Radzen components.
         //
-        // The header text should be visible in the rendered output.
+        // The demo uses an h4 heading to create a title for the card.
 
-        // TODO: Replace "__" with the card header text from RadzenSetupDemo
-        // HINT: Look for the text inside the CardHeader section
+        // TODO: Replace "__" with the card title text from RadzenSetupDemo
+        // HINT: Look for the h4 heading text inside the RadzenCard
 
         var cut = Render<RadzenSetupDemo>();
 
