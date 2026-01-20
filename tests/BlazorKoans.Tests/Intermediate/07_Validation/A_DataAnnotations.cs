@@ -62,7 +62,7 @@ public class A_DataAnnotations : BunitContext
 
         var cut = Render<ValidationDemo>();
 
-        var nameInput = cut.Find("input.valid");
+        var nameInput = cut.Find("input[name='person.Name']");
         nameInput.Change("A");
 
         var form = cut.Find("form");

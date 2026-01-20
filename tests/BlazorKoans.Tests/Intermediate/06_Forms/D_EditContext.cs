@@ -18,7 +18,8 @@ public class D_EditContext : BunitContext
 
         var cut = Render<RegistrationForm>();
 
-        var usernameInput = cut.Find("input.valid");
+        // InputText renders with name attribute matching the model binding path
+        var usernameInput = cut.Find("input[name='model.Username']");
         usernameInput.Change("testuser");
 
         var expected = "Username"; // SOLUTION: "Username"

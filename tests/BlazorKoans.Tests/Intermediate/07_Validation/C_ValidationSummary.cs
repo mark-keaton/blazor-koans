@@ -37,7 +37,7 @@ public class C_ValidationSummary : BunitContext
 
         var cut = Render<ValidationDemo>();
 
-        var nameInput = cut.Find("input.valid");
+        var nameInput = cut.Find("input[name='person.Name']");
         nameInput.Change("Alice");
 
         var form = cut.Find("form");
