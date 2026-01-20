@@ -49,10 +49,8 @@
         </RadzenFormField>
 
         <RadzenFormField Text="Total Amount (Read Only)" Variant="Variant.Outlined">
-            <RadzenNumeric Value="@TotalAmount"
-                           TValue="decimal"
+            <RadzenTextBox Value="@TotalAmount.ToString("C")"
                            Name="TotalAmount"
-                           Format="c"
                            ReadOnly="true" />
         </RadzenFormField>
     </RadzenStack>
@@ -77,5 +75,4 @@
     private decimal Weight { get; set; } = 1.5m;
     private int? OptionalCount { get; set; } = null;
     private decimal TotalAmount => Price * Quantity * (1 - (decimal)Discount);
-    private decimal TotalAmountDisplay => TotalAmount;
 }
