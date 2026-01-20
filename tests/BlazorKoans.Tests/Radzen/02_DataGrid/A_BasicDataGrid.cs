@@ -161,11 +161,11 @@ public class A_BasicDataGrid : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void DataGrid_AutoRefresh_UpdatesWhenDataChanges()
+    public void DataGrid_Reload_UpdatesWhenDataChanges()
     {
-        // ABOUT: RadzenDataGrid automatically updates when the Data collection changes.
-        // If you modify the collection and call StateHasChanged(), the grid re-renders
-        // to reflect the new data.
+        // ABOUT: RadzenDataGrid doesn't automatically detect changes to the Data collection.
+        // To refresh the grid after modifying data, use a component reference (@ref) and
+        // call the Reload() method. This is the idiomatic Radzen pattern for updating grids.
 
         // TODO: After adding an employee, how many rows should appear?
         // HINT: Original count + 1
