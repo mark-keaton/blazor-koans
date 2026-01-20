@@ -1,0 +1,132 @@
+@rendermode InteractiveServer
+
+<h3>Grid Layout Demo</h3>
+
+<div style="max-width: 1200px;">
+    <h4>Basic Grid - Equal Columns</h4>
+    <RadzenRow Gap="1rem" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="4">
+            <div style="padding: 1rem; background-color: #dbeafe; border-radius: 4px;">
+                Column 1 (4/12)
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="4">
+            <div style="padding: 1rem; background-color: #dbeafe; border-radius: 4px;">
+                Column 2 (4/12)
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="4">
+            <div style="padding: 1rem; background-color: #dbeafe; border-radius: 4px;">
+                Column 3 (4/12)
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Full Width Column</h4>
+    <RadzenRow Gap="1rem" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="12">
+            <div style="padding: 1rem; background-color: #dcfce7; border-radius: 4px;">
+                Full Width Column (12/12)
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Responsive Layout</h4>
+    <RadzenRow Gap="1rem" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
+            <div style="padding: 1rem; background-color: #fce7f3; border-radius: 4px;">
+                Full on mobile, half on tablet, third on desktop
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
+            <div style="padding: 1rem; background-color: #fce7f3; border-radius: 4px;">
+                Full on mobile, half on tablet, third on desktop
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6" SizeLG="4">
+            <div style="padding: 1rem; background-color: #fce7f3; border-radius: 4px;">
+                Full on mobile, half on tablet, third on desktop
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Column Wrapping</h4>
+    <RadzenRow Gap="1rem" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="6">
+            <div style="padding: 1rem; background-color: #fef3c7; border-radius: 4px;">
+                Column 1 (6/12)
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="6">
+            <div style="padding: 1rem; background-color: #fef3c7; border-radius: 4px;">
+                Column 2 (6/12)
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="6">
+            <div style="padding: 1rem; background-color: #fef3c7; border-radius: 4px;">
+                Column 3 wraps to new line (6/12)
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Column with Offset</h4>
+    <RadzenRow Gap="1rem" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="4" Offset="4">
+            <div style="padding: 1rem; background-color: #e0e7ff; border-radius: 4px;">
+                Centered with offset (4/12 with 4 offset)
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Alignment - Center</h4>
+    <RadzenRow Gap="1rem" JustifyContent="JustifyContent.Center" style="margin-bottom: 2rem;">
+        <RadzenColumn Size="4">
+            <div style="padding: 1rem; background-color: #f3e8ff; border-radius: 4px;">
+                Centered Column
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Vertical Alignment</h4>
+    <RadzenRow Gap="1rem" AlignItems="AlignItems.Center" style="margin-bottom: 2rem; min-height: 150px; background-color: #f5f5f5; border-radius: 4px;">
+        <RadzenColumn Size="6">
+            <div style="padding: 1rem; background-color: #fed7aa; border-radius: 4px;">
+                Column with normal height
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="6">
+            <div style="padding: 3rem; background-color: #fed7aa; border-radius: 4px;">
+                Taller column
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <h4>Nested Grid</h4>
+    <RadzenRow Gap="1rem">
+        <RadzenColumn Size="8">
+            <div style="padding: 1rem; background-color: #d1fae5; border-radius: 4px;">
+                <p style="margin-top: 0;">Outer Column (8/12)</p>
+                <RadzenRow Gap="0.5rem">
+                    <RadzenColumn Size="6">
+                        <div style="padding: 0.5rem; background-color: #a7f3d0; border-radius: 4px;">
+                            Nested 1
+                        </div>
+                    </RadzenColumn>
+                    <RadzenColumn Size="6">
+                        <div style="padding: 0.5rem; background-color: #a7f3d0; border-radius: 4px;">
+                            Nested 2
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+            </div>
+        </RadzenColumn>
+        <RadzenColumn Size="4">
+            <div style="padding: 1rem; background-color: #d1fae5; border-radius: 4px;">
+                Outer Column (4/12)
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+}
