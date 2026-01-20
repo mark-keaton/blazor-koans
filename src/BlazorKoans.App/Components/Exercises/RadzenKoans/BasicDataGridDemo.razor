@@ -38,14 +38,16 @@
 
     private void AddEmployee()
     {
-        employees.Add(new Employee
+        employees = new List<Employee>(employees)
         {
-            Id = employees.Count + 1,
-            Name = "New Employee",
-            Department = "New Dept",
-            Salary = 60000,
-            HireDate = DateTime.Now
-        });
-        StateHasChanged();
+            new Employee
+            {
+                Id = employees.Count + 1,
+                Name = "New Employee",
+                Department = "New Dept",
+                Salary = 60000,
+                HireDate = DateTime.Now
+            }
+        };
     }
 }
