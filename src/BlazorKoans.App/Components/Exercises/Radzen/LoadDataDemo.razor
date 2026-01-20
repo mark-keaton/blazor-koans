@@ -1,0 +1,101 @@
+@using BlazorKoans.App.Models
+@using Radzen.Blazor
+@using Radzen
+@rendermode InteractiveServer
+
+<h3>LoadData Demo</h3>
+
+<RadzenDataGrid @ref="grid" Data="@employees" TItem="Employee" Count="@count"
+                LoadData="@LoadData"
+                AllowSorting="true"
+                AllowFiltering="true"
+                AllowPaging="true"
+                PageSize="5"
+                FilterMode="FilterMode.Simple"
+                Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name" />
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right" />
+        <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
+    </Columns>
+</RadzenDataGrid>
+
+<div class="status-panel">
+    <p>Load Data Called: @loadDataCallCount times</p>
+    <p>Current Skip: @currentSkip</p>
+    <p>Current Top: @currentTop</p>
+    <p>Current OrderBy: @currentOrderBy</p>
+    <p>Total Count: @count</p>
+</div>
+
+@code {
+    private RadzenDataGrid<Employee>? grid;
+    private IEnumerable<Employee>? employees;
+    private int count;
+    private int loadDataCallCount = 0;
+    private int? currentSkip;
+    private int? currentTop;
+    private string currentOrderBy = "None";
+
+    // Simulated database - in real app, this would be DbContext
+    private List<Employee> allEmployees = new()
+    {
+        new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },
+        new Employee { Id = 2, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1) },
+        new Employee { Id = 3, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10) },
+        new Employee { Id = 4, Name = "David Brown", Department = "Sales", Salary = 85000, HireDate = new DateTime(2022, 5, 20) },
+        new Employee { Id = 5, Name = "Eve Davis", Department = "HR", Salary = 70000, HireDate = new DateTime(2023, 2, 14) },
+        new Employee { Id = 6, Name = "Frank Miller", Department = "Engineering", Salary = 98000, HireDate = new DateTime(2020, 8, 12) },
+        new Employee { Id = 7, Name = "Grace Lee", Department = "Marketing", Salary = 72000, HireDate = new DateTime(2021, 11, 5) },
+        new Employee { Id = 8, Name = "Henry Wilson", Department = "Sales", Salary = 88000, HireDate = new DateTime(2022, 1, 18) },
+        new Employee { Id = 9, Name = "Iris Chen", Department = "HR", Salary = 68000, HireDate = new DateTime(2023, 4, 22) },
+        new Employee { Id = 10, Name = "Jack Taylor", Department = "Engineering", Salary = 110000, HireDate = new DateTime(2019, 6, 30) },
+        new Employee { Id = 11, Name = "Karen White", Department = "Marketing", Salary = 76000, HireDate = new DateTime(2021, 9, 14) },
+        new Employee { Id = 12, Name = "Leo Martinez", Department = "Sales", Salary = 90000, HireDate = new DateTime(2022, 3, 8) },
+        new Employee { Id = 13, Name = "Maria Garcia", Department = "Engineering", Salary = 102000, HireDate = new DateTime(2020, 1, 20) },
+        new Employee { Id = 14, Name = "Nathan Lopez", Department = "HR", Salary = 69000, HireDate = new DateTime(2023, 7, 11) },
+        new Employee { Id = 15, Name = "Olivia Anderson", Department = "Engineering", Salary = 97000, HireDate = new DateTime(2020, 10, 5) }
+    };
+
+    private void LoadData(LoadDataArgs args)
+    {
+        loadDataCallCount++;
+        currentSkip = args.Skip;
+        currentTop = args.Top;
+        currentOrderBy = args.OrderBy ?? "None";
+
+        // Start with all data as IQueryable (simulating EF Core)
+        var query = allEmployees.AsQueryable();
+
+        // Apply filtering if present
+        if (!string.IsNullOrEmpty(args.Filter))
+        {
+            // In real app, you'd apply the filter expression to IQueryable
+            // For demo, we'll do simple name filtering
+            query = query.Where(e => e.Name.Contains(args.Filter, StringComparison.OrdinalIgnoreCase) ||
+                                    e.Department.Contains(args.Filter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // Get total count BEFORE paging
+        count = query.Count();
+
+        // Apply sorting if present
+        if (!string.IsNullOrEmpty(args.OrderBy))
+        {
+            // In real app, Dynamic LINQ would handle this
+            // For demo, handle common cases
+            if (args.OrderBy.Contains("Name"))
+                query = args.OrderBy.Contains("desc") ? query.OrderByDescending(e => e.Name) : query.OrderBy(e => e.Name);
+            else if (args.OrderBy.Contains("Department"))
+                query = args.OrderBy.Contains("desc") ? query.OrderByDescending(e => e.Department) : query.OrderBy(e => e.Department);
+            else if (args.OrderBy.Contains("Salary"))
+                query = args.OrderBy.Contains("desc") ? query.OrderByDescending(e => e.Salary) : query.OrderBy(e => e.Salary);
+        }
+
+        // Apply paging
+        employees = query.Skip(args.Skip ?? 0).Take(args.Top ?? 5).ToList();
+
+        StateHasChanged();
+    }
+}
