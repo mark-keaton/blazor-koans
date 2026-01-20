@@ -102,12 +102,14 @@ public class A_RadzenSetup : BunitContext
     [Trait("Category", "Radzen")]
     public void RadzenCard_DisplaysBodyContent()
     {
-        // ABOUT: The main content of a RadzenCard goes in the ChildContent
-        // RenderFragment. This is where you place paragraphs, lists, forms,
-        // or any other content you want in the card.
+        // ABOUT: RadzenCard can contain multiple elements including paragraphs.
+        // All content placed inside a RadzenCard becomes part of its ChildContent
+        // RenderFragment.
+        //
+        // The demo has a paragraph describing what Radzen provides.
 
-        // TODO: Replace "__" with the welcome message from the card body
-        // HINT: It's the first line of text in the ChildContent
+        // TODO: Replace "__" with the text about how many components Radzen provides
+        // HINT: Look for the paragraph that mentions "100+" in RadzenSetupDemo
 
         var cut = Render<RadzenSetupDemo>();
 
