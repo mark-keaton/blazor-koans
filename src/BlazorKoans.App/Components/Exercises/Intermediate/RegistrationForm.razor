@@ -1,60 +1,135 @@
 @using BlazorKoans.App.Models
+@using Microsoft.AspNetCore.Components.Forms
 @implements IDisposable
 @rendermode InteractiveServer
 
 <h3>Registration Form</h3>
 
-<EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit">
+<EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
     <DataAnnotationsValidator />
 
     <div>
         <label>Username:</label>
         <InputText @bind-Value="model.Username" />
+        <ValidationMessage For="@(() => model.Username)" />
     </div>
     <div>
         <label>Email:</label>
         <InputText @bind-Value="model.Email" type="email" />
+        <ValidationMessage For="@(() => model.Email)" />
     </div>
     <div>
         <label>Password:</label>
         <InputText @bind-Value="model.Password" type="password" />
+        <ValidationMessage For="@(() => model.Password)" />
     </div>
     <div>
         <label>Birth Date:</label>
         <InputDate @bind-Value="model.BirthDate" />
+        <ValidationMessage For="@(() => model.BirthDate)" />
     </div>
 
     <button type="submit">Register</button>
+    <button type="button" @onclick="ValidateForm">Validate</button>
+    <button type="button" @onclick="ResetModified">Reset Modified State</button>
 </EditForm>
 
-<p>Field Changed: @FieldChanged</p>
+<div class="status-panel">
+    <p>Field Changed: @FieldChanged</p>
+    <p>Is Form Modified: @IsFormModified</p>
+    <p>Is Username Modified: @IsUsernameModified</p>
+    <p>Is Form Valid: @IsFormValid</p>
+    <p>Validation Message Count: @ValidationMessageCount</p>
+    <p>Username Errors: @UsernameValidationErrors</p>
+    <p>Validation State Changed Count: @ValidationStateChangedCount</p>
+    <p>Submit Status: @SubmitStatus</p>
+</div>
 
 @code {
     private RegistrationModel model = new();
-    private EditContext? editContext;
+    private EditContext editContext = null!;
+
+    // Exposed for testing
     public string FieldChanged { get; private set; } = string.Empty;
+    public bool IsFormModified { get; private set; }
+    public bool IsUsernameModified { get; private set; }
+    public bool IsFormValid { get; private set; } = true;
+    public int ValidationMessageCount { get; private set; }
+    public string UsernameValidationErrors { get; private set; } = string.Empty;
+    public int ValidationStateChangedCount { get; private set; }
+    public string SubmitStatus { get; private set; } = "Not submitted";
 
     protected override void OnInitialized()
     {
         editContext = new EditContext(model);
         editContext.OnFieldChanged += HandleFieldChanged;
+        editContext.OnValidationStateChanged += HandleValidationStateChanged;
     }
 
     private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
     {
+        // Track which field changed
         FieldChanged = e.FieldIdentifier.FieldName;
+
+        // Check if form is modified (any field changed from initial state)
+        IsFormModified = editContext.IsModified();
+
+        // Check if specific field is modified
+        var usernameField = editContext.Field(nameof(model.Username));
+        IsUsernameModified = editContext.IsModified(usernameField);
+
+        StateHasChanged();
+    }
+
+    private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        ValidationStateChangedCount++;
+        UpdateValidationStatus();
+        StateHasChanged();
+    }
+
+    private void ValidateForm()
+    {
+        // Manually trigger validation
+        IsFormValid = editContext.Validate();
+        UpdateValidationStatus();
+    }
+
+    private void UpdateValidationStatus()
+    {
+        // Get all validation messages
+        var allMessages = editContext.GetValidationMessages();
+        ValidationMessageCount = allMessages.Count();
+
+        // Get validation messages for a specific field
+        var usernameField = editContext.Field(nameof(model.Username));
+        var usernameMessages = editContext.GetValidationMessages(usernameField);
+        UsernameValidationErrors = string.Join("; ", usernameMessages);
+    }
+
+    private void ResetModified()
+    {
+        // Mark all fields as unmodified
+        editContext.MarkAsUnmodified();
+        IsFormModified = false;
+        IsUsernameModified = false;
+        StateHasChanged();
     }
 
     private void HandleValidSubmit()
     {
-        // Handle registration
+        SubmitStatus = "Valid submission!";
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        SubmitStatus = "Invalid submission - check errors";
+        UpdateValidationStatus();
     }
 
     public void Dispose()
     {
-        if (editContext != null)
-        {
-            editContext.OnFieldChanged -= HandleFieldChanged;
-        }
+        editContext.OnFieldChanged -= HandleFieldChanged;
+        editContext.OnValidationStateChanged -= HandleValidationStateChanged;
     }
 }
