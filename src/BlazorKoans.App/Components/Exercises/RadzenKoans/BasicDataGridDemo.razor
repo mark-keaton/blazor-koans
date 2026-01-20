@@ -4,7 +4,7 @@
 
 <h3>Basic DataGrid Demo</h3>
 
-<RadzenDataGrid Data="@employees" TItem="Employee" Style="width: 100%">
+<RadzenDataGrid @ref="grid" Data="@employees" TItem="Employee" Style="width: 100%">
     <Columns>
         <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Employee Name" />
         <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
@@ -19,6 +19,7 @@
     [Parameter]
     public bool UseEmptyData { get; set; }
 
+    private RadzenDataGrid<Employee>? grid;
     private List<Employee> employees = new();
 
     protected override void OnInitialized()
@@ -36,18 +37,20 @@
         }
     }
 
-    private void AddEmployee()
+    private async Task AddEmployee()
     {
-        employees = new List<Employee>(employees)
+        employees.Add(new Employee
         {
-            new Employee
-            {
-                Id = employees.Count + 1,
-                Name = "New Employee",
-                Department = "New Dept",
-                Salary = 60000,
-                HireDate = DateTime.Now
-            }
-        };
+            Id = employees.Count + 1,
+            Name = "New Employee",
+            Department = "New Dept",
+            Salary = 60000,
+            HireDate = DateTime.Now
+        });
+
+        if (grid != null)
+        {
+            await grid.Reload();
+        }
     }
 }
