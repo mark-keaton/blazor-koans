@@ -99,7 +99,7 @@ public class A_BasicDataGrid : BunitContext
         var cut = Render<BasicDataGridDemo>();
 
         var firstCell = cut.FindAll("tbody tr")[0].QuerySelector("td");
-        var expected = "Alice";
+        var expected = "Alice Johnson";
 
         Assert.Contains(expected, firstCell?.TextContent ?? "");
     }
@@ -122,18 +122,20 @@ public class A_BasicDataGrid : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void DataGrid_EmptyData_RendersEmptyTable()
+    public void DataGrid_EmptyData_RendersEmptyMessage()
     {
         // ABOUT: If you provide an empty collection to the Data parameter,
-        // the grid still renders with headers but no data rows.
-        // This is useful for showing the grid structure before data loads.
+        // the grid still renders with headers. RadzenDataGrid also displays
+        // a "No records to display" message in a single tbody row.
+        // This provides user feedback when there's no data.
 
         // TODO: How many tbody rows appear when the employee list is empty?
+        // HINT: RadzenDataGrid shows a message row, not an empty tbody
 
         var cut = Render<BasicDataGridDemo>(parameters =>
             parameters.Add(p => p.UseEmptyData, true));
 
-        var expected = 0;
+        var expected = 1;
 
         Assert.Equal(expected, cut.FindAll("tbody tr").Count);
     }
