@@ -1,0 +1,118 @@
+@page "/exercises"
+@page "/exercises/{Category}"
+@page "/exercises/{Category}/{ComponentName}"
+@rendermode InteractiveServer
+
+<PageTitle>Blazor Koans - Exercises</PageTitle>
+
+<h1>Exercise Components</h1>
+
+@if (string.IsNullOrEmpty(Category))
+{
+    <p>Select a category to explore the exercise components:</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">Beginner</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="exercises/beginner/HelloWorld">HelloWorld</a></li>
+                        <li><a href="exercises/beginner/Greeting">Greeting</a></li>
+                        <li><a href="exercises/beginner/Counter">Counter</a></li>
+                        <li><a href="exercises/beginner/Card">Card</a></li>
+                        <li><a href="exercises/beginner/ItemList">ItemList</a></li>
+                        <li><a href="exercises/beginner/BindingDemo">BindingDemo</a></li>
+                        <li><a href="exercises/beginner/EventDemo">EventDemo</a></li>
+                        <li><a href="exercises/beginner/ParentWithEventDemo">ParentWithEventDemo</a></li>
+                        <li><a href="exercises/beginner/ParentWithFormDemo">ParentWithFormDemo</a></li>
+                        <li><a href="exercises/beginner/LifecycleDemo">LifecycleDemo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header bg-warning">Intermediate</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="exercises/intermediate/FormDemo">FormDemo</a></li>
+                        <li><a href="exercises/intermediate/RegistrationForm">RegistrationForm</a></li>
+                        <li><a href="exercises/intermediate/ValidationDemo">ValidationDemo</a></li>
+                        <li><a href="exercises/intermediate/ServiceDemo">ServiceDemo</a></li>
+                        <li><a href="exercises/intermediate/RoutingDemo">RoutingDemo</a></li>
+                        <li><a href="/search">SearchPage</a> (has own route)</li>
+                        <li><a href="/product/1">ProductPage</a> (has own route)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header bg-danger text-white">Advanced</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="exercises/advanced/ApiDemo">ApiDemo</a></li>
+                        <li><a href="exercises/advanced/WeatherDisplay">WeatherDisplay</a></li>
+                        <li><a href="exercises/advanced/LoginStatus">LoginStatus</a></li>
+                        <li><a href="exercises/advanced/ProtectedPage">ProtectedPage</a></li>
+                        <li><a href="exercises/advanced/ThemeProvider">ThemeProvider</a></li>
+                        <li><a href="exercises/advanced/ShoppingCart">ShoppingCart</a></li>
+                        <li><a href="exercises/advanced/ErrorDemo">ErrorDemo</a></li>
+                        <li><a href="exercises/advanced/LoggingDemo">LoggingDemo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (string.IsNullOrEmpty(ComponentName))
+{
+    <p><a href="exercises">&larr; Back to categories</a></p>
+    <h2>@Category Components</h2>
+}
+else
+{
+    <p><a href="exercises">&larr; Back to categories</a></p>
+    <h2>@ComponentName</h2>
+    <hr />
+
+    <div class="border p-3 bg-light">
+        @RenderComponent()
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string? Category { get; set; }
+
+    [Parameter]
+    public string? ComponentName { get; set; }
+
+    private RenderFragment RenderComponent() => builder =>
+    {
+        var componentType = GetComponentType();
+        if (componentType != null)
+        {
+            builder.OpenComponent(0, componentType);
+            builder.CloseComponent();
+        }
+        else
+        {
+            builder.AddContent(0, $"Component '{ComponentName}' not found in category '{Category}'");
+        }
+    };
+
+    private Type? GetComponentType()
+    {
+        if (string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(ComponentName))
+            return null;
+
+        var categoryPascal = char.ToUpper(Category[0]) + Category[1..].ToLower();
+        var typeName = $"BlazorKoans.App.Components.Exercises.{categoryPascal}.{ComponentName}";
+
+        return Type.GetType(typeName + ", BlazorKoans.App");
+    }
+}
