@@ -1,0 +1,127 @@
+@rendermode InteractiveServer
+
+<h3>Radzen Validation Demo</h3>
+
+<div class="demo-section">
+    <RadzenTemplateForm TItem="RegistrationModel" Data="@Model" Submit="@(() => OnSubmit())" InvalidSubmit="@(() => OnInvalidSubmit())">
+        <RadzenStack Gap="1rem">
+            <ValidationSummary />
+
+            <RadzenFormField Text="Username" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="@Model.Username" Name="Username" />
+                <RadzenRequiredValidator Component="Username" Text="Username is required" />
+                <RadzenCustomValidator Component="Username"
+                                       Validator="@(() => ValidateUsername())"
+                                       Text="Username 'admin' is reserved" />
+            </RadzenFormField>
+
+            <RadzenFormField Text="Email" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="@Model.Email" Name="Email" />
+                <RadzenRequiredValidator Component="Email" Text="Email is required" />
+                <RadzenEmailValidator Component="Email" Text="Invalid email format" />
+            </RadzenFormField>
+
+            <RadzenFormField Text="Age" Variant="Variant.Outlined">
+                <RadzenNumeric @bind-Value="@Model.Age" Name="Age" TValue="int" />
+                <RadzenRequiredValidator Component="Age" Text="Age is required" />
+                <RadzenNumericRangeValidator Component="Age" Min="18" Max="120" Text="Age must be between 18 and 120" />
+            </RadzenFormField>
+
+            <RadzenFormField Text="Password" Variant="Variant.Outlined">
+                <RadzenPassword @bind-Value="@Model.Password" Name="Password" />
+                <RadzenRequiredValidator Component="Password" Text="Password is required" />
+                <RadzenLengthValidator Component="Password" Min="8" Text="Password must be at least 8 characters" />
+            </RadzenFormField>
+
+            <RadzenFormField Text="Confirm Password" Variant="Variant.Outlined">
+                <RadzenPassword @bind-Value="@Model.ConfirmPassword" Name="ConfirmPassword" />
+                <RadzenRequiredValidator Component="ConfirmPassword" Text="Confirm password is required" />
+                <RadzenCompareValidator Value="@Model.Password" Component="ConfirmPassword" Text="Passwords do not match" />
+            </RadzenFormField>
+
+            <RadzenFormField Text="Phone" Variant="Variant.Outlined">
+                <RadzenTextBox @bind-Value="@Model.Phone" Name="Phone" />
+                <RadzenRegexValidator Component="Phone"
+                                      Pattern="^\d{3}-\d{3}-\d{4}$"
+                                      Text="Invalid phone format (use 123-456-7890)" />
+            </RadzenFormField>
+
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit" />
+        </RadzenStack>
+    </RadzenTemplateForm>
+</div>
+
+<div class="output-section">
+    <h4>Validation Info:</h4>
+    <p>Username Component: Username</p>
+    <p>Min Age: 18</p>
+    <p>Max Age: 120</p>
+    <p>Min Password Length: 8</p>
+    <p>Validation Errors: @ValidationErrorCount</p>
+    <p>Submit Status: @SubmitStatus</p>
+    <p>Has Validation Summary: true</p>
+    <p>Has Custom Validator: true</p>
+</div>
+
+@code {
+    private RegistrationModel Model { get; set; } = new();
+    private string SubmitStatus { get; set; } = "Not submitted";
+    private int ValidationErrorCount { get; set; } = 0;
+
+    private void OnSubmit()
+    {
+        SubmitStatus = "Valid submission";
+        ValidationErrorCount = 0;
+    }
+
+    private void OnInvalidSubmit()
+    {
+        SubmitStatus = "Invalid submission";
+        ValidationErrorCount = CountValidationErrors();
+    }
+
+    private bool ValidateUsername()
+    {
+        return Model.Username?.ToLower() != "admin";
+    }
+
+    private int CountValidationErrors()
+    {
+        int count = 0;
+
+        if (string.IsNullOrEmpty(Model.Username)) count++;
+        if (Model.Username?.ToLower() == "admin") count++;
+        if (string.IsNullOrEmpty(Model.Email)) count++;
+        if (!IsValidEmail(Model.Email)) count++;
+        if (Model.Age < 18 || Model.Age > 120) count++;
+        if (string.IsNullOrEmpty(Model.Password)) count++;
+        if (Model.Password?.Length < 8) count++;
+        if (string.IsNullOrEmpty(Model.ConfirmPassword)) count++;
+        if (Model.Password != Model.ConfirmPassword) count++;
+        if (!IsValidPhone(Model.Phone)) count++;
+
+        return count;
+    }
+
+    private bool IsValidEmail(string? email)
+    {
+        if (string.IsNullOrEmpty(email)) return true; // Let RequiredValidator handle empty
+        return email.Contains("@") && email.Contains(".");
+    }
+
+    private bool IsValidPhone(string? phone)
+    {
+        if (string.IsNullOrEmpty(phone)) return true; // Optional field
+        return System.Text.RegularExpressions.Regex.IsMatch(phone, @"^\d{3}-\d{3}-\d{4}$");
+    }
+
+    public class RegistrationModel
+    {
+        public string Username { get; set; } = "";
+        public string Email { get; set; } = "";
+        public int Age { get; set; } = 0;
+        public string Password { get; set; } = "";
+        public string ConfirmPassword { get; set; } = "";
+        public string Phone { get; set; } = "";
+    }
+}

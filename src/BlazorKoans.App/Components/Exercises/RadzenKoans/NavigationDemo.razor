@@ -1,0 +1,121 @@
+@rendermode InteractiveServer
+
+<h3>Navigation Demo</h3>
+
+<div style="max-width: 1200px;">
+    <RadzenRow Gap="2rem">
+        <RadzenColumn Size="12" SizeMD="4">
+            <h4>Panel Menu</h4>
+            <RadzenPanelMenu>
+                <RadzenPanelMenuItem Text="Home" Path="/" Icon="home" />
+                <RadzenPanelMenuItem Text="Products" Icon="inventory">
+                    <RadzenPanelMenuItem Text="Electronics" Path="/products/electronics" />
+                    <RadzenPanelMenuItem Text="Books" Path="/products/books" />
+                    <RadzenPanelMenuItem Text="Clothing" Path="/products/clothing" />
+                </RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Text="Services" Icon="build">
+                    <RadzenPanelMenuItem Text="Consulting" Path="/services/consulting" />
+                    <RadzenPanelMenuItem Text="Support" Path="/services/support" />
+                </RadzenPanelMenuItem>
+                <RadzenPanelMenuItem Text="About" Path="/about" Icon="info" />
+                <RadzenPanelMenuItem Text="Contact" Path="/contact" Icon="mail" />
+            </RadzenPanelMenu>
+
+            <div style="margin-top: 2rem; padding: 1rem; background-color: #f0f9ff; border-radius: 4px;">
+                <p><strong>Menu Features:</strong></p>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    <li>Expandable nested items</li>
+                    <li>Icons for visual hierarchy</li>
+                    <li>Path-based navigation</li>
+                </ul>
+            </div>
+        </RadzenColumn>
+
+        <RadzenColumn Size="12" SizeMD="8">
+            <h4>Breadcrumb Navigation</h4>
+
+            <h5>Simple Breadcrumb</h5>
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Text="Home" Path="/" />
+                <RadzenBreadCrumbItem Text="Products" Path="/products" />
+                <RadzenBreadCrumbItem Text="Electronics" />
+            </RadzenBreadCrumb>
+
+            <h5 style="margin-top: 2rem;">Deep Hierarchy</h5>
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Text="Home" Path="/" />
+                <RadzenBreadCrumbItem Text="Categories" Path="/categories" />
+                <RadzenBreadCrumbItem Text="Technology" Path="/categories/technology" />
+                <RadzenBreadCrumbItem Text="Computers" Path="/categories/technology/computers" />
+                <RadzenBreadCrumbItem Text="Laptops" />
+            </RadzenBreadCrumb>
+
+            <h5 style="margin-top: 2rem;">With Icons</h5>
+            <RadzenBreadCrumb>
+                <RadzenBreadCrumbItem Text="Home" Path="/" Icon="home" />
+                <RadzenBreadCrumbItem Text="Settings" Path="/settings" Icon="settings" />
+                <RadzenBreadCrumbItem Text="Profile" Icon="person" />
+            </RadzenBreadCrumb>
+
+            <div style="margin-top: 2rem; padding: 1rem; background-color: #f0fdf4; border-radius: 4px;">
+                <p><strong>Breadcrumb Best Practices:</strong></p>
+                <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                    <li>Show current location in navigation hierarchy</li>
+                    <li>Make parent levels clickable</li>
+                    <li>Keep current page non-clickable (last item)</li>
+                    <li>Use for 3+ levels of navigation depth</li>
+                </ul>
+            </div>
+
+            <h5 style="margin-top: 2rem;">Interactive Example</h5>
+            <p>Current Path: <code>@currentPath</code></p>
+            <RadzenBreadCrumb>
+                @foreach (var item in breadcrumbItems)
+                {
+                    if (item == breadcrumbItems.Last())
+                    {
+                        <RadzenBreadCrumbItem Text="@item" />
+                    }
+                    else
+                    {
+                        <RadzenBreadCrumbItem Text="@item" Path="@GetPathForItem(item)" />
+                    }
+                }
+            </RadzenBreadCrumb>
+
+            <div style="margin-top: 1rem;">
+                <button class="rz-button" @onclick='() => NavigateTo("/")'>Go Home</button>
+                <button class="rz-button" @onclick='() => NavigateTo("/products")'>Go to Products</button>
+                <button class="rz-button" @onclick='() => NavigateTo("/products/electronics")'>Go to Electronics</button>
+                <button class="rz-button" @onclick='() => NavigateTo("/products/electronics/laptops")'>Go to Laptops</button>
+            </div>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+@code {
+    private string currentPath = "/";
+    private List<string> breadcrumbItems = new() { "Home" };
+
+    private void NavigateTo(string path)
+    {
+        currentPath = path;
+        breadcrumbItems = path.Split('/', StringSplitOptions.RemoveEmptyEntries)
+            .Select(segment => char.ToUpper(segment[0]) + segment.Substring(1))
+            .ToList();
+
+        if (!breadcrumbItems.Any() || breadcrumbItems[0] != "Home")
+        {
+            breadcrumbItems.Insert(0, "Home");
+        }
+    }
+
+    private string GetPathForItem(string item)
+    {
+        var index = breadcrumbItems.IndexOf(item);
+        if (index == 0) return "/";
+
+        var segments = breadcrumbItems.Skip(1).Take(index).Select(s => s.ToLower());
+        return "/" + string.Join("/", segments);
+    }
+}

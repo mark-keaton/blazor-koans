@@ -1,0 +1,42 @@
+@rendermode InteractiveServer
+
+<h3>Cards Demo</h3>
+
+<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <RadzenCard Style="width: 300px;">
+        <h4>Simple Card</h4>
+        <p>This is a basic RadzenCard with some content inside.</p>
+    </RadzenCard>
+
+    <RadzenCard Style="width: 300px; background-color: #f0f9ff; border: 2px solid #0ea5e9;">
+        <h4>Styled Card</h4>
+        <p>This card has custom styling applied via the Style parameter.</p>
+    </RadzenCard>
+
+    <RadzenCard Style="width: 300px;">
+        <div style="text-align: center;">
+            <i class="rz-icon" style="font-size: 48px;">home</i>
+            <h4>Card with Icon</h4>
+            <p>This card includes an icon for visual appeal.</p>
+        </div>
+    </RadzenCard>
+
+    <RadzenCard Style="width: 300px;">
+        <h4>Interactive Card</h4>
+        <p>Click the button to interact with this card.</p>
+        <button class="rz-button" @onclick="HandleCardClick">Click Me</button>
+        @if (!string.IsNullOrEmpty(clickStatus))
+        {
+            <p style="margin-top: 1rem; color: green;">@clickStatus</p>
+        }
+    </RadzenCard>
+</div>
+
+@code {
+    private string clickStatus = string.Empty;
+
+    private void HandleCardClick()
+    {
+        clickStatus = "Card Clicked!";
+    }
+}

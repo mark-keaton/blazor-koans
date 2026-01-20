@@ -9,7 +9,6 @@ Koans are small, focused exercises that teach programming concepts through faili
 Each koan includes:
 - **ABOUT**: Explanation of the concept
 - **TODO**: What you need to implement
-- **SOLUTION**: The answer (as a comment) if you get stuck
 
 ## Prerequisites
 
@@ -32,18 +31,37 @@ code .
 
 ## How to Use
 
-1. **Run the tests** to see what's failing:
+1. **Run the tests** - they execute in learning order and stop at the first failure:
    ```bash
    dotnet test
    ```
 
-2. **Pick a failing test** and read the instructions in the test file
+2. **Read the failing test** - it shows you exactly what to learn:
+   - `ABOUT:` explains the concept
+   - `TODO:` tells you what to fix
 
-3. **Implement the solution** by modifying the component or filling in the placeholder
+3. **Fix the placeholder** - replace `"__"` with the correct answer
 
-4. **Run the test again** to verify your solution
+4. **Run tests again** - when it passes, you'll see the next koan
 
-5. **Move to the next koan** and repeat!
+5. **Repeat** until all 114 tests pass!
+
+### Example Workflow
+
+```bash
+$ dotnet test
+
+Failed BlazorKoans.Tests.Beginner.Components.ComponentKoans.A_CreatingComponents
+Expected: <h1>__</h1>
+Actual:   <h1>Hello, Blazor!</h1>
+
+# Open the test file, find the SOLUTION comment, replace "__" with "Hello, Blazor!"
+
+$ dotnet test
+
+Failed BlazorKoans.Tests.Beginner.Components.ComponentKoans.B_ComponentParameters
+# Next koan!
+```
 
 ## Learning Path
 
@@ -73,11 +91,13 @@ code .
 
 ## Running Specific Tests
 
+By default, tests run in order and stop at the first failure. You can also run specific sections:
+
 ```bash
-# Run all tests
+# Run all tests in order (recommended)
 dotnet test
 
-# Run only Beginner koans
+# Run only Beginner koans (in order)
 dotnet test --filter "Category=Beginner"
 
 # Run only Intermediate koans
@@ -88,6 +108,9 @@ dotnet test --filter "Category=Advanced"
 
 # Run a specific topic
 dotnet test --filter "FullyQualifiedName~Components"
+
+# Run ALL tests without stopping on failure (see full progress)
+dotnet test -- xUnit.StopOnFail=false
 ```
 
 ## Project Structure
@@ -136,8 +159,13 @@ Then open https://localhost:5001 in your browser.
 
 1. **Read the ABOUT section** in the test - it explains the concept
 2. **Check the TODO section** - it tells you exactly what to implement
-3. **Look at the SOLUTION comment** - it shows the expected answer
-4. **Run the app** - sometimes seeing the component helps
+3. **Run the app** - sometimes seeing the component in action helps
+4. **Check the solutions branch** - all answers are available there:
+   ```bash
+   git checkout solutions
+   # Compare the test file to see the answer
+   git checkout epic/blazor-koans  # Return to continue learning
+   ```
 
 ## Tips for Success
 

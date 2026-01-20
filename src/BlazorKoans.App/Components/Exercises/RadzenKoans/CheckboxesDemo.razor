@@ -1,0 +1,110 @@
+@rendermode InteractiveServer
+
+<h3>Checkboxes Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Accept Terms" Variant="Variant.Outlined">
+            <RadzenCheckBox @bind-Value="@AcceptTerms"
+                            Name="AcceptTerms"
+                            Change="@((bool value) => OnAcceptTermsChange(value))" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Newsletter (Tri-State)" Variant="Variant.Outlined">
+            <RadzenCheckBox @bind-Value="@Newsletter"
+                            TValue="bool?"
+                            Name="Newsletter"
+                            TriState="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Interests" Variant="Variant.Outlined">
+            <RadzenCheckBoxList @bind-Value="@SelectedInterests"
+                                Data="@Interests"
+                                TextProperty="Name"
+                                ValueProperty="Id"
+                                Orientation="Orientation.Horizontal"
+                                Change="@((IEnumerable<int> value) => OnInterestsChange(value))" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Features" Variant="Variant.Outlined">
+            <RadzenCheckBoxList @bind-Value="@SelectedFeatures"
+                                Data="@Features"
+                                Disabled="@FeaturesDisabled" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Notifications" Variant="Variant.Outlined">
+            <RadzenSwitch @bind-Value="@Notifications"
+                          Name="Notifications" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Dark Mode" Variant="Variant.Outlined">
+            <RadzenSwitch @bind-Value="@DarkMode"
+                          Name="DarkMode"
+                          Text="Enable Dark Mode" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Locked Option" Variant="Variant.Outlined">
+            <RadzenCheckBox @bind-Value="@LockedOption"
+                            Name="LockedOption"
+                            Disabled="true" />
+        </RadzenFormField>
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Accept Terms: @AcceptTerms</p>
+    <p>Tri-State: true</p>
+    <p>Newsletter: @(Newsletter?.ToString() ?? "null")</p>
+    <p>Selected Interests: @SelectedInterests.Count()</p>
+    <p>Interests Text: Name</p>
+    <p>Interests Value: Id</p>
+    <p>Orientation: Horizontal</p>
+    <p>Notifications: @Notifications</p>
+    <p>Dark Mode Label: Enable Dark Mode</p>
+    <p>Event Fired: @LastEvent</p>
+    <p>Change Count: @ChangeCount</p>
+    <p>Features Disabled: @FeaturesDisabled</p>
+</div>
+
+@code {
+    private bool AcceptTerms { get; set; } = false;
+    private bool? Newsletter { get; set; } = false;
+    private IEnumerable<int> SelectedInterests { get; set; } = new List<int>();
+    private IEnumerable<string> SelectedFeatures { get; set; } = new List<string>();
+    private bool Notifications { get; set; } = false;
+    private bool DarkMode { get; set; } = false;
+    private bool LockedOption { get; set; } = true;
+    private bool FeaturesDisabled { get; set; } = true;
+    private string LastEvent { get; set; } = "None";
+    private int ChangeCount { get; set; } = 0;
+
+    private List<Interest> Interests { get; set; } = new()
+    {
+        new() { Id = 1, Name = "Reading" },
+        new() { Id = 2, Name = "Music" },
+        new() { Id = 3, Name = "Sports" },
+        new() { Id = 4, Name = "Travel" }
+    };
+
+    private List<string> Features { get; set; } = new()
+    {
+        "Feature A", "Feature B", "Feature C"
+    };
+
+    private void OnAcceptTermsChange(bool value)
+    {
+        LastEvent = "AcceptTermsChange";
+    }
+
+    private void OnInterestsChange(IEnumerable<int> value)
+    {
+        ChangeCount++;
+    }
+
+    public class Interest
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+}

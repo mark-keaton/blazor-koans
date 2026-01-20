@@ -67,6 +67,45 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">Radzen - DataGrid</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="exercises/radzenkoans/RadzenSetupDemo">RadzenSetupDemo</a></li>
+                        <li><a href="exercises/radzenkoans/BasicDataGridDemo">BasicDataGridDemo</a></li>
+                        <li><a href="exercises/radzenkoans/ColumnTypesDemo">ColumnTypesDemo</a></li>
+                        <li><a href="exercises/radzenkoans/SortingDemo">SortingDemo</a></li>
+                        <li><a href="exercises/radzenkoans/FilteringDemo">FilteringDemo</a></li>
+                        <li><a href="exercises/radzenkoans/PagingDemo">PagingDemo</a></li>
+                        <li><a href="exercises/radzenkoans/SelectionDemo">SelectionDemo</a></li>
+                        <li><a href="exercises/radzenkoans/InlineEditingDemo">InlineEditingDemo</a></li>
+                        <li><a href="exercises/radzenkoans/LoadDataDemo">LoadDataDemo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">Radzen - Forms & Layout</div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><a href="exercises/radzenkoans/TextInputsDemo">TextInputsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/NumericInputsDemo">NumericInputsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/DateInputsDemo">DateInputsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/DropdownsDemo">DropdownsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/CheckboxesDemo">CheckboxesDemo</a></li>
+                        <li><a href="exercises/radzenkoans/RadzenValidationDemo">RadzenValidationDemo</a></li>
+                        <li><a href="exercises/radzenkoans/CardsDemo">CardsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/PanelsDemo">PanelsDemo</a></li>
+                        <li><a href="exercises/radzenkoans/TabsDemo">TabsDemo</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 else if (string.IsNullOrEmpty(ComponentName))
 {
@@ -110,7 +149,12 @@ else
         if (string.IsNullOrEmpty(Category) || string.IsNullOrEmpty(ComponentName))
             return null;
 
-        var categoryPascal = char.ToUpper(Category[0]) + Category[1..].ToLower();
+        // Handle special case for RadzenKoans folder
+        var categoryPascal = Category.ToLower() switch
+        {
+            "radzenkoans" => "RadzenKoans",
+            _ => char.ToUpper(Category[0]) + Category[1..].ToLower()
+        };
         var typeName = $"BlazorKoans.App.Components.Exercises.{categoryPascal}.{ComponentName}";
 
         return Type.GetType(typeName + ", BlazorKoans.App");

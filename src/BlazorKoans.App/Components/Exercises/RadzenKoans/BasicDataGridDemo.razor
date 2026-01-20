@@ -1,0 +1,51 @@
+@using BlazorKoans.App.Models
+@using global::Radzen.Blazor
+@rendermode InteractiveServer
+
+<h3>Basic DataGrid Demo</h3>
+
+<RadzenDataGrid Data="@employees" TItem="Employee" Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Employee Name" />
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" />
+        <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" />
+    </Columns>
+</RadzenDataGrid>
+
+<button class="add-employee" @onclick="AddEmployee">Add Employee</button>
+
+@code {
+    [Parameter]
+    public bool UseEmptyData { get; set; }
+
+    private List<Employee> employees = new();
+
+    protected override void OnInitialized()
+    {
+        if (!UseEmptyData)
+        {
+            employees = new List<Employee>
+            {
+                new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },
+                new Employee { Id = 2, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1) },
+                new Employee { Id = 3, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10) },
+                new Employee { Id = 4, Name = "David Brown", Department = "Sales", Salary = 85000, HireDate = new DateTime(2022, 5, 20) },
+                new Employee { Id = 5, Name = "Eve Davis", Department = "HR", Salary = 70000, HireDate = new DateTime(2023, 2, 14) }
+            };
+        }
+    }
+
+    private void AddEmployee()
+    {
+        employees.Add(new Employee
+        {
+            Id = employees.Count + 1,
+            Name = "New Employee",
+            Department = "New Dept",
+            Salary = 60000,
+            HireDate = DateTime.Now
+        });
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,68 @@
+@rendermode InteractiveServer
+
+<h3>Text Inputs Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Name" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="@Name"
+                           Name="Name"
+                           Placeholder="Enter your name"
+                           MaxLength="50" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Email" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="@Email"
+                           Name="Email"
+                           Placeholder="your.email@example.com"
+                           Disabled="@IsEmailDisabled" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Description" Variant="Variant.Outlined">
+            <RadzenTextArea @bind-Value="@Description"
+                            Name="Description"
+                            Placeholder="Enter a description"
+                            Rows="4" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Password" Variant="Variant.Outlined">
+            <RadzenPassword @bind-Value="@Password"
+                            Name="Password"
+                            Placeholder="Enter password" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Read Only Field" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="@ReadOnlyField"
+                           Name="ReadOnlyField"
+                           ReadOnly="true" />
+        </RadzenFormField>
+
+        <RadzenButton Text="Clear Name"
+                      ButtonStyle="global::Radzen.ButtonStyle.Secondary"
+                      Click="@ClearName"
+                      class="clear-name" />
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Name: @Name</p>
+    <p>Email: @Email</p>
+    <p>Description: @Description</p>
+    <p>Password Length: @Password.Length</p>
+    <p>Read Only Field: @ReadOnlyField</p>
+</div>
+
+@code {
+    private string Name { get; set; } = "John Doe";
+    private string Email { get; set; } = string.Empty;
+    private string Description { get; set; } = "Initial description";
+    private string Password { get; set; } = string.Empty;
+    private string ReadOnlyField { get; set; } = "Cannot edit this";
+    private bool IsEmailDisabled { get; set; } = true;
+
+    private void ClearName()
+    {
+        Name = string.Empty;
+    }
+}

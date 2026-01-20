@@ -1,0 +1,116 @@
+@rendermode InteractiveServer
+
+<h3>Date Inputs Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Birth Date" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@BirthDate"
+                              TValue="DateTime"
+                              Name="BirthDate"
+                              DateFormat="MM/dd/yyyy"
+                              ShowTime="false" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Appointment Time" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@AppointmentTime"
+                              TValue="DateTime"
+                              Name="AppointmentTime"
+                              DateFormat="MM/dd/yyyy HH:mm"
+                              ShowTime="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Daily Reminder" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@DailyReminder"
+                              TValue="TimeOnly"
+                              Name="DailyReminder" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Start Date" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@StartDate"
+                              TValue="DateTime"
+                              Name="StartDate"
+                              Min="@DateTime.Today" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="End Date" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@EndDate"
+                              TValue="DateTime"
+                              Name="EndDate"
+                              Max="@DateTime.Today.AddDays(90)" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Event Date" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@EventDate"
+                              TValue="DateOnly"
+                              Name="EventDate" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Optional Date" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@OptionalDate"
+                              TValue="DateTime?"
+                              Name="OptionalDate"
+                              Placeholder="Select a date (optional)" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Expiry Date (Month/Year)" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@ExpiryDate"
+                              TValue="DateTime"
+                              Name="ExpiryDate"
+                              DateFormat="MM/yyyy"
+                              YearRange="2024:2034" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Calendar View (Inline)" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@CalendarView"
+                              TValue="DateTime"
+                              Name="CalendarView"
+                              Inline="true" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Confirmed Date (Read Only)" Variant="Variant.Outlined">
+            <RadzenDatePicker @bind-Value="@ConfirmedDate"
+                              TValue="DateTime"
+                              Name="ConfirmedDate"
+                              ReadOnly="true" />
+        </RadzenFormField>
+
+        <RadzenButton Text="Clear Optional Date"
+                      ButtonStyle="global::Radzen.ButtonStyle.Secondary"
+                      Click="@ClearOptionalDate"
+                      class="clear-date" />
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Birth Date: @BirthDate.ToString("MM/dd/yyyy")</p>
+    <p>Date Format: MM/dd/yyyy</p>
+    <p>Show Time: true</p>
+    <p>Daily Reminder: @DailyReminder.ToString("HH:mm")</p>
+    <p>Min Date: today</p>
+    <p>Max Date: today + 90 days</p>
+    <p>Event Date Type: DateOnly</p>
+    <p>Optional Date: @(OptionalDate?.ToString("MM/dd/yyyy") ?? "null")</p>
+    <p>Expiry View: Month/Year</p>
+    <p>Inline Calendar: true</p>
+    <p>Has Footer Template: true</p>
+</div>
+
+@code {
+    private DateTime BirthDate { get; set; } = new DateTime(1990, 1, 1);
+    private DateTime AppointmentTime { get; set; } = DateTime.Now.AddDays(7);
+    private TimeOnly DailyReminder { get; set; } = new TimeOnly(9, 0);
+    private DateTime StartDate { get; set; } = DateTime.Today;
+    private DateTime EndDate { get; set; } = DateTime.Today.AddDays(30);
+    private DateOnly EventDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private DateTime? OptionalDate { get; set; } = null;
+    private DateTime ExpiryDate { get; set; } = new DateTime(2024, 12, 31);
+    private DateTime CalendarView { get; set; } = DateTime.Today;
+    private DateTime ConfirmedDate { get; set; } = DateTime.Today;
+
+    private void ClearOptionalDate()
+    {
+        OptionalDate = null;
+    }
+}

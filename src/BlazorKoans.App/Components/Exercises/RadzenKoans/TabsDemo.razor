@@ -1,0 +1,100 @@
+@rendermode InteractiveServer
+
+<h3>Tabs Demo</h3>
+
+<div style="max-width: 800px;">
+    <RadzenTabs @bind-SelectedIndex="selectedTabIndex" Change="@OnTabChange">
+        <Tabs>
+            <RadzenTabsItem Text="Overview">
+                <h4>Overview Tab</h4>
+                <p>This is the first tab showing an overview of the content.</p>
+                <p>Tabs are great for organizing related information into separate views.</p>
+            </RadzenTabsItem>
+
+            <RadzenTabsItem Text="Details">
+                <h4>Details Tab</h4>
+                <p>This tab contains detailed information.</p>
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+            </RadzenTabsItem>
+
+            <RadzenTabsItem Text="Settings">
+                <h4>Settings Tab</h4>
+                <p>Configure your preferences here.</p>
+                <div>
+                    <label>
+                        <input type="checkbox" /> Enable feature A
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" /> Enable feature B
+                    </label>
+                </div>
+            </RadzenTabsItem>
+
+            <RadzenTabsItem Text="About" Icon="info">
+                <h4>About Tab</h4>
+                <p>This tab includes an icon in its header.</p>
+                <p>Icons help users quickly identify tab purposes.</p>
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
+
+    <div style="margin-top: 1rem; padding: 1rem; background-color: #f0f9ff; border-radius: 4px;">
+        <p><strong>Current Tab Index:</strong> @selectedTabIndex</p>
+        <p><strong>Status:</strong> @tabChangeStatus</p>
+    </div>
+
+    @if (dynamicTabs.Any())
+    {
+        <h4 style="margin-top: 2rem;">Dynamic Tabs</h4>
+        <button class="rz-button" @onclick="AddDynamicTab">Add Tab</button>
+        <button class="rz-button" @onclick="RemoveDynamicTab" disabled="@(!dynamicTabs.Any())">Remove Tab</button>
+
+        <RadzenTabs style="margin-top: 1rem;">
+            <Tabs>
+                @foreach (var tab in dynamicTabs)
+                {
+                    <RadzenTabsItem Text="@tab">
+                        <p>Content for @tab</p>
+                    </RadzenTabsItem>
+                }
+            </Tabs>
+        </RadzenTabs>
+    }
+    else
+    {
+        <div style="margin-top: 2rem;">
+            <button class="rz-button" @onclick="AddDynamicTab">Add Tab</button>
+        </div>
+    }
+</div>
+
+@code {
+    private int selectedTabIndex = 0;
+    private string tabChangeStatus = "No tab changes yet";
+    private List<string> dynamicTabs = new();
+    private int dynamicTabCounter = 1;
+
+    private void OnTabChange(int index)
+    {
+        tabChangeStatus = $"Switched to tab {index}";
+    }
+
+    private void AddDynamicTab()
+    {
+        dynamicTabs.Add($"Tab {dynamicTabCounter++}");
+    }
+
+    private void RemoveDynamicTab()
+    {
+        if (dynamicTabs.Any())
+        {
+            dynamicTabs.RemoveAt(dynamicTabs.Count - 1);
+        }
+    }
+}

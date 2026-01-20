@@ -1,0 +1,191 @@
+@rendermode InteractiveServer
+
+<h3>DropDown DataGrid Demo</h3>
+
+<div class="demo-section">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Select Employee" Variant="Variant.Outlined">
+            <RadzenDropDownDataGrid @bind-Value="@SelectedEmployee"
+                                    Data="@Employees"
+                                    TextProperty="FullName"
+                                    Name="Employee"
+                                    AllowFiltering="true"
+                                    AllowSorting="true"
+                                    PageSize="5"
+                                    Placeholder="Select an employee"
+                                    AllowClear="true">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="FirstName" Title="First Name" />
+                    <RadzenDropDownDataGridColumn Property="LastName" Title="Last Name" class="lastname-header" />
+                    <RadzenDropDownDataGridColumn Property="Department" Title="Department" />
+                    <RadzenDropDownDataGridColumn Property="Status" Title="Status">
+                        <Template Context="employee">
+                            <RadzenBadge Text="@employee.Status"
+                                         BadgeStyle="@GetStatusBadgeStyle(employee.Status)" />
+                        </Template>
+                    </RadzenDropDownDataGridColumn>
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </RadzenFormField>
+
+        <RadzenFormField Text="Select Projects (Multiple)" Variant="Variant.Outlined">
+            <RadzenDropDownDataGrid @bind-Value="@SelectedProjects"
+                                    Data="@Projects"
+                                    TextProperty="Name"
+                                    Name="Projects"
+                                    Multiple="true"
+                                    AllowFiltering="true"
+                                    PageSize="10">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="Name" Title="Project Name" />
+                    <RadzenDropDownDataGridColumn Property="Status" Title="Status" />
+                    <RadzenDropDownDataGridColumn Property="DueDate" Title="Due Date" FormatString="{0:d}" />
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </RadzenFormField>
+
+        <RadzenFormField Text="Select Customer (LoadData)" Variant="Variant.Outlined">
+            <RadzenDropDownDataGrid @bind-Value="@SelectedCustomer"
+                                    Data="@Customers"
+                                    LoadData="@LoadCustomerData"
+                                    TextProperty="CompanyName"
+                                    Name="Customer"
+                                    AllowFiltering="true"
+                                    PageSize="10">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="CompanyName" Title="Company" />
+                    <RadzenDropDownDataGridColumn Property="ContactName" Title="Contact" />
+                    <RadzenDropDownDataGridColumn Property="Country" Title="Country" />
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </RadzenFormField>
+
+        <RadzenFormField Text="Locked Employee" Variant="Variant.Outlined">
+            <RadzenDropDownDataGrid Value="@LockedEmployee"
+                                    Data="@Employees"
+                                    TextProperty="FullName"
+                                    Name="LockedEmployee"
+                                    Disabled="true">
+                <Columns>
+                    <RadzenDropDownDataGridColumn Property="FullName" Title="Name" />
+                </Columns>
+            </RadzenDropDownDataGrid>
+        </RadzenFormField>
+
+        <RadzenButton Text="Select Projects"
+                      Click="@SelectProjects"
+                      class="select-projects" />
+
+        <RadzenButton Text="Clear Employee"
+                      Click="@ClearEmployee"
+                      class="clear-employee" />
+    </RadzenStack>
+</div>
+
+<div class="output-section">
+    <h4>Current Values:</h4>
+    <p>Column Count: 4</p>
+    <p>Employee Type: Employee</p>
+    <p>Filtered Count: @FilteredEmployeeCount</p>
+    <p>Text Property: FullName</p>
+    <p>Allow Filtering: true</p>
+    <p>First Employee: @GetFirstEmployeeLastName()</p>
+    <p>Status Template: true</p>
+    <p>Page Size: 5</p>
+    <p>Selected: @(SelectedEmployee?.FullName ?? "None")</p>
+    <p>Multiple Projects: true</p>
+    <p>Selected Chips: @(SelectedProjects?.Count() ?? 0)</p>
+    <p>Uses LoadData: true</p>
+    <p>Selected Employee: @(SelectedEmployee?.FullName ?? "null")</p>
+</div>
+
+@code {
+    private Employee? SelectedEmployee { get; set; } = null;
+    private IEnumerable<Project> SelectedProjects { get; set; } = new List<Project>();
+    private Customer? SelectedCustomer { get; set; } = null;
+    private Employee LockedEmployee { get; set; } = new() { Id = 1, FirstName = "John", LastName = "Doe", Department = "IT", Status = "Active" };
+    private int FilteredEmployeeCount { get; set; } = 0;
+
+    private List<Employee> Employees { get; set; } = new()
+    {
+        new() { Id = 1, FirstName = "John", LastName = "Doe", Department = "Engineering", Status = "Active" },
+        new() { Id = 2, FirstName = "Jane", LastName = "Smith", Department = "Engineering", Status = "Active" },
+        new() { Id = 3, FirstName = "Bob", LastName = "Johnson", Department = "Sales", Status = "Active" },
+        new() { Id = 4, FirstName = "Alice", LastName = "Williams", Department = "Marketing", Status = "Inactive" },
+        new() { Id = 5, FirstName = "Charlie", LastName = "Brown", Department = "Engineering", Status = "Active" }
+    };
+
+    private List<Project> Projects { get; set; } = new()
+    {
+        new() { Id = 1, Name = "Project Alpha", Status = "Active", DueDate = DateTime.Now.AddDays(30) },
+        new() { Id = 2, Name = "Project Beta", Status = "Planning", DueDate = DateTime.Now.AddDays(60) },
+        new() { Id = 3, Name = "Project Gamma", Status = "Completed", DueDate = DateTime.Now.AddDays(-10) }
+    };
+
+    private List<Customer> Customers { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        FilteredEmployeeCount = Employees.Count;
+    }
+
+    private string GetFirstEmployeeLastName()
+    {
+        return Employees.OrderBy(e => e.LastName).First().LastName;
+    }
+
+    private BadgeStyle GetStatusBadgeStyle(string status)
+    {
+        return status switch
+        {
+            "Active" => BadgeStyle.Success,
+            "Inactive" => BadgeStyle.Danger,
+            _ => BadgeStyle.Secondary
+        };
+    }
+
+    private void LoadCustomerData(LoadDataArgs args)
+    {
+        Customers = new List<Customer>
+        {
+            new() { Id = 1, CompanyName = "Acme Corp", ContactName = "John Smith", Country = "USA" },
+            new() { Id = 2, CompanyName = "Global Inc", ContactName = "Jane Doe", Country = "Canada" }
+        };
+    }
+
+    private void SelectProjects()
+    {
+        SelectedProjects = Projects.Take(3).ToList();
+    }
+
+    private void ClearEmployee()
+    {
+        SelectedEmployee = null;
+    }
+
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string Department { get; set; } = "";
+        public string Status { get; set; } = "";
+        public string FullName => $"{FirstName} {LastName}";
+    }
+
+    public class Project
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Status { get; set; } = "";
+        public DateTime DueDate { get; set; }
+    }
+
+    public class Customer
+    {
+        public int Id { get; set; }
+        public string CompanyName { get; set; } = "";
+        public string ContactName { get; set; } = "";
+        public string Country { get; set; } = "";
+    }
+}
