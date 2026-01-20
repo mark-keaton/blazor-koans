@@ -17,7 +17,7 @@ public class C_FormSubmission : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input[name='person.Name']");
         nameInput.Change("Charlie");
 
         var form = cut.Find("form");
@@ -39,7 +39,7 @@ public class C_FormSubmission : BunitContext
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        var nameInput = cut.Find("input[name='person.Name']");
         nameInput.Change("David");
 
         var form = cut.Find("form");

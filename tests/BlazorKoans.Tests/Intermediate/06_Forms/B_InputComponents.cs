@@ -10,15 +10,16 @@ public class B_InputComponents : BunitContext
     [Trait("Category", "Intermediate")]
     public void InputText_BindsStringProperty()
     {
-        // ABOUT: InputText binds to string properties
-        // It renders as an HTML <input type="text"> element
+        // ABOUT: InputText binds to string properties.
+        // It renders as <input name="model.PropertyName"> (without explicit type="text").
 
         // TODO: Replace "__" with the name after changing the input
         // HINT: InputText uses @bind-Value for two-way binding
 
         var cut = Render<FormDemo>();
 
-        var nameInput = cut.Find("input[type='text']");
+        // InputText renders with name attribute, not type="text"
+        var nameInput = cut.Find("input[name='person.Name']");
         nameInput.Change("Bob");
 
         var expected = "__";
