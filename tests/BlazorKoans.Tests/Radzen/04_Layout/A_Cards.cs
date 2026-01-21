@@ -5,12 +5,23 @@ using Xunit;
 namespace BlazorKoans.Tests.Radzen._04_Layout;
 
 /// <summary>
-/// RadzenCard is a container component that provides a card-style layout with
-/// optional header, footer, and styling. Cards are perfect for grouping related
-/// content in a visually distinct container.
-///
-/// Think of RadzenCard as a "content box" that makes your UI look organized
-/// and professional with minimal effort.
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                              RADZEN CARDS                                    ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  RadzenCard is a container component that provides a card-style layout       ║
+/// ║  with optional header, footer, and styling for grouping content.             ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  &lt;RadzenCard&gt;                                                          │  ║
+/// ║  │      &lt;h3&gt;Card Title&lt;/h3&gt;                                               │  ║
+/// ║  │      &lt;p&gt;Card content goes here&lt;/p&gt;                                     │  ║
+/// ║  │  &lt;/RadzenCard&gt;                                                         │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  &lt;RadzenCard Style="background-color: #f5f5f5;"&gt;                       │  ║
+/// ║  │      Custom styled card                                                │  ║
+/// ║  │  &lt;/RadzenCard&gt;                                                         │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
 /// </summary>
 public class A_Cards : BunitContext
 {
@@ -18,146 +29,267 @@ public class A_Cards : BunitContext
     [Trait("Category", "Radzen")]
     public void Card_RendersBasicContent()
     {
-        // ABOUT: RadzenCard wraps content in a styled container. The content
-        // you place inside <RadzenCard> appears in the card body.
-        // By default, it includes padding and a subtle shadow.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: RadzenCard CSS Classes
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // RadzenCard wraps content in a styled container. The content you place
+        // inside <RadzenCard> appears in the card body. By default, it includes
+        // padding and a subtle shadow. Radzen uses the "rz-" prefix for CSS classes.
+        //
+        // EXERCISE: What CSS class identifies a Radzen card in the DOM?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the CSS class that identifies a Radzen card
-        // HINT: Radzen uses "rz-" prefix for its CSS classes
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What CSS class identifies a Radzen card?        ║
+        // ║                                                                    ║
+        // ║  HINT: Radzen uses "rz-" prefix for its CSS classes                ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: The card CSS class exists in the rendered markup
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_DisplaysCardTitle()
     {
-        // ABOUT: The card displays a title that you set in the demo component.
-        // This title appears in the card's header area.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Card Titles
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The card displays a title that you set in the demo component. This
+        // title appears in the card's header area and helps identify the card's
+        // purpose to users.
+        //
+        // EXERCISE: What is the exact title text shown in the first card?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the exact title text shown in the first card
-        // HINT: Look at CardsDemo.razor for the title text
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What title text appears in the first card?      ║
+        // ║                                                                    ║
+        // ║  HINT: Look at CardsDemo.razor for the title text                  ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: The title appears in the rendered markup
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_WithCustomStyle_AppliesStyles()
     {
-        // ABOUT: RadzenCard accepts a Style parameter to apply custom CSS.
-        // This lets you customize colors, borders, spacing, and more.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Custom Card Styling
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // RadzenCard accepts a Style parameter to apply custom CSS. This lets
+        // you customize colors, borders, spacing, and more. Custom styles
+        // typically include properties like background-color, border, etc.
+        //
+        // EXERCISE: Does the demo include a card with custom styling?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace false with true if the demo includes a card with custom styling
-        // HINT: Check if any card in CardsDemo has a Style parameter
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
 
-        var hasCustomStyle = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does the demo include custom styled cards?      ║
+        // ║                                                                    ║
+        // ║  HINT: Check if any card in CardsDemo has a Style parameter        ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        // Custom styles typically include properties like background-color, border, etc.
-        Assert.True(hasCustomStyle == cut.Markup.Contains("style="));
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: Custom styles are present (or not) as expected
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.True(answer == cut.Markup.Contains("style="));
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_SupportsClickEvents()
     {
-        // ABOUT: RadzenCard can be made clickable by adding click event handlers.
-        // This is useful for navigation cards or interactive content boxes.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Card Click Events
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // RadzenCard can be made clickable by adding click event handlers. This
+        // is useful for navigation cards or interactive content boxes. The demo
+        // shows a click status message when a card button is clicked.
+        //
+        // EXERCISE: What text appears when a card is clicked?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the text that appears when a card is clicked
-        // HINT: The demo shows a click status message
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo and click a button
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
-
-        // Initially no card is clicked
         Assert.DoesNotContain("Card Clicked", cut.Markup);
-
-        // Find and click a button inside the card
+        
         var clickButton = cut.Find("button");
         clickButton.Click();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What text appears when a card is clicked?       ║
+        // ║                                                                    ║
+        // ║  HINT: The demo shows a click status message                       ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: The click message appears in the markup
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_WithMultipleCards_RendersAll()
     {
-        // ABOUT: You can use multiple RadzenCard components on a page.
-        // Each card is independent and can have different content and styling.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Multiple Cards
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // You can use multiple RadzenCard components on a page. Each card is
+        // independent and can have different content and styling. Count the
+        // cards by looking for "rz-card" elements.
+        //
+        // EXERCISE: How many cards are rendered in the demo?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace 0 with the number of cards rendered in the demo
-        // HINT: Count the "rz-card" elements in the output
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
-
         var cardElements = cut.FindAll(".rz-card");
-        var expected = 0;
 
-        Assert.Equal(expected, cardElements.Count);
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - How many cards are rendered?                    ║
+        // ║                                                                    ║
+        // ║  HINT: Count the "rz-card" elements in the output                  ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
+
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: The expected number of cards are rendered
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cardElements.Count);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_ContentProjection_DisplaysChildContent()
     {
-        // ABOUT: RadzenCard uses content projection (ChildContent) to render
-        // whatever you place inside it. This can be text, other components,
-        // forms, images, etc.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Content Projection (ChildContent)
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // RadzenCard uses content projection (ChildContent) to render whatever
+        // you place inside it. This can be text, other components, forms,
+        // images, etc.
+        //
+        // EXERCISE: What content appears inside one of the cards?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with a piece of content that appears in a card
-        // HINT: Look for descriptive text in the card bodies
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What content appears in a card?                 ║
+        // ║                                                                    ║
+        // ║  HINT: Look for descriptive text in the card bodies                ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: The content appears in the rendered markup
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_WithIcon_DisplaysIconContent()
     {
-        // ABOUT: Cards often include icons to make them more visual and engaging.
-        // You can add icons from icon libraries or use Radzen's icon support.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Cards with Icons
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Cards often include icons to make them more visual and engaging. You
+        // can add icons from icon libraries or use Radzen's built-in icon
+        // support with the "rz-icon" CSS class.
+        //
+        // EXERCISE: Does the demo include any cards with icons?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Does the demo include any cards with icons? Replace false with expected
-        // HINT: Look for "rz-icon" or similar icon-related CSS classes
-
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: Render the CardsDemo component
+        // ───────────────────────────────────────────────────────────────────────
         var cut = Render<CardsDemo>();
 
-        var hasIcon = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does the demo include cards with icons?         ║
+        // ║                                                                    ║
+        // ║  HINT: Look for "rz-icon" or similar icon-related CSS classes      ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        Assert.True(hasIcon == cut.Markup.Contains("icon"));
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: Icons are present (or not) as expected
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.True(answer == cut.Markup.Contains("icon"));
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Card_Accessibility_IncludesSemanticHTML()
     {
-        // ABOUT: Well-structured cards should use semantic HTML for accessibility.
-        // RadzenCard renders as a div, so you should add appropriate ARIA attributes
-        // or semantic elements inside as needed.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Card Semantic HTML
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Well-structured cards should use semantic HTML for accessibility.
+        // RadzenCard renders as a div element, so you should add appropriate
+        // ARIA attributes or semantic elements inside as needed.
+        //
+        // EXERCISE: What HTML element type does RadzenCard render as?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the HTML element type that RadzenCard renders
-        // HINT: Radzen cards are typically div elements with CSS classes
+        // ───────────────────────────────────────────────────────────────────────
+        // ARRANGE: No rendering needed for this knowledge check
+        // ───────────────────────────────────────────────────────────────────────
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What HTML element does RadzenCard render?       ║
+        // ║                                                                    ║
+        // ║  HINT: Radzen cards are typically div elements with CSS classes    ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // RadzenCard renders as a specific HTML element
-        Assert.Equal("div", expected);
+        // ───────────────────────────────────────────────────────────────────────
+        // VERIFY: RadzenCard renders as a div element
+        // ───────────────────────────────────────────────────────────────────────
+        Assert.Equal("div", answer);
     }
 }
