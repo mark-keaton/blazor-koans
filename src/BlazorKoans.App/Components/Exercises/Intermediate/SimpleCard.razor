@@ -1,0 +1,30 @@
+<div class="simple-card">
+    @if (Header != null)
+    {
+        <div class="simple-card-header">
+            @Header
+        </div>
+    }
+
+    <div class="simple-card-body">
+        @ChildContent
+    </div>
+
+    @if (Footer != null)
+    {
+        <div class="simple-card-footer">
+            @Footer
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+}

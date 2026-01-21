@@ -28,7 +28,7 @@ public class B_ColumnTypes : BunitContext
         var cut = Render<ColumnTypesDemo>();
 
         var salaryCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[2];
-        var expected = "__";
+        var expected = "$95,000";
 
         Assert.Contains(expected, salaryCell?.TextContent ?? "");
     }
@@ -47,7 +47,7 @@ public class B_ColumnTypes : BunitContext
         var cut = Render<ColumnTypesDemo>();
 
         var hireDateCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[3];
-        var expected = "__";
+        var expected = "3/15/2020";
 
         Assert.Contains(expected, hireDateCell?.TextContent ?? "");
     }

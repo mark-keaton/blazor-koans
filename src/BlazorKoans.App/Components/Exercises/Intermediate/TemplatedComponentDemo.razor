@@ -1,0 +1,80 @@
+@rendermode InteractiveServer
+
+<h3>Templated Component Demo</h3>
+
+<div class="demo-section">
+    <h4>Simple RenderFragment (ChildContent)</h4>
+    <SimpleCard>
+        <p>This content is passed as ChildContent.</p>
+        <p>Any markup inside the component tags becomes ChildContent.</p>
+    </SimpleCard>
+</div>
+
+<div class="demo-section">
+    <h4>Named RenderFragments</h4>
+    <SimpleCard>
+        <Header>
+            <strong>Card Header</strong>
+        </Header>
+        <ChildContent>
+            <p>This is the card body content.</p>
+        </ChildContent>
+        <Footer>
+            <em>Card Footer</em>
+        </Footer>
+    </SimpleCard>
+</div>
+
+<div class="demo-section">
+    <h4>Generic RenderFragment with Context</h4>
+    <ItemList Items="@products" TItem="Product">
+        <ItemTemplate Context="product">
+            <span class="product-name">@product.Name</span> -
+            <span class="product-price">@product.Price.ToString("C")</span>
+        </ItemTemplate>
+    </ItemList>
+</div>
+
+<div class="demo-section">
+    <h4>Default Context Name</h4>
+    <ItemList Items="@products" TItem="Product">
+        <ItemTemplate>
+            <span class="default-context">@context.Name</span>
+        </ItemTemplate>
+    </ItemList>
+</div>
+
+<div class="demo-section">
+    <h4>Full Template with Header and Footer</h4>
+    <ItemList Items="@products" TItem="Product">
+        <Header>
+            <h5 class="list-title">Product Catalog</h5>
+        </Header>
+        <ItemTemplate Context="p">
+            <div class="product-item">
+                <strong>@p.Name</strong>
+                <span class="badge">@p.Category</span>
+            </div>
+        </ItemTemplate>
+        <Footer>
+            <p class="list-footer">Total: @products.Count items</p>
+        </Footer>
+    </ItemList>
+</div>
+
+@code {
+    private List<Product> products = new()
+    {
+        new Product { Id = 1, Name = "Laptop", Price = 999.99m, Category = "Electronics" },
+        new Product { Id = 2, Name = "Headphones", Price = 149.99m, Category = "Electronics" },
+        new Product { Id = 3, Name = "Desk Chair", Price = 299.99m, Category = "Furniture" }
+    };
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public decimal Price { get; set; }
+        public string Category { get; set; } = "";
+    }
+}

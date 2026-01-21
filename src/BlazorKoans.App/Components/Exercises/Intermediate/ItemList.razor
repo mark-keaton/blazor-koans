@@ -1,0 +1,40 @@
+@typeparam TItem
+
+<div class="item-list">
+    @if (Header != null)
+    {
+        <div class="item-list-header">
+            @Header
+        </div>
+    }
+
+    <ul class="item-list-items">
+        @foreach (var item in Items ?? Enumerable.Empty<TItem>())
+        {
+            <li class="item-list-item">
+                @ItemTemplate(item)
+            </li>
+        }
+    </ul>
+
+    @if (Footer != null)
+    {
+        <div class="item-list-footer">
+            @Footer
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem>? ItemTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+}
