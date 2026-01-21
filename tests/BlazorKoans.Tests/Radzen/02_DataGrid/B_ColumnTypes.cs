@@ -160,15 +160,18 @@ public class B_ColumnTypes : BunitContext
     public void Column_Frozen_StaysVisible_WhenScrolling()
     {
         // ABOUT: Setting Frozen="true" on a column keeps it visible when scrolling
-        // horizontally. This is useful for key columns like Name or ID that you
-        // always want visible.
+        // horizontally. Radzen applies the "rz-frozen-cell" CSS class to frozen cells.
+        // This is useful for key columns like Name or ID that you always want visible.
 
-        // TODO: Which column type is commonly frozen in data grids?
-        // HINT: Think about which column you'd always want to see
+        // TODO: What CSS class does Radzen apply to frozen column cells?
+        // HINT: Look at the first column's header cell class in ColumnTypesDemo
 
-        var expected = "__"; // "First", "Last", or "Middle"
+        var cut = Render<ColumnTypesDemo>();
 
-        Assert.Equal("First", expected);
+        var firstHeaderCell = cut.Find("thead th");
+        var expected = "__";
+
+        Assert.Contains(expected, firstHeaderCell.ClassName ?? "");
     }
 
     [Fact]
