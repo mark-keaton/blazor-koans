@@ -3,20 +3,65 @@ using BlazorKoans.App.Components.Exercises.Beginner;
 
 namespace BlazorKoans.Tests.Beginner.Events;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                          EVENT HANDLING IN BLAZOR                            ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Events make your Blazor UI interactive. When users click, type, or          ║
+/// ║  interact with elements, event handlers execute your C# code.                ║
+/// ║                                                                              ║
+/// ║  Key Concepts You'll Learn:                                                  ║
+/// ║  1. Basic events: @onclick, @onchange, @oninput, @onsubmit, etc.            ║
+/// ║  2. EventCallback: Notify parent components of child events                  ║
+/// ║  3. EventCallback&lt;T&gt;: Pass data with event notifications                     ║
+/// ║  4. Event modifiers: @onclick:preventDefault, @onclick:stopPropagation       ║
+/// ║                                                                              ║
+/// ║  Event Handler Syntax:                                                       ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  &lt;button @onclick="HandleClick"&gt;Click Me&lt;/button&gt;                       │  ║
+/// ║  │                    ↑                                                   │  ║
+/// ║  │          Method name (no parentheses!)                                 │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  @code {                                                               │  ║
+/// ║  │      void HandleClick() { /* do something */ }                         │  ║
+/// ║  │  }                                                                     │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class EventKoans : BunitContext
 {
     [Fact]
     [Trait("Category", "Beginner")]
     public void A_BasicEvents()
     {
-        // ABOUT: Event handlers in Blazor use the @onclick syntax (and similar for other events).
-        // When a user clicks an element, the handler method executes.
-        // This is how you make your UI interactive.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Basic Click Events
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The @onclick directive attaches a click handler to an element.
+        // When clicked, Blazor calls your C# method.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  <button @onclick="Increment">+</button>                            │
+        // │  <button @onclick="Decrement">-</button>                            │
+        // │  <span>@count</span>                                                │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      private int count = 0;                                         │
+        // │      void Increment() => count++;                                   │
+        // │      void Decrement() => count--;                                   │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // Other common events: @onchange, @oninput, @onsubmit, @onmouseover
+        //
+        // EXERCISE: EventDemo has increment and decrement buttons.
+        //           5 increments, then 2 decrements = what final count?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at the EventDemo component. It has increment (+) and decrement (-) buttons.
-        // After these clicks, what is the final count displayed?
-        // Replace "__" with the expected count as a string.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering EventDemo and clicking buttons
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<EventDemo>();
 
         var increment = cut.Find("button.increment");
@@ -30,48 +75,127 @@ public class EventKoans : BunitContext
         decrement.Click();
         decrement.Click();
 
-        var expectedCount = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is 5 increments minus 2 decrements?        ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expectedCount, cut.Find("span.click-count").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the displayed count
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Find("span.click-count").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void B_EventCallback()
     {
-        // ABOUT: EventCallback is used to pass event notifications from child to parent.
-        // A parent component passes a handler to a child via an EventCallback parameter.
-        // When the child invokes the callback, the parent's handler executes.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: EventCallback - Child-to-Parent Communication
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // EventCallback lets a child component notify its parent of events.
+        // It's like a "reverse parameter" - data flows UP from child to parent.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  // CHILD: ChildButton.razor                                        │
+        // │  <button @onclick="OnClick">Click Me</button>                       │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      [Parameter]                                                    │
+        // │      public EventCallback OnButtonClick { get; set; }               │
+        // │                       ↑                                             │
+        // │         Parent provides the handler                                 │
+        // │                                                                     │
+        // │      async Task OnClick() => await OnButtonClick.InvokeAsync();     │
+        // │  }                              ↑                                   │
+        // │                                 Calls parent's handler              │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  // PARENT: uses the child component                                │
+        // │  <ChildButton OnButtonClick="HandleChildClick" />                   │
+        // │                             ↑                                       │
+        // │         Pass the handler method                                     │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      void HandleChildClick() { message = "Child was clicked!"; }    │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Look at ParentWithEventDemo - what message does HandleChildClick set?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at ParentWithEventDemo - it contains EventDemo as a child.
-        // The parent passes HandleChildClick to the child's OnButtonClick parameter.
-        // When you click the "Click Me" button in the child, what message does the PARENT display?
-        // Replace "__" with the message shown in <p class="parent-message">.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering parent, clicking child's button
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<ParentWithEventDemo>();
 
         var button = cut.Find("button.event-callback-button");
         button.Click();
 
-        var expectedParentMessage = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What message does the PARENT display?           ║
+        // ║                                                                    ║
+        // ║  HINT: Look at ParentWithEventDemo's HandleChildClick method       ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expectedParentMessage, cut.Find("p.parent-message").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the parent's message
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Find("p.parent-message").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void C_EventCallbackWithValue()
     {
-        // ABOUT: EventCallback<T> is a typed event callback that passes a value.
-        // This is useful when you need to send data along with the event notification.
-        // For example, passing form data or user input to a parent component.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: EventCallback<T> - Passing Data to Parent
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // EventCallback<T> is a TYPED callback that sends a value to the parent.
+        // Use it when the parent needs data from the child, not just notification.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  // CHILD: with typed EventCallback                                 │
+        // │  <input @bind="inputText" />                                        │
+        // │  <button @onclick="Submit">Submit</button>                          │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      private string inputText = "";                                 │
+        // │                                                                     │
+        // │      [Parameter]                                                    │
+        // │      public EventCallback<string> OnSubmit { get; set; }            │
+        // │                          ↑                                          │
+        // │         The type of data being sent (string, int, object, etc.)     │
+        // │                                                                     │
+        // │      async Task Submit() => await OnSubmit.InvokeAsync(inputText);  │
+        // │  }                                                  ↑               │
+        // │                                         Pass the value here         │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  // PARENT: receives the typed value                                │
+        // │  <ChildForm OnSubmit="HandleSubmit" />                              │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      private string receivedText = "";                              │
+        // │                                                                     │
+        // │      void HandleSubmit(string value)    // ← Receives the string    │
+        // │      {                                                              │
+        // │          receivedText = value;                                      │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Type "Blazor" and submit. What does the parent display?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at ParentWithFormDemo - it contains EventDemo as a child.
-        // The parent passes HandleChildSubmit to the child's OnSubmit parameter.
-        // Type "Blazor" in the input and click Submit.
-        // What text does the PARENT display in <p class="received-value">?
-        // Replace "__" with the expected text.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering parent, typing in child, clicking submit
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<ParentWithFormDemo>();
 
         var input = cut.Find("input[type='text']");
@@ -80,32 +204,72 @@ public class EventKoans : BunitContext
         var submitButton = cut.Find("button.submit-button");
         submitButton.Click();
 
-        var expectedReceivedText = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What value does the PARENT receive and display? ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expectedReceivedText, cut.Find("p.received-value").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the parent's display
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Find("p.received-value").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void D_PreventDefault()
     {
-        // ABOUT: @onclick:preventDefault prevents the default browser action.
-        // Blazor renders this as a special attribute: blazor:onclick:preventdefault
-        // This is useful for forms where you want to handle submission in Blazor
-        // instead of letting the browser submit the form traditionally.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Event Modifiers (@onclick:preventDefault)
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Sometimes you need to prevent the browser's default behavior:
+        //   - Form submit: Prevent page reload, handle in Blazor instead
+        //   - Link click: Prevent navigation, do custom routing
+        //   - Right-click: Prevent context menu, show custom menu
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  // Without preventDefault - browser submits form traditionally     │
+        // │  <form>                                                             │
+        // │      <button type="submit">Submit</button>                          │
+        // │  </form>                                                            │
+        // │                                                                     │
+        // │  // With preventDefault - Blazor handles it, no page reload         │
+        // │  <form>                                                             │
+        // │      <button @onclick="HandleSubmit"                                │
+        // │              @onclick:preventDefault>Submit</button>                │
+        // │  </form>            ↑                                               │
+        // │         This modifier prevents the default action                   │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // Rendered HTML includes a special attribute that Blazor recognizes:
+        //   <button blazor:onclick:preventDefault="">Submit</button>
+        //
+        // Other modifiers: @onclick:stopPropagation (prevents event bubbling)
+        //
+        // EXERCISE: Look at the rendered HTML. What attribute name indicates
+        //           that preventDefault is enabled?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at the EventDemo component's submit button.
-        // Examine the rendered HTML below - what attribute indicates preventDefault is enabled?
-        // Replace "__" with the attribute name that Blazor adds for preventDefault.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering EventDemo, finding the submit button
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<EventDemo>();
 
         var submitButton = cut.Find("button.submit-button");
 
-        // Hint: The rendered HTML looks like:
-        // <button class="submit-button" blazor:onclick="5" ???="">Submit</button>
-        var preventDefaultAttribute = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is the attribute name for preventDefault?  ║
+        // ║                                                                    ║
+        // ║  HINT: The rendered HTML looks like:                               ║
+        // ║        <button class="submit-button" ???="">Submit</button>        ║
+        // ║        Format: blazor:eventname:modifier                           ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.True(submitButton.HasAttribute(preventDefaultAttribute));
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks that the button has this attribute
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.True(submitButton.HasAttribute(answer));
     }
 }
