@@ -91,17 +91,18 @@ public class C_Sorting : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void Sorting_MultiColumn_SortsMultipleColumns()
+    public void Sorting_MultiColumn_RequiresProperty()
     {
-        // ABOUT: Hold Shift while clicking additional column headers to sort by
-        // multiple columns. First sort is primary, second is secondary (breaks ties).
+        // ABOUT: To enable Shift+Click multi-column sorting, you must set
+        // AllowMultiColumnSorting="true" on the DataGrid (in addition to AllowSorting).
+        // This lets users sort by Department first, then by Salary within each department.
 
-        // TODO: Does RadzenDataGrid support multi-column sorting by default?
-        // HINT: Yes, when AllowSorting is enabled
+        // TODO: What property enables multi-column sorting (Shift+Click)?
+        // HINT: It's similar to AllowSorting but for multiple columns
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "__";
 
-        Assert.Equal("Yes", expected);
+        Assert.Equal("AllowMultiColumnSorting", expected);
     }
 
     [Fact]

@@ -5,7 +5,9 @@
 
 <h3>Sorting Demo</h3>
 
-<RadzenDataGrid Data="@employees" TItem="Employee" AllowSorting="true" Style="width: 100%">
+<p><em>Click column headers to sort. Hold Shift and click another column for multi-column sorting.</em></p>
+
+<RadzenDataGrid Data="@employees" TItem="Employee" AllowSorting="true" AllowMultiColumnSorting="true" Style="width: 100%">
     <Columns>
         <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name" />
         <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
@@ -20,12 +22,16 @@
 </RadzenDataGrid>
 
 @code {
+    // More employees with overlapping departments to demonstrate multi-column sorting
     private List<Employee> employees = new()
     {
         new Employee { Id = 1, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10) },
         new Employee { Id = 2, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },
-        new Employee { Id = 3, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1) },
-        new Employee { Id = 4, Name = "David Brown", Department = "Sales", Salary = 85000, HireDate = new DateTime(2022, 5, 20) },
-        new Employee { Id = 5, Name = "Eve Davis", Department = "HR", Salary = 70000, HireDate = new DateTime(2023, 2, 14) }
+        new Employee { Id = 3, Name = "Frank Miller", Department = "Engineering", Salary = 88000, HireDate = new DateTime(2021, 6, 1) },
+        new Employee { Id = 4, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1) },
+        new Employee { Id = 5, Name = "Grace Lee", Department = "Marketing", Salary = 72000, HireDate = new DateTime(2022, 3, 15) },
+        new Employee { Id = 6, Name = "David Brown", Department = "Sales", Salary = 85000, HireDate = new DateTime(2022, 5, 20) },
+        new Employee { Id = 7, Name = "Helen Chen", Department = "Sales", Salary = 82000, HireDate = new DateTime(2023, 1, 10) },
+        new Employee { Id = 8, Name = "Eve Davis", Department = "HR", Salary = 70000, HireDate = new DateTime(2023, 2, 14) }
     };
 }
