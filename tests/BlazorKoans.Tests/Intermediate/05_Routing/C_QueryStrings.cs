@@ -7,22 +7,66 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                          QUERY STRING PARAMETERS                             ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Query strings pass data in URLs after the ? mark: /search?query=blazor      ║
+/// ║  Blazor can automatically bind these to component parameters.                ║
+/// ║                                                                              ║
+/// ║  The [SupplyParameterFromQuery] attribute:                                   ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  @page "/search"                                                       │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  @code {                                                               │  ║
+/// ║  │      [Parameter]                                                       │  ║
+/// ║  │      [SupplyParameterFromQuery]        ← Binds from URL query string   │  ║
+/// ║  │      public string? Query { get; set; }                                │  ║
+/// ║  │  }                                                                     │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  URL: /search?Query=blazor  →  Query = "blazor"                        │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class C_QueryStrings : BunitContext
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void QueryStrings_SupplyParameterFromQuery()
     {
-        // ABOUT: [SupplyParameterFromQuery] binds query string values to parameters.
-        // For example, /search?query=blazor would set Query = "blazor".
-        // Without this attribute, the property won't receive values from the URL.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: The [SupplyParameterFromQuery] Attribute
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // To receive values from query strings, mark a parameter with
+        // [SupplyParameterFromQuery]. Without it, the parameter won't get values.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  [Parameter]                                                        │
+        // │  [SupplyParameterFromQuery]    ← REQUIRED for query binding         │
+        // │  public string? Query { get; set; }                                 │
+        // │                                                                     │
+        // │  URL: /search?Query=test  →  Query property gets "test"             │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Add [SupplyParameterFromQuery] to the Query property
+        //           in SearchPage.razor (this is a code modification exercise)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Add the [SupplyParameterFromQuery] attribute to the Query property
-        // in SearchPage.razor to bind it to the URL query string.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE & VERIFY: Check if the attribute exists on the property
+        // ──────────────────────────────────────────────────────────────────────
         var queryProperty = typeof(SearchPage).GetProperty("Query");
         var hasAttribute = queryProperty?
             .GetCustomAttribute<SupplyParameterFromQueryAttribute>() != null;
+
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ACTION - Add this attribute to Query in SearchPage.razor:║
+        // ║                                                                    ║
+        // ║      [Parameter]                                                   ║
+        // ║      [SupplyParameterFromQuery]                                    ║
+        // ║      public string? Query { get; set; }                            ║
+        // ╚════════════════════════════════════════════════════════════════════╝
 
         Assert.True(hasAttribute,
             "The Query property needs the [SupplyParameterFromQuery] attribute");
@@ -91,63 +135,115 @@ public class C_QueryStrings : BunitContext
     [Trait("Category", "Intermediate")]
     public void QueryStrings_BindingInAction()
     {
-        // ABOUT: Now let's see query string binding in action!
-        // bUnit's NavigationManager lets us set the URL before rendering.
-        // When we navigate to /search?Query=blazor, the Query property gets the value.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Query String Binding in Action
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // When the URL contains query parameters, Blazor extracts them and
+        // assigns them to matching [SupplyParameterFromQuery] properties.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  URL: /search?Query=blazor                                          │
+        // │                      ↓                                              │
+        // │  [SupplyParameterFromQuery]                                         │
+        // │  public string? Query { get; set; }  ← Gets "blazor"                │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Look at the URL below. What value will Query receive?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the value that Query will receive from the URL.
-        // Look at the query string in the NavigateTo call below.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - navigating to URL with query string
+        // ──────────────────────────────────────────────────────────────────────
         var navMan = Services.GetRequiredService<NavigationManager>();
         navMan.NavigateTo("/search?Query=blazor");
 
         var cut = Render<SearchPage>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What value does Query receive from the URL?     ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // The Query property should have received the value from the URL
-        Assert.Equal(expected, cut.Instance.Query);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Query property should have the URL value
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Instance.Query);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void QueryStrings_AreCaseInsensitive()
     {
-        // ABOUT: Query string keys are case-insensitive in Blazor.
-        // ?query=value, ?Query=value, and ?QUERY=value all bind to the Query property.
-        // This matches standard URL conventions.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Query Keys Are Case-Insensitive
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Query string matching is case-insensitive in Blazor.
+        // All of these bind to a property named "Query":
+        //   ?query=value  ?Query=value  ?QUERY=value
+        //
+        // EXERCISE: The URL uses lowercase "query", but the property is "Query".
+        //           What value does Query receive?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the value Query receives.
-        // Notice the URL uses lowercase "query" but the property is "Query".
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - navigating with lowercase query key
+        // ──────────────────────────────────────────────────────────────────────
         var navMan = Services.GetRequiredService<NavigationManager>();
         navMan.NavigateTo("/search?query=case-test");
 
         var cut = Render<SearchPage>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What value does Query receive?                  ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // Even with lowercase "query" in the URL, Query property gets the value
-        Assert.Equal(expected, cut.Instance.Query);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Case-insensitive matching should work
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Instance.Query);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void QueryStrings_CustomKeyBindingInAction()
     {
-        // ABOUT: Custom query keys work the same way.
-        // With [SupplyParameterFromQuery(Name = "q")], the URL ?q=test binds to SearchTerm.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Custom Query Key Names
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Use Name parameter to bind to a different query key than the property:
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  [SupplyParameterFromQuery(Name = "q")]                             │
+        // │  public string? SearchTerm { get; set; }                            │
+        // │                                                                     │
+        // │  URL: /search?q=test  →  SearchTerm = "test"                        │
+        // │                  ↑                                                  │
+        // │         Matches "q" not "SearchTerm"                                │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: What value does SearchTerm receive from ?q=test?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace "__" with the value that SearchTerm will receive from ?q=test.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - navigating with custom query key
+        // ──────────────────────────────────────────────────────────────────────
         var navMan = Services.GetRequiredService<NavigationManager>();
         navMan.NavigateTo("/search?q=test");
 
         var cut = Render<SearchPage>();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What value does SearchTerm receive from ?q=...? ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // The SearchTerm property should have received the value from ?q=test
-        Assert.Equal(expected, cut.Instance.SearchTerm);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: SearchTerm should have the value from ?q=
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Instance.SearchTerm);
     }
 }

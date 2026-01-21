@@ -5,18 +5,49 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._07_Validation;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                      CUSTOM VALIDATION ATTRIBUTES                            ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  When built-in attributes aren't enough, create your own validators.        ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  public class MinimumAgeAttribute : ValidationAttribute              │  ║
+/// ║  │  {                                                                    │  ║
+/// ║  │      private int _minimumAge;                                         │  ║
+/// ║  │      public MinimumAgeAttribute(int minimumAge) =&gt;                    │  ║
+/// ║  │          _minimumAge = minimumAge;                                    │  ║
+/// ║  │                                                                        │  ║
+/// ║  │      protected override ValidationResult IsValid(...)                 │  ║
+/// ║  │      {                                                                 │  ║
+/// ║  │          // Return ValidationResult.Success or new ValidationResult  │  ║
+/// ║  │      }                                                                 │  ║
+/// ║  │  }                                                                    │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  Usage: [MinimumAge(18, ErrorMessage = "Must be 18+")]                 │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class D_CustomValidation : BunitContext
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void CustomValidation_MinimumAgeAttribute()
     {
-        // ABOUT: Custom validation attributes extend ValidationAttribute
-        // They implement custom validation logic beyond built-in attributes
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Custom Attributes Enforce Custom Rules
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // [MinimumAge(18)] checks if a birth date makes someone at least 18.
+        // It calculates age from the provided DateTime.
+        //
+        // EXERCISE: Should a 15-year-old FAIL [MinimumAge(18)] validation?
+        //           (Answer true if they should fail, false if they should pass)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace false with true if a 15-year-old should fail MinimumAge(18)
-        // HINT: Look at the MinimumAgeAttribute implementation
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating a model with a 15-year-old
+        // ──────────────────────────────────────────────────────────────────────
         var model = new RegistrationModel
         {
             Username = "testuser",
@@ -30,20 +61,36 @@ public class D_CustomValidation : BunitContext
         var results = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(model, context, results, true);
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Should a 15-year-old fail MinimumAge(18)?        ║
+        // ║                                                                    ║
+        // ║  true = yes they should fail (invalid), false = they should pass   ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        Assert.Equal(expected, !isValid);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: !isValid means validation FAILED
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, !isValid);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void CustomValidation_PassesWhenValid()
     {
-        // ABOUT: Custom validators should return success when criteria are met
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Valid Input Passes Custom Validation
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Custom validators return ValidationResult.Success when criteria are met.
+        // A 25-year-old should pass [MinimumAge(18)] because 25 >= 18.
+        //
+        // EXERCISE: Should a 25-year-old PASS [MinimumAge(18)]?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace false with true if a 25-year-old should pass MinimumAge(18)
-        // HINT: 25 is greater than or equal to 18
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating a model with a 25-year-old
+        // ──────────────────────────────────────────────────────────────────────
         var model = new RegistrationModel
         {
             Username = "testuser",
@@ -57,8 +104,16 @@ public class D_CustomValidation : BunitContext
         var results = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(model, context, results, true);
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Should a 25-year-old pass MinimumAge(18)?        ║
+        // ║                                                                    ║
+        // ║  true = yes they should pass (valid), false = they should fail     ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        Assert.Equal(expected, isValid);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: isValid means validation PASSED
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, isValid);
     }
 }

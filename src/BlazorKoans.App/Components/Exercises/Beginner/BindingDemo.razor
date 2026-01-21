@@ -1,6 +1,29 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  Type in the first input and watch the <p class="display"> update!       ║
+   ║  This is TWO-WAY binding with @bind - data flows BOTH directions:        ║
+   ║  • User types → text variable updates                                    ║
+   ║  • text changes → input value updates                                    ║
+   ║                                                                          ║
+   ║  Notice THREE binding features:                                          ║
+   ║  1. @bind="text"                 - Basic two-way binding                 ║
+   ║  2. @bind:after="Method"         - Callback AFTER value changes          ║
+   ║  3. @bind:format="pattern"       - Date/time formatting                  ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Type "test" - how many characters are counted?                        ║
+   ║  • Remove @bind:after - does character count still work?                 ║
+   ║  • Change the date format to "MM/dd/yyyy" - what appears?                ║
+   ║  • What's the difference between @bind and value="@text"?                ║
+   ║                                                                          ║
+   ║  💡 THINK: @bind="text" is syntactic sugar. What TWO things does it      ║
+   ║            expand to? (Hint: a value and an event handler)               ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div>
     <input @bind="text" @bind:after="UpdateCharacterCount" />
-    <p class="display">@text</p>
+    <p class="display">@text</p>                    @* ⚡ Watch this update as you type! *@
     <p>Characters: @characterCount</p>
     <input type="datetime-local" @bind="selectedDate" @bind:format="yyyy-MM-ddTHH:mm" />
 </div>
@@ -18,7 +41,7 @@
         selectedDate = Time.GetLocalNow().DateTime;
     }
 
-    private void UpdateCharacterCount()
+    private void UpdateCharacterCount()                 // ⚡ Called AFTER text is updated
     {
         characterCount = text.Length;
     }

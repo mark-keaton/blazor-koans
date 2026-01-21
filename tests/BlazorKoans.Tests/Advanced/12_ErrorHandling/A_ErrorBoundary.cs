@@ -7,33 +7,69 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.ErrorHandling;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                   ERROR BOUNDARY COMPONENT IN BLAZOR                         ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  ErrorBoundary catches unhandled exceptions from child components and        ║
+/// ║  displays error UI instead of crashing the entire app.                       ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  &lt;ErrorBoundary&gt;                                                     │  ║
+/// ║  │      &lt;ChildContent&gt;                                                  │  ║
+/// ║  │          &lt;ComponentThatMightFail /&gt;                                   │  ║
+/// ║  │      &lt;/ChildContent&gt;                                                 │  ║
+/// ║  │      &lt;ErrorContent Context="ex"&gt;                                      │  ║
+/// ║  │          &lt;p&gt;Oops! @ex.Message&lt;/p&gt;                                     │  ║
+/// ║  │      &lt;/ErrorContent&gt;                                                 │  ║
+/// ║  │  &lt;/ErrorBoundary&gt;                                                    │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class A_ErrorBoundary : BunitContext
 {
     [Fact]
     [Trait("Category", "Advanced")]
     public void ErrorBoundary_catches_child_component_errors()
     {
-        // ABOUT: ErrorBoundary is a component that catches unhandled exceptions
-        // from its child components and displays error UI.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Catching Rendering Errors
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Blazor provides a built-in component for catching and handling errors.
+        // It wraps child content and displays alternate UI when exceptions occur.
+        //
+        // EXERCISE: What is the name of this component?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: What component is used to catch rendering errors in Blazor?
-        // Replace "__" with the component name
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What component catches rendering errors?          ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        var expected = "__";
-
-        Assert.Equal("ErrorBoundary", expected);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The component is "ErrorBoundary"
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal("ErrorBoundary", answer);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void ErrorBoundary_displays_ErrorContent_on_exception()
     {
-        // ABOUT: When an error occurs, ErrorBoundary shows the ErrorContent
-        // instead of the ChildContent.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: ErrorContent Shows When Errors Occur
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // ErrorBoundary has two slots: ChildContent (normal) and ErrorContent (error).
+        // When an exception occurs, ErrorContent replaces ChildContent.
+        //
+        // EXERCISE: Look at ErrorDemo - what text appears when an error occurs?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The ErrorDemo component uses ErrorBoundary.
-        // What is displayed when an error occurs?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering and triggering an error
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<ErrorDemo>();
 
         // Initially no error
@@ -45,25 +81,41 @@ public class A_ErrorBoundary : BunitContext
         // The button click will cause the component to throw
         Assert.Throws<InvalidOperationException>(() => causeErrorButton.Click());
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What text appears in the error UI?               ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // After error, ErrorContent should be displayed
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: After error, ErrorContent should be displayed
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
-            Assert.Contains(expected, cut.Markup), timeout: TimeSpan.FromSeconds(2));
+            Assert.Contains(answer, cut.Markup), timeout: TimeSpan.FromSeconds(2));
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void ErrorBoundary_provides_exception_context()
     {
-        // ABOUT: The ErrorContent template receives the exception as context.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: ErrorContent Receives the Exception as Context
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The ErrorContent template receives the exception object.
+        // You can access ex.Message, ex.StackTrace, etc. in the template.
+        //
+        // EXERCISE: What is the type of the Context parameter in ErrorContent?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: In ErrorDemo, the exception message is displayed.
-        // What type is the context parameter?
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What type is the context parameter?              ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        var expected = "__";
-
-        Assert.Equal("Exception", expected);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The context type is "Exception"
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal("Exception", answer);
     }
 
     [Fact]

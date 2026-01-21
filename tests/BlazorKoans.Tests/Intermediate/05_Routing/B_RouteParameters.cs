@@ -5,67 +5,148 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                          ROUTE PARAMETERS                                    ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Route parameters capture values from URL segments and pass them to your     ║
+/// ║  component as parameter values.                                              ║
+/// ║                                                                              ║
+/// ║  Syntax: {ParameterName} or {ParameterName:constraint}                       ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  @page "/product/{Id:int}"      ← Captures integer from URL            │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  @code {                                                               │  ║
+/// ║  │      [Parameter]                ← Property name MUST match route param │  ║
+/// ║  │      public int Id { get; set; }                                       │  ║
+/// ║  │  }                                                                     │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  URL: /product/42  →  Id = 42                                          │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class B_RouteParameters
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void RouteParameters_CaptureValueFromUrl()
     {
-        // ABOUT: Route parameters use {ParameterName} syntax in the @page directive.
-        // For example: @page "/product/{Id}" captures the URL segment into the Id parameter.
-        // The parameter name in the route must match a [Parameter] property on the component.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Defining Route Parameters
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Route parameters use curly braces {} in the @page directive.
+        // The name inside the braces becomes the parameter that captures the value.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @page "/user/{Username}"                                           │
+        // │              ↑                                                      │
+        // │         Parameter name - captures this URL segment                  │
+        // │                                                                     │
+        // │  /user/alice  →  Username = "alice"                                 │
+        // │  /user/bob    →  Username = "bob"                                   │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Look at ProductPage.razor's @page directive.
+        //           What parameter name is defined (inside the braces)?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at ProductPage.razor's @page directive.
-        // What is the name of the route parameter (the part inside the curly braces)?
-        // Replace "__" with the parameter name (without braces or constraints).
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - reading the route template
+        // ──────────────────────────────────────────────────────────────────────
         var routeAttribute = typeof(ProductPage).GetCustomAttribute<RouteAttribute>();
         var routeTemplate = routeAttribute?.Template ?? "";
 
-        var expectedParameterName = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is the parameter name (without braces)?    ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // The route template should contain {ParameterName} or {ParameterName:constraint}
-        Assert.Contains($"{{{expectedParameterName}", routeTemplate);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The route template should contain {YourAnswer...}
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"{{{answer}", routeTemplate);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void RouteParameters_TypeConstraints()
     {
-        // ABOUT: Route parameters can have type constraints like :int, :guid, :bool, etc.
-        // For example: {Id:int} only matches integer values in the URL.
-        // If the URL doesn't match the constraint, the route won't match.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Route Constraints
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Constraints limit what values a route parameter accepts.
+        // If the URL doesn't match the constraint, the route won't match at all.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  Common constraints:                                                │
+        // │    {Id:int}      - Only integers       /product/42 ✓  /product/abc ✗│
+        // │    {Id:guid}     - Only GUIDs          /item/550e8400-... ✓         │
+        // │    {Active:bool} - Only true/false     /status/true ✓               │
+        // │    {Name:alpha}  - Only letters        /user/alice ✓  /user/123 ✗   │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: What type constraint does ProductPage.razor use for Id?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at ProductPage.razor's @page directive.
-        // What type constraint is applied to the Id parameter?
-        // Replace "__" with the constraint type (just the type name, e.g., "int", "guid").
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - reading the route template
+        // ──────────────────────────────────────────────────────────────────────
         var routeAttribute = typeof(ProductPage).GetCustomAttribute<RouteAttribute>();
         var routeTemplate = routeAttribute?.Template ?? "";
 
-        var expectedConstraint = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What constraint type? (e.g., "int", "guid")     ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // The route template should contain :constraint}
-        Assert.Contains($":{expectedConstraint}}}", routeTemplate);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The route template should contain :constraint}
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($":{answer}}}", routeTemplate);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void RouteParameters_MatchComponentProperty()
     {
-        // ABOUT: The route parameter name must match a [Parameter] property on the component.
-        // Blazor uses this to automatically populate the property from the URL.
-        // The property type should match the route constraint (e.g., :int means int property).
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Route Parameters Must Match Component Properties
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The route parameter name must exactly match a [Parameter] property.
+        // The property type should match the constraint for proper type conversion.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @page "/product/{Id:int}"                                          │
+        // │                  ↑                                                  │
+        // │             Must match ↓                                            │
+        // │  @code {                                                            │
+        // │      [Parameter]                                                    │
+        // │      public int Id { get; set; }   ← Same name "Id", type matches   │
+        // │  }                                   the :int constraint            │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: What is the C# type of ProductPage's Id property?
+        //           Replace typeof(string) with the correct type.
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at ProductPage.razor's @code section.
-        // The Id property has the [Parameter] attribute. What is its C# type?
-        // Replace "typeof(string)" with the correct type (e.g., typeof(int), typeof(Guid)).
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - inspecting the Id property's type
+        // ──────────────────────────────────────────────────────────────────────
         var idProperty = typeof(ProductPage).GetProperty("Id");
         var actualType = idProperty?.PropertyType;
 
-        var expectedType = typeof(string);
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Change typeof(string) to the correct type       ║
+        // ║                    e.g., typeof(int), typeof(Guid)                 ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = typeof(string);
 
-        Assert.Equal(expectedType, actualType);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The property type should match your answer
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, actualType);
     }
 }

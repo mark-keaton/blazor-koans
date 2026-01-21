@@ -5,84 +5,252 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorKoans.Tests.Beginner.Lifecycle;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                      COMPONENT LIFECYCLE IN BLAZOR                           ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Blazor components have a lifecycle - a series of methods called at          ║
+/// ║  specific points from creation to disposal. Understanding this helps         ║
+/// ║  you initialize data, react to changes, and clean up resources.              ║
+/// ║                                                                              ║
+/// ║  The Lifecycle Flow:                                                         ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │                                                                        │  ║
+/// ║  │   Component Created                                                    │  ║
+/// ║  │         │                                                              │  ║
+/// ║  │         ▼                                                              │  ║
+/// ║  │   OnInitialized[Async]()    ← Called ONCE when component starts        │  ║
+/// ║  │         │                                                              │  ║
+/// ║  │         ▼                                                              │  ║
+/// ║  │   OnParametersSet[Async]()  ← Called when parameters change            │  ║
+/// ║  │         │                                                              │  ║
+/// ║  │         ▼                                                              │  ║
+/// ║  │   Render                                                               │  ║
+/// ║  │         │                                                              │  ║
+/// ║  │         ▼                                                              │  ║
+/// ║  │   OnAfterRender[Async]()    ← Called AFTER DOM is updated              │  ║
+/// ║  │         │                                                              │  ║
+/// ║  │         ▼                                                              │  ║
+/// ║  │   Dispose()                 ← Called when component is removed         │  ║
+/// ║  │                                                                        │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class LifecycleKoans : BunitContext
 {
     [Fact]
     [Trait("Category", "Beginner")]
     public void A_OnInitialized()
     {
-        // ABOUT: OnInitialized is called when a component is first created.
-        // This happens once per component instance, before the first render.
-        // Use this to initialize data, load resources, or set up the component.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: OnInitialized - Component Startup
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // OnInitialized runs ONCE when a component is first created.
+        // This is the place to:
+        //   - Set initial values
+        //   - Subscribe to events
+        //   - Start loading data
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @code {                                                            │
+        // │      private string message = "";                                   │
+        // │                                                                     │
+        // │      protected override void OnInitialized()                        │
+        // │      {                                                              │
+        // │          message = "Component initialized!";                        │
+        // │      }                                                              │
+        // │                                                                     │
+        // │      // Or async version for loading data:                          │
+        // │      protected override async Task OnInitializedAsync()             │
+        // │      {                                                              │
+        // │          data = await LoadDataAsync();                              │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Look at LifecycleDemo's OnInitialized method.
+        //           What message does it set in the status property?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The LifecycleDemo component sets an initial message in OnInitialized.
-        // What message is displayed in the status paragraph after initialization?
-        // Replace "__" with the expected message.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - adding required services and rendering
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>();
 
-        var expectedMessage = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What message is set in OnInitialized?           ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expectedMessage, cut.Find("p.status").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the status paragraph
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Find("p.status").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void B_OnParametersSet()
     {
-        // ABOUT: OnParametersSet is called when parameters are set or changed.
-        // This happens after OnInitialized and every time parameters change.
-        // Use this to compute derived state from parameters.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: OnParametersSet - Reacting to Parameter Changes
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // OnParametersSet is called:
+        //   1. After OnInitialized (with initial parameter values)
+        //   2. Every time a parent changes the component's parameters
+        //
+        // Use this to compute "derived state" - values calculated from parameters.
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @code {                                                            │
+        // │      [Parameter]                                                    │
+        // │      public string Name { get; set; } = "";                         │
+        // │                                                                     │
+        // │      private string formattedName = "";   // Derived state          │
+        // │                                                                     │
+        // │      protected override void OnParametersSet()                      │
+        // │      {                                                              │
+        // │          // Runs after OnInitialized AND on every param change      │
+        // │          formattedName = $"Hello, {Name.ToUpper()}!";               │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: LifecycleDemo transforms the Value parameter in OnParametersSet.
+        //           When Value is "blazor", what formatted string is displayed?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at LifecycleDemo's OnParametersSet method.
-        // It transforms the Value parameter into a formatted string.
-        // When Value is set to "blazor", what does the param-value paragraph display?
-        // Replace "__" with the expected formatted text.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering with Value="blazor"
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>(parameters => parameters
             .Add(p => p.Value, "blazor"));
 
-        var expectedDisplay = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What formatted string does OnParametersSet      ║
+        // ║                    produce from "blazor"?                          ║
+        // ║                                                                    ║
+        // ║  HINT: Look at the transformation in OnParametersSet               ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expectedDisplay, cut.Find("p.param-value").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the param-value paragraph
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Find("p.param-value").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void C_OnAfterRender()
     {
-        // ABOUT: OnAfterRender is called after the component renders.
-        // The firstRender parameter indicates if this is the first render.
-        // Use this for JavaScript interop or DOM manipulation after rendering.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: OnAfterRender - Working with the DOM
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // OnAfterRender runs AFTER Blazor has updated the DOM.
+        // This is the only safe place to:
+        //   - Call JavaScript interop (DOM exists now)
+        //   - Measure DOM elements
+        //   - Initialize JS libraries (charts, maps, etc.)
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @code {                                                            │
+        // │      private int renderCount = 0;                                   │
+        // │                                                                     │
+        // │      protected override void OnAfterRender(bool firstRender)        │
+        // │      {                                            ↑                 │
+        // │          renderCount++;      // true only on first render           │
+        // │                                                                     │
+        // │          if (firstRender)                                           │
+        // │          {                                                          │
+        // │              // One-time setup: focus input, init JS library        │
+        // │          }                                                          │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // ⚠️  Be careful: changing state in OnAfterRender causes a re-render,
+        //     which calls OnAfterRender again → potential infinite loop!
+        //
+        // EXERCISE: LifecycleDemo tracks renderCount. After the first render,
+        //           what count is displayed?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The LifecycleDemo component counts how many times it has rendered.
-        // Look at OnAfterRenderAsync - what render count is displayed after the first render?
-        // Replace "__" with the expected count as a string.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering the component
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddSingleton<DisposalTracker>();
         var cut = Render<LifecycleDemo>();
 
-        var expectedRenderCount = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is the render count after first render?    ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal($"Renders: {expectedRenderCount}", cut.Find("p.render-count").TextContent);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The test checks your answer against the render count display
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal($"Renders: {answer}", cut.Find("p.render-count").TextContent);
     }
 
     [Fact]
     [Trait("Category", "Beginner")]
     public void D_ImplementsIDisposable()
     {
-        // ABOUT: To enable disposal in Blazor, a component must implement IDisposable.
-        // In Razor components, you do this with the @implements directive.
-        // Without @implements IDisposable, Blazor won't call your Dispose() method!
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Implementing IDisposable in Components
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // To clean up resources when a component is removed, implement IDisposable.
+        // In .razor files, you MUST use the @implements directive - just having
+        // a Dispose() method isn't enough!
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @implements IDisposable       ← REQUIRED! Tells Blazor to call     │
+        // │                                  Dispose() when component removed   │
+        // │                                                                     │
+        // │  <p>Some content</p>                                                │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      private Timer? timer;                                          │
+        // │                                                                     │
+        // │      protected override void OnInitialized()                        │
+        // │      {                                                              │
+        // │          timer = new Timer(Tick, null, 0, 1000);                    │
+        // │      }                                                              │
+        // │                                                                     │
+        // │      public void Dispose()     ← Called when component removed      │
+        // │      {                                                              │
+        // │          timer?.Dispose();     // Clean up resources!               │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // Without @implements IDisposable:
+        //   ❌ Dispose() method exists but NEVER gets called
+        //   ❌ Resources leak (timers keep running, events stay subscribed)
+        //
+        // EXERCISE: Open LifecycleDemo.razor and add the missing @implements directive.
+        //           This is a "fix the code" exercise, not a fill-in-the-blank!
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at LifecycleDemo.razor - it has a Dispose() method but something is missing.
-        // The component needs a directive to tell Blazor it implements IDisposable.
-        // Add the missing directive to the component, then this test will pass.
-
-        // This checks if LifecycleDemo implements the IDisposable interface
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE & VERIFY: Check if the component implements IDisposable
+        // ──────────────────────────────────────────────────────────────────────
         var implementsIDisposable = typeof(LifecycleDemo).IsAssignableTo(typeof(IDisposable));
+
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ACTION - Edit LifecycleDemo.razor, add this directive:   ║
+        // ║                                                                    ║
+        // ║      @implements IDisposable                                       ║
+        // ║                                                                    ║
+        // ║  Add it near the top of the file, after any @page directives       ║
+        // ╚════════════════════════════════════════════════════════════════════╝
 
         Assert.True(implementsIDisposable, "Add @implements IDisposable to LifecycleDemo.razor");
     }
@@ -91,15 +259,45 @@ public class LifecycleKoans : BunitContext
     [Trait("Category", "Beginner")]
     public void E_DisposeIsCalled()
     {
-        // ABOUT: When a component is removed from the UI, Blazor calls Dispose().
-        // This is where you clean up resources like event subscriptions or timers.
-        // The DisposalTracker service helps verify that cleanup actually happens.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Verifying Dispose() Works Correctly
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Dispose() is where you clean up resources:
+        //   - Unsubscribe from events
+        //   - Stop timers
+        //   - Release unmanaged resources
+        //   - Unregister from services
+        //
+        // A common pattern is to register with a service on init and unregister
+        // on dispose. The DisposalTracker service demonstrates this:
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @inject DisposalTracker Tracker                                    │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      protected override void OnInitialized()                        │
+        // │      {                                                              │
+        // │          Tracker.Register(this);    // ← Register on startup        │
+        // │      }                                                              │
+        // │                                                                     │
+        // │      public void Dispose()                                          │
+        // │      {                                                              │
+        // │          Tracker.Unregister(this);  // ← Unregister on cleanup      │
+        // │      }                                                              │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // If Dispose() works correctly, the component should NOT be registered
+        // with the tracker after disposal.
+        //
+        // EXERCISE: After disposal, is the component still registered?
+        //           Change the answer to reflect what SHOULD happen.
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at LifecycleDemo's OnInitialized and Dispose methods.
-        // The component registers with the tracker on init and unregisters on dispose.
-        // After disposing the component, is it still registered with the tracker?
-        // Replace true with false if the component properly unregisters, or keep true.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating tracker, rendering component
+        // ──────────────────────────────────────────────────────────────────────
         var tracker = new DisposalTracker();
         Services.AddSingleton(tracker);
 
@@ -111,9 +309,17 @@ public class LifecycleKoans : BunitContext
         // Dispose the component
         cut.Dispose();
 
-        // After disposal, is the component still registered?
-        var stillRegisteredAfterDispose = true;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Is the component still registered after dispose?║
+        // ║                                                                    ║
+        // ║  If Dispose() correctly unregisters, what should this be?          ║
+        // ║  Change 'true' to 'false' if unregistration works correctly.       ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = true;
 
-        Assert.False(stillRegisteredAfterDispose, "Component should unregister from tracker in Dispose()");
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The component should NOT be registered after proper disposal
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.False(answer, "Component should unregister from tracker in Dispose()");
     }
 }

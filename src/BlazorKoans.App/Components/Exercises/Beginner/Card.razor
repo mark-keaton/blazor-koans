@@ -1,8 +1,30 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This Card wraps any content you put inside it with a <div class="card">. ║
+   ║  Notice the special property type: RenderFragment (not string or int).   ║
+   ║                                                                          ║
+   ║  The name "ChildContent" is MAGIC in Blazor - content between component  ║
+   ║  tags automatically becomes ChildContent:                                ║
+   ║                                                                          ║
+   ║  <Card>                                                                  ║
+   ║      <p>This becomes ChildContent!</p>    ← Captured automatically       ║
+   ║  </Card>                                                                 ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Rename ChildContent to "Body" - what changes? (Check the test!)       ║
+   ║  • Add a second RenderFragment called "Footer" - how would you use it?   ║
+   ║  • What happens if ChildContent is null? (Hint: notice the ?)            ║
+   ║                                                                          ║
+   ║  💡 THINK: Why must the property be named "ChildContent" for the magic   ║
+   ║            syntax to work? What if you want multiple content slots?      ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div class="card">
-    @ChildContent
+    @ChildContent                                   @* ⚡ TRY: What if this is null? *@
 </div>
 
 @code {
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }   // ⚡ TRY: Rename to "Body"
 }

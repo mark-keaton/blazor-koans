@@ -6,37 +6,76 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._08_DependencyInjection;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                    SCOPED SERVICES IN BLAZOR SERVER                          ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  In Blazor Server, a "circuit" is the connection between browser and server. ║
+/// ║  SCOPED services live for the lifetime of that circuit (user session).       ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  User A opens app → New circuit → New scoped services                  │  ║
+/// ║  │  User A clicks around → Same scoped service instances                  │  ║
+/// ║  │  User A closes browser → Circuit ends → Services disposed              │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  User B opens app → Different circuit → Different service instances   │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class C_ScopedInBlazor : BunitContext
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void ScopedServices_PerCircuit()
     {
-        // ABOUT: In Blazor Server, Scoped services are created once per circuit
-        // A circuit represents a user's interactive session
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Initial State of Scoped Services
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // When a circuit starts, scoped services are created fresh.
+        // CounterService starts with an initial value.
+        //
+        // EXERCISE: What is the initial counter value?
+        //           (Check the CounterService implementation)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace 0 with the initial counter value
-        // HINT: Check the CounterService constructor/initialization
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - registering scoped services and rendering
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddScoped<IGreetingService, GreetingService>();
         Services.AddScoped<ICounterService, CounterService>();
 
         var cut = Render<ServiceDemo>();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is the initial counter value?                ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
-        Assert.Contains($"Counter: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Counter value appears in markup
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Counter: {answer}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Intermediate")]
     public void ScopedServices_StatePersistence()
     {
-        // ABOUT: Scoped services maintain state throughout the circuit lifetime
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Scoped Services Maintain State
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Scoped services persist state throughout the circuit.
+        // When you modify the counter, it stays modified for that user.
+        //
+        // EXERCISE: What is the counter value after clicking increment once?
+        //           (Counter starts at 0, Increment() adds 1)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Replace 0 with the counter value after clicking increment
-        // HINT: The counter starts at 0, and Increment() adds 1
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering and clicking the increment button
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddScoped<IGreetingService, GreetingService>();
         Services.AddScoped<ICounterService, CounterService>();
 
@@ -45,8 +84,14 @@ public class C_ScopedInBlazor : BunitContext
         var button = cut.Find("button");
         button.Click();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is counter after clicking increment?         ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
-        Assert.Contains($"Counter: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Counter value should be incremented
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Counter: {answer}", cut.Markup);
     }
 }

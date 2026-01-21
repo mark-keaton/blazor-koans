@@ -6,38 +6,80 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.StateManagement;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                   STATE CONTAINER PATTERN IN BLAZOR                          ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  A state container is a SERVICE that holds shared state for components.      ║
+/// ║  Components subscribe to change events to know when to re-render.            ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  public class StateContainer                                          │  ║
+/// ║  │  {                                                                    │  ║
+/// ║  │      public int Count { get; private set; }                           │  ║
+/// ║  │      public event Action? OnChange;                                   │  ║
+/// ║  │                                                                        │  ║
+/// ║  │      public void Increment()                                          │  ║
+/// ║  │      {                                                                 │  ║
+/// ║  │          Count++;                                                      │  ║
+/// ║  │          OnChange?.Invoke();  // Notify subscribers                    │  ║
+/// ║  │      }                                                                 │  ║
+/// ║  │  }                                                                    │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class B_StateContainer : BunitContext
 {
     [Fact]
     [Trait("Category", "Advanced")]
     public void StateContainer_shares_state_across_components()
     {
-        // ABOUT: A state container is a service that holds shared state
-        // accessible to multiple components.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: State Containers Share State Across Components
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // A state container is a service registered with DI that holds shared state.
+        // Multiple components can inject it and see the same data.
+        //
+        // EXERCISE: What is the initial count in CounterStateContainer?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Create a CounterStateContainer and inject it into ShoppingCart.
-        // What is the initial count?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating and registering the state container
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
         var cut = Render<ShoppingCart>();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is the initial count?                       ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
-        Assert.Contains($"Cart Items: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The cart should show the initial count
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Cart Items: {answer}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void StateContainer_updates_are_shared()
     {
-        // ABOUT: When state in the container changes, all components
-        // using it can see the update.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: State Changes Are Visible to All Components
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // When state changes in the container, any component using it sees the update.
+        // The component subscribes to OnChange and calls StateHasChanged().
+        //
+        // EXERCISE: What is the count after calling Increment() once?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Call Increment() on the state container.
-        // What is the new count?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - incrementing the state container
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
@@ -45,22 +87,35 @@ public class B_StateContainer : BunitContext
 
         stateContainer.Increment();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What is count after Increment()?                 ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The cart should show the updated count
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
-            Assert.Contains($"Cart Items: {expected}", cut.Markup));
+            Assert.Contains($"Cart Items: {answer}", cut.Markup));
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void StateContainer_uses_events_to_notify_changes()
     {
-        // ABOUT: State containers use events (like OnChange) to notify
-        // components when state changes.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Event-Based Change Notification
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // State containers expose an OnChange event (Action delegate).
+        // Components subscribe and call StateHasChanged() when it fires.
+        //
+        // EXERCISE: How many times does OnChange fire when calling Increment() twice?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Subscribe to OnChange event in the state container.
-        // How many times does it fire when Increment is called?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - subscribing to and counting change events
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         var eventCount = 0;
 
@@ -69,9 +124,15 @@ public class B_StateContainer : BunitContext
         stateContainer.Increment();
         stateContainer.Increment();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - How many events after 2 Increment() calls?        ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
-        Assert.Equal(expected, eventCount);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The event count should match Increment() calls
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, eventCount);
     }
 
     [Fact]

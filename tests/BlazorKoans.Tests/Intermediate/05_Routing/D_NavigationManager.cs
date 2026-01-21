@@ -7,23 +7,52 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._05_Routing;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                          NAVIGATION MANAGER                                  ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  NavigationManager is Blazor's service for programmatic navigation.          ║
+/// ║  Use it to navigate in code, get the current URL, or respond to changes.     ║
+/// ║                                                                              ║
+/// ║  Key methods and properties:                                                 ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  NavigateTo("/path")     → Navigate to a URL                         │  ║
+/// ║  │  Uri                      → Current absolute URL                       │  ║
+/// ║  │  BaseUri                  → Base URL of the app                        │  ║
+/// ║  │  LocationChanged event    → Fires when URL changes                     │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class D_NavigationManager : BunitContext
 {
     [Fact]
     [Trait("Category", "Intermediate")]
     public void NavigationManager_IsInjectedWithDirective()
     {
-        // ABOUT: NavigationManager is injected into components using @inject.
-        // The syntax is: @inject NavigationManager PropertyName
-        // This gives the component access to navigation functionality.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Injecting NavigationManager
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // NavigationManager is a built-in Blazor service. Inject it like any service:
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  @inject NavigationManager Navigation                                │
+        // │                             ↑                                        │
+        // │                 Property name for use in component                   │
+        // │                                                                     │
+        // │  @code {                                                            │
+        // │      void GoHome() => Navigation.NavigateTo("/");                   │
+        // │  }                                                                  │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // bUnit automatically provides a fake NavigationManager for testing.
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Look at SearchPage.razor's @inject directive.
-        // What property name is NavigationManager injected as?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE & VERIFY: NavigationManager is available
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<SearchPage>();
 
-        // The component should have access to NavigationManager via the injected property
-        // bUnit provides a fake NavigationManager automatically
         var navManager = Services.GetRequiredService<NavigationManager>();
         Assert.NotNull(navManager);
         Assert.Contains("localhost", navManager.Uri);
@@ -33,19 +62,48 @@ public class D_NavigationManager : BunitContext
     [Trait("Category", "Intermediate")]
     public void NavigationManager_NavigateTo()
     {
-        // ABOUT: NavigationManager.NavigateTo() programmatically navigates to a URL.
-        // When called, bUnit's fake NavigationManager records the navigation in History.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Programmatic Navigation with NavigateTo()
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // NavigateTo() navigates to a URL from C# code (not a link click).
+        //
+        // ┌─────────────────────────────────────────────────────────────────────┐
+        // │  void NavigateToHome()                                              │
+        // │  {                                                                  │
+        // │      Navigation.NavigateTo("/");   ← Navigate to home               │
+        // │  }                                                                  │
+        // │                                                                     │
+        // │  Options:                                                           │
+        // │    NavigateTo("/path", forceLoad: true)  ← Full page reload         │
+        // │    NavigateTo("/path", replace: true)    ← Replace history entry    │
+        // └─────────────────────────────────────────────────────────────────────┘
+        //
+        // EXERCISE: Add Navigation.NavigateTo("/") to NavigateToHome method
+        //           in SearchPage.razor (this is a code modification exercise)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: In SearchPage.razor, add Navigation.NavigateTo("/") to the NavigateToHome method.
-        // This will navigate to the home page when the button is clicked.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering and clicking the navigation button
+        // ──────────────────────────────────────────────────────────────────────
         var cut = Render<SearchPage>();
         var navManager = Services.GetRequiredService<BunitNavigationManager>();
+
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ACTION - Add this code to SearchPage.razor:              ║
+        // ║                                                                    ║
+        // ║      void NavigateToHome()                                         ║
+        // ║      {                                                             ║
+        // ║          Navigation.NavigateTo("/");                               ║
+        // ║      }                                                             ║
+        // ╚════════════════════════════════════════════════════════════════════╝
 
         var button = cut.Find("button");
         button.Click();
 
-        // After clicking, the navigation history should contain a navigation to "/"
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Navigation history should show navigation to "/"
+        // ──────────────────────────────────────────────────────────────────────
         Assert.Single(navManager.History);
         Assert.Equal("/", navManager.History.First().Uri);
     }

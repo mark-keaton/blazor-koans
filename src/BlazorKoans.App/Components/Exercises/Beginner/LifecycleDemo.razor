@@ -1,5 +1,33 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This component demonstrates the Blazor LIFECYCLE - methods called at    ║
+   ║  specific times during a component's life:                               ║
+   ║                                                                          ║
+   ║  1. OnInitialized      → Called ONCE when component first created        ║
+   ║  2. OnParametersSet    → Called when parameters change (including init)  ║
+   ║  3. OnAfterRender      → Called AFTER the DOM is updated                 ║
+   ║  4. Dispose            → Called when component is removed                ║
+   ║                                                                          ║
+   ║  Notice the DisposalTracker service - it tracks registered components.   ║
+   ║  A properly disposed component should UNREGISTER itself.                 ║
+   ║                                                                          ║
+   ║  ⚠️  IMPORTANT: This component has a bug! It has Dispose() but Blazor    ║
+   ║      won't call it because @implements IDisposable is MISSING!           ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • What status message appears when the component loads?                 ║
+   ║  • Pass Value="blazor" - what does formattedValue become?                ║
+   ║  • Run the E_DisposeIsCalled test - does it pass? Why not?               ║
+   ║  • Add @implements IDisposable after @inject - what changes?             ║
+   ║                                                                          ║
+   ║  💡 THINK: Why would Dispose() exist but never be called? What does      ║
+   ║            @implements IDisposable actually DO?                          ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 @using BlazorKoans.App.Services
 @inject DisposalTracker Tracker
+@* ⚡ TODO: Add "@implements IDisposable" here to fix the bug! *@
 
 <div>
     <p class="status">@status</p>
@@ -15,13 +43,13 @@
     private string formattedValue = string.Empty;
     private int renderCount = 0;
 
-    protected override void OnInitialized()
+    protected override void OnInitialized()                     // ⚡ Called ONCE on startup
     {
         status = "Initialized";
         Tracker.Register(this);
     }
 
-    protected override void OnParametersSet()
+    protected override void OnParametersSet()                   // ⚡ Called when params change
     {
         // Compute derived state from parameter
         formattedValue = string.IsNullOrEmpty(Value)
@@ -29,7 +57,7 @@
             : $"Received: {Value.ToUpper()}";
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)  // ⚡ Called AFTER DOM update
     {
         if (firstRender)
         {
@@ -42,11 +70,8 @@
         }
     }
 
-    public void Dispose()
+    public void Dispose()                                       // ⚡ Called on removal (IF @implements!)
     {
         Tracker.Unregister(this);
     }
 }
-
-@* TODO: This component has a Dispose() method but Blazor won't call it automatically.
-   Add the directive that tells Blazor this component implements IDisposable. *@

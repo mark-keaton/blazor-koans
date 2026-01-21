@@ -1,6 +1,23 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This component displays "Hello, {Name}!" - but where does Name come     ║
+   ║  from? Look at the @code block: Name has a [Parameter] attribute.        ║
+   ║                                                                          ║
+   ║  When a parent uses: <Greeting Name="Alice" />                           ║
+   ║  Blazor sets the Name property to "Alice" before rendering.              ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Remove [Parameter] - what error appears in the test?                  ║
+   ║  • Change the default from string.Empty to "World" - what renders?       ║
+   ║  • Add a second [Parameter] called Title - how would you display it?     ║
+   ║                                                                          ║
+   ║  💡 THINK: What makes a property "settable" from outside the component?  ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <p>Hello, @Name!</p>
 
 @code {
-    [Parameter]
+    [Parameter]                                     // ⚡ TRY: Remove this and run the test!
     public string Name { get; set; } = string.Empty;
 }
