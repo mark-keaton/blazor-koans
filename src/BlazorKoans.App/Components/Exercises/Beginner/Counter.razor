@@ -1,13 +1,34 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  Watch what happens when you click the button:                           ║
+   ║  1. The @onclick fires, calling IncrementCount()                         ║
+   ║  2. count++ increases the value                                          ║
+   ║  3. Blazor detects the change and RE-RENDERS the component               ║
+   ║  4. The new count value appears in the <p> tag                           ║
+   ║                                                                          ║
+   ║  This is ONE-WAY binding: data flows FROM C# TO the display.             ║
+   ║  The user can't type into the <p> tag to change count.                   ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Change count = 0 to count = 100 - what's the starting value?          ║
+   ║  • Add a second button that decrements - what method would it call?      ║
+   ║  • Remove @onclick - does the button still click? What's different?      ║
+   ║                                                                          ║
+   ║  💡 THINK: How does Blazor know to update the display after count++?     ║
+   ║            (Hint: event handlers trigger a re-render automatically)      ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div>
-    <p>Count: @count</p>
+    <p>Count: @count</p>                            @* ⚡ This updates automatically! *@
     <button @onclick="IncrementCount">Increment</button>
 </div>
 
 @code {
-    private int count = 0;
+    private int count = 0;                          // ⚡ TRY: Change starting value
 
     private void IncrementCount()
     {
-        count++;
+        count++;                                    // After this, Blazor re-renders
     }
 }

@@ -1,9 +1,36 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This is a GENERIC templated component - notice @typeparam TItem.        ║
+   ║  It can render a list of ANYTHING: strings, numbers, objects, etc.       ║
+   ║                                                                          ║
+   ║  Key differences from Card's RenderFragment:                             ║
+   ║  • RenderFragment      = just UI content (no data)                       ║
+   ║  • RenderFragment<T>   = UI template that RECEIVES data of type T        ║
+   ║                                                                          ║
+   ║  Usage:                                                                  ║
+   ║  <ItemList Items="@fruits">                                              ║
+   ║      <ItemTemplate>                                                      ║
+   ║          <li>@context</li>     ← "context" is each TItem in the loop     ║
+   ║      </ItemTemplate>                                                     ║
+   ║  </ItemList>                                                             ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Change <ul> to <ol> - what changes in the output?                     ║
+   ║  • What happens if Items is empty? Does the <ul> still render?           ║
+   ║  • Why is ItemTemplate?.Invoke() used instead of just @ItemTemplate?     ║
+   ║                                                                          ║
+   ║  💡 THINK: How does the parent's <ItemTemplate> content know about each  ║
+   ║            item? What is "context" and where does it come from?          ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
+@* ⚡ TRY: What if you remove the @typeparam below? *@
 @typeparam TItem
 
 <ul>
     @foreach (var item in Items)
     {
-        @ItemTemplate?.Invoke(item)
+        @ItemTemplate?.Invoke(item)                 @* The "item" becomes "context" in parent *@
     }
 </ul>
 
@@ -12,5 +39,5 @@
     public IEnumerable<TItem> Items { get; set; } = Array.Empty<TItem>();
 
     [Parameter]
-    public RenderFragment<TItem>? ItemTemplate { get; set; }
+    public RenderFragment<TItem>? ItemTemplate { get; set; }    // ⚡ Compare to Card's RenderFragment
 }

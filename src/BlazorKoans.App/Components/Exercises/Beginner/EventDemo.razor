@@ -1,3 +1,27 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This component demonstrates several event concepts:                     ║
+   ║                                                                          ║
+   ║  1. @onclick="Method"       - Basic click handler (see +/- buttons)      ║
+   ║  2. EventCallback           - Notify PARENT of events (no data)          ║
+   ║  3. EventCallback<string>   - Notify parent WITH data                    ║
+   ║  4. @onclick:preventDefault - Stop browser's default action              ║
+   ║                                                                          ║
+   ║  Notice how EventCallbacks work:                                         ║
+   ║  • Parent passes: <EventDemo OnButtonClick="ParentMethod" />             ║
+   ║  • Child calls:   await OnButtonClick.InvokeAsync()                      ║
+   ║  • This is CHILD → PARENT communication (opposite of parameters!)        ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Click + five times, then - twice. What's the count?                   ║
+   ║  • Remove @onclick:preventDefault - what happens on submit?              ║
+   ║  • What's the difference between EventCallback and EventCallback<T>?     ║
+   ║  • Type "Hello" and submit - what value does the parent receive?         ║
+   ║                                                                          ║
+   ║  💡 THINK: Parameters flow DOWN (parent→child). How does data flow UP?   ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div>
     <button class="increment" @onclick="IncrementClickCount">+</button>
     <span class="click-count">@clickCount</span>
@@ -11,10 +35,10 @@
 
 @code {
     [Parameter]
-    public EventCallback OnButtonClick { get; set; }
+    public EventCallback OnButtonClick { get; set; }            // ⚡ No data sent to parent
 
     [Parameter]
-    public EventCallback<string> OnSubmit { get; set; }
+    public EventCallback<string> OnSubmit { get; set; }         // ⚡ Sends string to parent
 
     private int clickCount = 0;
     private string message = string.Empty;
@@ -34,12 +58,12 @@
     private async Task HandleButtonClick()
     {
         message = "Button was clicked!";
-        await OnButtonClick.InvokeAsync();
+        await OnButtonClick.InvokeAsync();                      // ⚡ Calls parent's handler
     }
 
     private async Task HandleSubmit()
     {
         submittedValue = inputValue;
-        await OnSubmit.InvokeAsync(inputValue);
+        await OnSubmit.InvokeAsync(inputValue);                 // ⚡ Sends data TO parent
     }
 }

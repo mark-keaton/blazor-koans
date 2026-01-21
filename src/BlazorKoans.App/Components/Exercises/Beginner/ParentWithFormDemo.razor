@@ -1,12 +1,34 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  Similar to ParentWithEventDemo, but this time the child sends DATA!     ║
+   ║                                                                          ║
+   ║  Compare:                                                                ║
+   ║  • EventCallback          → HandleClick()         (no parameter)         ║
+   ║  • EventCallback<string>  → HandleSubmit(string)  (receives data!)       ║
+   ║                                                                          ║
+   ║  The child calls: await OnSubmit.InvokeAsync(inputValue)                 ║
+   ║  The parent receives that value in the handler parameter.                ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Type "Blazor" in the input and submit - what appears?                 ║
+   ║  • Change the format string to "Got: {value}" - what changes?            ║
+   ║  • What type is 'value'? Could it be an int or object instead?           ║
+   ║                                                                          ║
+   ║  💡 THINK: When would you use EventCallback vs EventCallback<T>?         ║
+   ║            (Hint: Does the parent need to know WHAT happened, or just    ║
+   ║            THAT something happened?)                                     ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div class="parent">
     <p class="received-value">@receivedValue</p>
-    <EventDemo OnSubmit="HandleChildSubmit" />
+    <EventDemo OnSubmit="HandleChildSubmit" />          @* ⚡ Receives data from child *@
 </div>
 
 @code {
     private string receivedValue = "No submission yet";
 
-    private void HandleChildSubmit(string value)
+    private void HandleChildSubmit(string value)                // ⚡ 'value' comes from child!
     {
         receivedValue = $"Received: {value}";
     }

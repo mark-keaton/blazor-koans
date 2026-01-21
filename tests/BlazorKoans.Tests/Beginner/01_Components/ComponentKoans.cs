@@ -61,7 +61,7 @@ public class ComponentKoans : BunitContext
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║  ✏️  YOUR ANSWER - Replace the "__" with the correct value         ║
         // ╚════════════════════════════════════════════════════════════════════╝
-        var answer = "__";
+        var answer = "Hello, Blazor!";
 
         // ──────────────────────────────────────────────────────────────────────
         // VERIFY: The test checks your answer against the component output
@@ -182,7 +182,7 @@ public class ComponentKoans : BunitContext
         // ║  HINT: Your answer should include the wrapper element AND the      ║
         // ║        child content. Example format: <tag>child content</tag>     ║
         // ╚════════════════════════════════════════════════════════════════════╝
-        var answer = "__";
+        var answer = "<div class\"=card\">This is card content</div>";
 
         // ──────────────────────────────────────────────────────────────────────
         // VERIFY: The test checks your answer against the component output

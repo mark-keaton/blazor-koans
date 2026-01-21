@@ -293,3 +293,119 @@ tests/BlazorKoans.Tests/
 4. **Helpful hints** - Include hints that point to specific files or methods
 5. **Meaningful names** - Test names should describe what's being learned: `Parameter_PassesValueToChild`
 6. **Real examples** - Use the actual components in the project, not hypothetical ones
+
+---
+
+## Learning Approaches: Deductive vs Inductive
+
+This project supports **two complementary learning styles**:
+
+### Deductive Learning (Theory → Practice)
+The standard test pattern above is **deductive**: we explain the theory first, then ask learners to predict a concrete outcome.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  DEDUCTIVE FLOW:                                                        │
+│                                                                         │
+│  📚 LESSON: "Parameters pass data to components using [Parameter]..."   │
+│       │                                                                 │
+│       ▼                                                                 │
+│  🧪 EXERCISE: "What value will the Title parameter have?"               │
+│       │                                                                 │
+│       ▼                                                                 │
+│  ✏️  YOUR ANSWER: Learner applies theory to predict outcome             │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Inductive Learning (Observation → Theory)
+Inductive learning flips this: learners **observe behavior first**, then derive the principle themselves.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  INDUCTIVE FLOW:                                                        │
+│                                                                         │
+│  👀 OBSERVE: "When you type in the input, the <p> tag updates..."       │
+│       │                                                                 │
+│       ▼                                                                 │
+│  🔬 EXPERIMENT: "Try removing @bind and see what changes..."            │
+│       │                                                                 │
+│       ▼                                                                 │
+│  💡 SYNTHESIS: Learner forms their own understanding                    │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Component File Comments (Inductive Support)
+
+To support inductive learning, component files include special comment blocks that guide observation and experimentation **before** reading the test's LESSON section.
+
+### Comment Block Format
+
+```razor
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  Description of what to notice when the component runs.                  ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Try changing X and observe Y                                          ║
+   ║  • Remove Z and see what happens                                         ║
+   ║  • What pattern do you notice?                                           ║
+   ║                                                                          ║
+   ║  💡 THINK: Question that guides synthesis                                ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+```
+
+### Inductive Learning Markers
+
+| Marker | Purpose |
+|--------|---------|
+| 🔍 OBSERVE | Points to specific behavior to notice |
+| 🧪 EXPERIMENT | Suggests modifications to try |
+| 💡 THINK | Poses a question to guide synthesis |
+| ⚡ TRY | Quick mini-experiments |
+
+### Example Component with Inductive Comments
+
+```razor
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This component displays "Hello, {Name}!" - but where does Name come     ║
+   ║  from? Notice the [Parameter] attribute on the Name property below.      ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Change [Parameter] to [Obsolete] - what error appears?                ║
+   ║  • Add a second parameter called "Title" - how would you use it?         ║
+   ║                                                                          ║
+   ║  💡 THINK: What makes a property "receivable" from a parent component?   ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
+<p>Hello, @Name!</p>
+
+@code {
+    [Parameter]                         // ← This attribute is the key!
+    public string Name { get; set; }
+}
+```
+
+---
+
+## Dual-Path Learning Workflow
+
+Learners can approach the material two ways:
+
+### Path A: Deductive (Guided)
+1. Read the test's LESSON section for theory
+2. Look at the component to see it applied
+3. Answer the EXERCISE
+
+### Path B: Inductive (Exploratory)
+1. Open the component file first
+2. Read OBSERVE comments and study the code
+3. Try the EXPERIMENTS
+4. Form a hypothesis
+5. Read the test to verify understanding
+
+Both paths lead to the same knowledge, but suit different learning preferences.

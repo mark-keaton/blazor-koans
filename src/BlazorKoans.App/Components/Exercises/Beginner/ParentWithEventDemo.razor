@@ -1,12 +1,38 @@
+@* ╔══════════════════════════════════════════════════════════════════════════╗
+   ║  🔍 OBSERVE                                                              ║
+   ╠══════════════════════════════════════════════════════════════════════════╣
+   ║  This PARENT component contains EventDemo as a CHILD.                    ║
+   ║  Notice how it receives events FROM the child:                           ║
+   ║                                                                          ║
+   ║  <EventDemo OnButtonClick="HandleChildClick" />                          ║
+   ║              ↑               ↑                                           ║
+   ║              │               └── Parent's method to call                 ║
+   ║              └── Child's EventCallback parameter                         ║
+   ║                                                                          ║
+   ║  Data flow:                                                              ║
+   ║  1. User clicks button in EventDemo (child)                              ║
+   ║  2. Child calls: await OnButtonClick.InvokeAsync()                       ║
+   ║  3. This triggers parent's HandleChildClick()                            ║
+   ║  4. Parent updates message and re-renders                                ║
+   ║                                                                          ║
+   ║  🧪 EXPERIMENT                                                           ║
+   ║  • Click the EventDemo button - what message appears?                    ║
+   ║  • Change "Child was clicked!" to something else                         ║
+   ║  • What if you don't pass OnButtonClick? Does the child still work?      ║
+   ║                                                                          ║
+   ║  💡 THINK: Compare this to Parameters. How is the data direction         ║
+   ║            different? (Params: parent→child, Events: child→parent)       ║
+   ╚══════════════════════════════════════════════════════════════════════════╝ *@
+
 <div class="parent">
     <p class="parent-message">@message</p>
-    <EventDemo OnButtonClick="HandleChildClick" />
+    <EventDemo OnButtonClick="HandleChildClick" />     @* ⚡ Parent listens to child *@
 </div>
 
 @code {
     private string message = "Waiting for child...";
 
-    private void HandleChildClick()
+    private void HandleChildClick()                             // ⚡ Called BY the child!
     {
         message = "Child was clicked!";
     }
