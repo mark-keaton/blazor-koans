@@ -31,20 +31,17 @@ public class AsyncKoans : BunitContext
         // Blazor will render once before and once after the async work completes.
 
         // TODO: Look at AsyncDemo.razor. It loads data in OnInitializedAsync.
-        // Before the async operation completes, what message is shown?
-        // Replace "__" with the expected loading message.
+        // The component shows a loading message while IsLoading is true.
+        // What text is shown in the .loading-message element during loading?
+        // Replace "__" with the expected message.
 
         var cut = Render<AsyncDemo>();
 
-        // Note: In bUnit, async operations complete synchronously by default
-        // So we might see the loaded state immediately, but let's check what the
-        // initial state message would be based on the component logic
-
         var expectedLoadingMessage = "__";
 
-        // The component should show this message while loading
-        var hasLoadingClass = cut.Find(".loading-message");
-        Assert.Contains(expectedLoadingMessage, hasLoadingClass.TextContent);
+        // Before async completes, the loading message is shown
+        var loadingMessage = cut.Find(".loading-message");
+        Assert.Contains(expectedLoadingMessage, loadingMessage.TextContent);
 
         // HINT: Components typically show "Loading..." while awaiting data
     }
@@ -60,8 +57,12 @@ public class AsyncKoans : BunitContext
         // TODO: The AsyncDemo loads a list of items asynchronously.
         // After loading completes, how many items are displayed?
         // Replace 0 with the expected count.
+        // Note: Use WaitForState to wait for async operations in bUnit.
 
         var cut = Render<AsyncDemo>();
+
+        // Wait for loading to complete
+        cut.WaitForState(() => !cut.Instance.IsLoading);
 
         var expectedItemCount = 0;
 
@@ -81,8 +82,12 @@ public class AsyncKoans : BunitContext
 
         // TODO: After the async load completes, what is the value of IsLoading?
         // Replace true with the expected value after loading finishes.
+        // Note: Use WaitForState to wait for async operations in bUnit.
 
         var cut = Render<AsyncDemo>();
+
+        // Wait for loading to complete
+        cut.WaitForState(() => !cut.Instance.IsLoading);
 
         var expectedIsLoading = true;
 
@@ -103,11 +108,22 @@ public class AsyncKoans : BunitContext
         // TODO: The AsyncDemo has a button that triggers an async refresh.
         // After clicking and the async operation completes, what message appears?
         // Replace "__" with the expected message.
+        // Note: Use WaitForAssertion to wait for async event handlers in bUnit.
 
         var cut = Render<AsyncDemo>();
 
+        // Wait for initial load
+        cut.WaitForState(() => !cut.Instance.IsLoading);
+
         // Click the refresh button
         cut.Find("button.refresh-button").Click();
+
+        // Wait for the refresh to complete
+        cut.WaitForAssertion(() =>
+        {
+            var msg = cut.Find(".status-message").TextContent;
+            Assert.NotEqual("Refreshing...", msg);
+        });
 
         var expectedMessage = "__";
 
@@ -127,18 +143,27 @@ public class AsyncKoans : BunitContext
         // Note: Calling StateHasChanged in OnAfterRenderAsync triggers re-render!
 
         // TODO: The AsyncDemo tracks renders in OnAfterRenderAsync.
-        // After initial render and the async operation, what render count is shown?
+        // After initial render cycle completes, how many renders have occurred?
         // Replace 0 with the expected render count.
+        // Note: Wait for the render count to stabilize using WaitForAssertion.
 
         var cut = Render<AsyncDemo>();
 
+        // Wait for the render cycle to complete
+        cut.WaitForAssertion(() =>
+        {
+            var renderCountText = cut.Find(".render-count").TextContent;
+            var count = int.Parse(renderCountText.Replace("Renders: ", ""));
+            Assert.True(count >= 1);
+        });
+
         var expectedRenderCount = 0;
 
-        var renderCountText = cut.Find(".render-count").TextContent;
-        var actualCount = int.Parse(renderCountText.Replace("Renders: ", ""));
+        var finalRenderCountText = cut.Find(".render-count").TextContent;
+        var actualCount = int.Parse(finalRenderCountText.Replace("Renders: ", ""));
         Assert.Equal(expectedRenderCount, actualCount);
 
-        // HINT: Blazor renders once during OnInitialized, then again after OnInitializedAsync completes
+        // HINT: The first render calls OnAfterRenderAsync which sets the count to 1
     }
 
     [Fact]
@@ -152,11 +177,19 @@ public class AsyncKoans : BunitContext
         // TODO: The AsyncDemo has a button that triggers an operation that fails.
         // After clicking the "Trigger Error" button, what CSS class is on the error element?
         // Replace "__" with the expected class.
+        // Note: Use WaitForAssertion to wait for error handling in bUnit.
 
         var cut = Render<AsyncDemo>();
 
         // Click the error button
         cut.Find("button.error-button").Click();
+
+        // Wait for the error to be displayed
+        cut.WaitForAssertion(() =>
+        {
+            var err = cut.Find(".error-display");
+            Assert.NotNull(err);
+        });
 
         var expectedErrorClass = "__";
 
