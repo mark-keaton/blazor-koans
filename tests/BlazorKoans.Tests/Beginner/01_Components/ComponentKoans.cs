@@ -18,7 +18,7 @@ public class ComponentKoans : BunitContext
 
         var cut = Render<HelloWorld>();
 
-        var expected = "Hello, Blazor!";
+        var expected = "__";
 
         cut.MarkupMatches($"<h1>{expected}</h1>");
     }
@@ -40,7 +40,9 @@ public class ComponentKoans : BunitContext
         var cut = Render<Greeting>(parameters => parameters
             .Add(p => p.Name, parameterValue));
 
-        cut.MarkupMatches("<p>Hello, World!</p>");
+        var expected = "__";
+
+        cut.MarkupMatches($"<p>Hello, {expected}!</p>");
     }
 
     [Fact]
@@ -58,7 +60,7 @@ public class ComponentKoans : BunitContext
         var cut = Render<Card>(parameters => parameters
             .AddChildContent("<p>This is card content</p>"));
 
-        var expectedMarkup = @"<div class=""card""><p>This is card content</p></div>";
+        var expectedMarkup = "__";
 
         cut.MarkupMatches(expectedMarkup);
     }
