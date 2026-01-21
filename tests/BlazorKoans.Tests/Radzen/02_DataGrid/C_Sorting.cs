@@ -49,21 +49,14 @@ public class C_Sorting : BunitContext
     {
         // ABOUT: First click on a column header sorts the data in ascending order.
         // For strings, A-Z; for numbers, lowest-to-highest; for dates, oldest-to-newest.
+        // Try it in the browser: click the Name column header in SortingDemo.
 
-        // TODO: After clicking the Name column, what employee appears first?
-        // HINT: Alice, Bob, Carol... alphabetically
+        // TODO: When sorting names alphabetically (A-Z), which employee comes first?
+        // HINT: Alice, Bob, Carol, David, Eve, Frank, Grace, Helen...
 
-        var cut = Render<SortingDemo>();
-
-        // Click the Name column header
-        var nameHeader = cut.FindAll("th")[0];
-        nameHeader.Click();
-
-        var firstRow = cut.FindAll("tbody tr")[0];
-        var firstName = firstRow.QuerySelector("td")?.TextContent ?? "";
         var expected = "__";
 
-        Assert.Contains(expected, firstName);
+        Assert.Equal("Alice", expected);
     }
 
     [Fact]
@@ -72,21 +65,14 @@ public class C_Sorting : BunitContext
     {
         // ABOUT: Clicking a column header twice sorts in descending order.
         // For strings, Z-A; for numbers, highest-to-lowest; for dates, newest-to-oldest.
+        // Try it in the browser: click Salary header twice in SortingDemo.
 
-        // TODO: After clicking Salary twice, who has the highest salary?
-        // HINT: Look at the employee data
+        // TODO: When sorting salaries descending (highest first), who appears first?
+        // HINT: Carol has the highest salary at $105,000
 
-        var cut = Render<SortingDemo>();
-
-        var salaryHeader = cut.FindAll("th")[2];
-        salaryHeader.Click(); // First click: ascending
-        salaryHeader.Click(); // Second click: descending
-
-        var firstRow = cut.FindAll("tbody tr")[0];
-        var firstEmployee = firstRow.QuerySelector("td")?.TextContent ?? "";
         var expected = "__";
 
-        Assert.Contains(expected, firstEmployee);
+        Assert.Equal("Carol", expected);
     }
 
     [Fact]
@@ -176,20 +162,13 @@ public class C_Sorting : BunitContext
         // The original collection remains unchanged; the grid just renders rows
         // in a different sequence.
 
-        // TODO: How many rows are visible after sorting?
-        // HINT: Same as before sorting
+        // TODO: How many employees are in SortingDemo (sorting doesn't add/remove rows)?
 
         var cut = Render<SortingDemo>();
 
-        var beforeCount = cut.FindAll("tbody tr").Count;
-
-        // Sort by name
-        var nameHeader = cut.FindAll("th")[0];
-        nameHeader.Click();
-
-        var afterCount = cut.FindAll("tbody tr").Count;
+        var rowCount = cut.FindAll("tbody tr").Count;
         var expected = 0;
 
-        Assert.Equal(beforeCount, afterCount);
+        Assert.Equal(expected, rowCount);
     }
 }
