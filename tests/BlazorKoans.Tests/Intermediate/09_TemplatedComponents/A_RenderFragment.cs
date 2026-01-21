@@ -49,7 +49,7 @@ public class A_RenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "simple-card";
+        var expected = "__";
 
         Assert.NotNull(cut.Find($".{expected}"));
     }
