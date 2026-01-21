@@ -8,6 +8,24 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                              ROLE-BASED AUTH                                 ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Roles provide a way to group users and control access to features based     ║
+/// ║  on their assigned roles (Admin, User, Manager, etc.).                       ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  // Check role in code                                                 │  ║
+/// ║  │  if (user.IsInRole("Admin")) { ... }                                   │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  // Role-based AuthorizeView                                           │  ║
+/// ║  │  <AuthorizeView Roles="Admin">                                         │  ║
+/// ║  │      <p>Admin only content</p>                                         │  ║
+/// ║  │  </AuthorizeView>                                                      │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class D_Roles : BunitContext
 {
     public D_Roles()
@@ -24,11 +42,20 @@ public class D_Roles : BunitContext
     [Trait("Category", "Advanced")]
     public void Roles_are_stored_as_claims()
     {
-        // ABOUT: User roles are represented as claims with type ClaimTypes.Role.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Roles as Claims
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // User roles are represented as claims with type ClaimTypes.Role. When
+        // you assign a role to a user, it becomes part of their identity claims
+        // and can be checked throughout the application.
+        //
+        // EXERCISE: What role is displayed for a user with "Admin" role?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Set a user with role "Admin".
-        // What role does the user have?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating user with Admin role
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Admin", "Admin");
 
@@ -45,20 +72,34 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What role is displayed?                         ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains($"Role: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The role should be displayed in the component
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Role: {answer}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Users_without_roles_show_default_role()
     {
-        // ABOUT: Users without specific roles can have a default role display.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Default Role Display
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Users without specific roles can have a default role display. This
+        // provides a consistent UI experience even when no role is assigned.
+        //
+        // EXERCISE: What role is displayed for a user without any role?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Set a user without a role.
-        // What role is displayed in LoginStatus?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating user without a role
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Regular");
 
@@ -75,39 +116,71 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What default role is shown?                     ║
+        // ║                                                                    ║
+        // ║  HINT: Check what LoginStatus displays when no role is assigned    ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains($"Role: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The default role should be displayed
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Role: {answer}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void IsInRole_checks_user_role()
     {
-        // ABOUT: ClaimsPrincipal.IsInRole() checks if user has a specific role.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Checking Roles with IsInRole
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // ClaimsPrincipal.IsInRole() checks if a user has a specific role.
+        // This method returns true if the user has the specified role claim,
+        // false otherwise.
+        //
+        // EXERCISE: What does IsInRole("Admin") return for a user with Admin role?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Check if a user with "Admin" role is in the "Admin" role.
-        // What does IsInRole return?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating user with Admin role
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("SuperUser", "Admin");
 
         var state = authProvider.GetAuthenticationStateAsync().Result;
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What does IsInRole return? ("true" or "false")  ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expected, state.User.IsInRole("Admin").ToString().ToLower());
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: IsInRole should return the expected value
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, state.User.IsInRole("Admin").ToString().ToLower());
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void AuthorizeView_can_filter_by_roles()
     {
-        // ABOUT: AuthorizeView has a Roles parameter to show content only to specific roles.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Role-Based AuthorizeView
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // AuthorizeView has a Roles parameter to show content only to users with
+        // specific roles. Multiple roles can be specified as a comma-separated
+        // string: Roles="Admin,Manager".
+        //
+        // EXERCISE: What role is displayed for a user with "Admin" role?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The LoginStatus component checks for "Admin" role.
-        // What is displayed for a user with "Admin" role?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - creating user with Admin role
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("AdminUser", "Admin");
 
@@ -124,8 +197,14 @@ public class D_Roles : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What role is displayed?                         ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains($"Role: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The Admin role should be displayed
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Role: {answer}", cut.Markup);
     }
 }

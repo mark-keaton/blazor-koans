@@ -6,18 +6,47 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.StateManagement;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                    STATE CHANGE NOTIFICATIONS IN BLAZOR                      ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  Components must subscribe to state changes to know when to re-render.       ║
+/// ║  The pattern involves subscribing in OnInitialized and unsubscribing         ║
+/// ║  in Dispose to prevent memory leaks.                                         ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  protected override void OnInitialized()                               │  ║
+/// ║  │  {                                                                     │  ║
+/// ║  │      StateContainer.OnChange += StateHasChanged;  // Subscribe         │  ║
+/// ║  │  }                                                                     │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  public void Dispose()                                                 │  ║
+/// ║  │  {                                                                     │  ║
+/// ║  │      StateContainer.OnChange -= StateHasChanged;  // Unsubscribe       │  ║
+/// ║  │  }                                                                     │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class C_StateChanged : BunitContext
 {
     [Fact]
     [Trait("Category", "Advanced")]
     public void NotifyStateChanged_triggers_re_render()
     {
-        // ABOUT: Components subscribe to state change notifications
-        // to know when to re-render.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: OnChange Event Triggers Re-Rendering
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Components subscribe to state change notifications to know when to
+        // re-render. When state container fires OnChange, subscribed components
+        // call StateHasChanged() and update their UI.
+        //
+        // EXERCISE: After Increment(), does the component show "Cart Items: 1"?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: When state container fires OnChange, components re-render.
-        // What pattern does ShoppingCart use?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering component and incrementing state
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
@@ -25,22 +54,37 @@ public class C_StateChanged : BunitContext
 
         stateContainer.Increment();
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does UI show "Cart Items: 1" after Increment()?  ║
+        // ║     HINT: ShoppingCart subscribes to OnChange and re-renders        ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The component should re-render with updated count
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
-            Assert.Equal(expected, cut.Markup.Contains("Cart Items: 1")));
+            Assert.Equal(answer, cut.Markup.Contains("Cart Items: 1").ToString().ToLower()));
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Components_must_subscribe_in_OnInitialized()
     {
-        // ABOUT: Components typically subscribe to state changes
-        // in OnInitialized lifecycle method.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Subscribe to State Changes in OnInitialized
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Components typically subscribe to state changes in the OnInitialized
+        // lifecycle method. This ensures they receive updates as soon as they
+        // are rendered.
+        //
+        // EXERCISE: After Increment(), does the markup change from initial?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The ShoppingCart subscribes to OnChange in OnInitialized.
-        // Does it receive updates?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - capturing initial markup and incrementing
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
@@ -50,53 +94,83 @@ public class C_StateChanged : BunitContext
 
         stateContainer.Increment();
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does the markup change after Increment()?        ║
+        // ║     HINT: ShoppingCart subscribes in OnInitialized and receives     ║
+        // ║           updates when state changes                                ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The markup should be different after state change
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
             Assert.NotEqual(initialMarkup, cut.Markup));
 
-        Assert.Equal(expected, cut.Markup != initialMarkup);
+        Assert.Equal(answer, (cut.Markup != initialMarkup).ToString().ToLower());
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Components_should_unsubscribe_on_dispose()
     {
-        // ABOUT: Components implementing IDisposable should unsubscribe
-        // from events to prevent memory leaks.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Unsubscribe on Dispose to Prevent Memory Leaks
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Components implementing IDisposable should unsubscribe from events
+        // to prevent memory leaks. If you don't unsubscribe, the event handler
+        // keeps a reference to the disposed component.
+        //
+        // EXERCISE: After dispose, how many times does our test handler fire?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: ShoppingCart implements IDisposable and unsubscribes.
-        // Does it properly clean up?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - subscribing test handler and disposing component
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
         var cut = Render<ShoppingCart>();
 
-        var eventsFiredBeforeDispose = 0;
-        stateContainer.OnChange += () => eventsFiredBeforeDispose++;
+        var eventsFiredAfterDispose = 0;
+        stateContainer.OnChange += () => eventsFiredAfterDispose++;
 
         cut.Dispose();
 
         stateContainer.Increment();
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - How many times does our handler fire?            ║
+        // ║     HINT: After dispose, only our test handler fires (not the       ║
+        // ║           component's handler), so count should be 1                ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        // After dispose, ShoppingCart's handler should not increment the count
-        // Only our test handler fires, so count should be 1
-        Assert.Equal(expected, eventsFiredBeforeDispose.ToString());
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Only our test handler should fire after dispose
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, eventsFiredAfterDispose.ToString());
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Multiple_components_can_share_same_state()
     {
-        // ABOUT: Multiple component instances can subscribe to the same
-        // state container and all receive updates.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Multiple Components Share the Same State
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Multiple component instances can subscribe to the same state container
+        // and all receive updates. When one component changes state, all others
+        // see the change.
+        //
+        // EXERCISE: When cart1 adds an item, does cart2 also show 1 item?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Create two ShoppingCart instances with shared state.
-        // When one increments, do both update?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering two cart instances with shared state
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
@@ -105,9 +179,16 @@ public class C_StateChanged : BunitContext
 
         cart1.Find("button").Click(); // Add item in first cart
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does cart2 show "Cart Items: 1"?                  ║
+        // ║     HINT: Both carts share the same state container                 ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Both carts should show the updated count
+        // ──────────────────────────────────────────────────────────────────────
         cart2.WaitForAssertion(() =>
-            Assert.Equal(expected, cart2.Markup.Contains("Cart Items: 1")));
+            Assert.Equal(answer, cart2.Markup.Contains("Cart Items: 1").ToString().ToLower()));
     }
 }

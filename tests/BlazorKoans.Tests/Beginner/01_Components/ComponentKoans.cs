@@ -61,7 +61,7 @@ public class ComponentKoans : BunitContext
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║  ✏️  YOUR ANSWER - Replace the "__" with the correct value         ║
         // ╚════════════════════════════════════════════════════════════════════╝
-        var answer = "Hello, Blazor!";
+        var answer = "__";
 
         // ──────────────────────────────────────────────────────────────────────
         // VERIFY: The test checks your answer against the component output

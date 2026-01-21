@@ -139,12 +139,19 @@ public class B_StateContainer : BunitContext
     [Trait("Category", "Advanced")]
     public void Components_must_call_StateHasChanged()
     {
-        // ABOUT: When state container changes, components should call
-        // StateHasChanged() to trigger re-rendering.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: StateHasChanged() Triggers Re-Rendering
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // When state container changes, components should call StateHasChanged()
+        // to trigger re-rendering. Without this call, the UI won't update.
+        //
+        // EXERCISE: After clicking "Add Item", does the UI update to show 1 item?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: The ShoppingCart component subscribes to OnChange.
-        // Does it call StateHasChanged when the event fires?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering component and clicking add button
+        // ──────────────────────────────────────────────────────────────────────
         var stateContainer = new CounterStateContainer();
         Services.AddSingleton(stateContainer);
 
@@ -152,8 +159,16 @@ public class B_StateContainer : BunitContext
 
         cut.Find("button").Click(); // Clicks "Add Item"
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does UI show "Cart Items: 1" after click?        ║
+        // ║     HINT: ShoppingCart subscribes to OnChange and calls             ║
+        // ║           StateHasChanged when the event fires                      ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Equal(expected, cut.Markup.Contains("Cart Items: 1"));
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: Check if the UI properly updates
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Markup.Contains("Cart Items: 1").ToString().ToLower());
     }
 }

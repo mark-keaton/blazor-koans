@@ -8,6 +8,25 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                             AUTHORIZE VIEW                                   ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  AuthorizeView is a component that conditionally renders content based on    ║
+/// ║  the user's authentication and authorization status.                         ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  <AuthorizeView>                                                       │  ║
+/// ║  │      <Authorized>                                                      │  ║
+/// ║  │          Welcome, @context.User.Identity?.Name!                        │  ║
+/// ║  │      </Authorized>                                                     │  ║
+/// ║  │      <NotAuthorized>                                                   │  ║
+/// ║  │          Please log in.                                                │  ║
+/// ║  │      </NotAuthorized>                                                  │  ║
+/// ║  │  </AuthorizeView>                                                      │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class B_AuthorizeView : BunitContext
 {
     public B_AuthorizeView()
@@ -24,12 +43,20 @@ public class B_AuthorizeView : BunitContext
     [Trait("Category", "Advanced")]
     public void AuthorizeView_shows_NotAuthorized_for_unauthenticated_users()
     {
-        // ABOUT: AuthorizeView is a component that conditionally renders content
-        // based on the user's authentication status.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: NotAuthorized Content
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // AuthorizeView is a component that conditionally renders content based
+        // on the user's authentication status. The <NotAuthorized> section is
+        // displayed when the user is not authenticated.
+        //
+        // EXERCISE: What text is displayed for an unauthenticated user?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Render LoginStatus with an unauthenticated user.
-        // What text is displayed?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering LoginStatus with unauthenticated user
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetUnauthenticatedUser();
 
@@ -46,20 +73,36 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What text is shown to unauthenticated users?    ║
+        // ║                                                                    ║
+        // ║  HINT: Check what the NotAuthorized section displays               ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The NotAuthorized content should be displayed
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void AuthorizeView_shows_Authorized_for_authenticated_users()
     {
-        // ABOUT: The <Authorized> section renders when user is authenticated.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Authorized Content
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The <Authorized> section renders when the user is authenticated. This
+        // section typically displays personalized content like the user's name.
+        //
+        // EXERCISE: What username is displayed after setting user to "Charlie"?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Set an authenticated user and render LoginStatus.
-        // What username is displayed?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering LoginStatus with authenticated user
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Charlie");
 
@@ -76,20 +119,35 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What username is displayed?                     ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains($"Logged in as: {expected}", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The Authorized content should show the username
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Logged in as: {answer}", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void AuthorizeView_provides_context_with_user_info()
     {
-        // ABOUT: The context parameter in <Authorized> gives access to the user's claims.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Context Parameter in AuthorizeView
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The context parameter in <Authorized> gives access to the user's claims
+        // through context.User.Identity.Name and other properties. This allows
+        // displaying user-specific information.
+        //
+        // EXERCISE: What name is displayed when user is set to "Diana"?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Access the user's name through context.User.Identity.Name.
-        // Does the LoginStatus component use this pattern?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering LoginStatus with user "Diana"
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Diana");
 
@@ -106,20 +164,35 @@ public class B_AuthorizeView : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What name appears in the component?             ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The user name should be displayed via context
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void AuthorizeView_updates_when_authentication_changes()
     {
-        // ABOUT: AuthorizeView automatically re-renders when authentication state changes.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Reactive Authentication State
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // AuthorizeView automatically re-renders when authentication state changes.
+        // This means the UI updates immediately when a user logs in or out without
+        // requiring a page refresh.
+        //
+        // EXERCISE: After changing from unauthenticated to "Eve", what name shows?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Change from unauthenticated to authenticated.
-        // Does the UI update automatically?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - starting with unauthenticated user
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetUnauthenticatedUser();
 
@@ -138,11 +211,18 @@ public class B_AuthorizeView : BunitContext
 
         Assert.Contains("Not logged in", cut.Markup);
 
+        // Change authentication state
         authProvider.SetAuthenticatedUser("Eve");
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What username is displayed after the change?    ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The UI should automatically update with the new user
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
-            Assert.Contains($"Logged in as: {expected}", cut.Markup));
+            Assert.Contains($"Logged in as: {answer}", cut.Markup));
     }
 }

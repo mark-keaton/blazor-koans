@@ -8,6 +8,22 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.Authentication;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                           AUTHORIZE ATTRIBUTE                                ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  The [Authorize] attribute restricts access to components and pages based    ║
+/// ║  on authentication and authorization requirements.                           ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  @attribute [Authorize]                                                │  ║
+/// ║  │  @page "/protected"                                                    │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  <h1>Protected Content</h1>                                            │  ║
+/// ║  │  <p>Only authenticated users can see this.</p>                         │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class C_AuthorizeAttribute : BunitContext
 {
     public C_AuthorizeAttribute()
@@ -24,12 +40,20 @@ public class C_AuthorizeAttribute : BunitContext
     [Trait("Category", "Advanced")]
     public void Authorize_attribute_restricts_page_access()
     {
-        // ABOUT: The [Authorize] attribute on a component requires authentication
-        // to access that page.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: The [Authorize] Attribute
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // The [Authorize] attribute on a component requires authentication to
+        // access that page. When present and the user is authenticated, the
+        // component's content renders normally.
+        //
+        // EXERCISE: Does ProtectedPage render "Welcome" for an authenticated user?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Does the ProtectedPage component have the [Authorize] attribute?
-        // Check the component definition.
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering ProtectedPage with authenticated user
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Frank");
 
@@ -46,21 +70,35 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does the markup contain "Welcome"?              ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        // If [Authorize] is present and user is authenticated, content should render
-        Assert.Equal(expected, cut.Markup.Contains("Welcome"));
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: If [Authorize] is present and user is authenticated, content renders
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Markup.Contains("Welcome"));
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Authorized_users_can_access_protected_pages()
     {
-        // ABOUT: Users who are authenticated can access [Authorize] protected pages.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Accessing Protected Pages
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Users who are authenticated can access [Authorize] protected pages.
+        // The component can access the user's identity to display personalized
+        // content like a welcome message with the user's name.
+        //
+        // EXERCISE: What name is displayed when user is set to "Grace"?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Authenticate a user and render ProtectedPage.
-        // What message is displayed?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering ProtectedPage with user "Grace"
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Grace");
 
@@ -77,20 +115,35 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What username is displayed in the welcome?      ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains($"Welcome, {expected}!", cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The welcome message should include the user's name
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains($"Welcome, {answer}!", cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Authorize_attribute_works_with_AuthorizeView()
     {
-        // ABOUT: [Authorize] on the component and <AuthorizeView> inside work together.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Combining [Authorize] with AuthorizeView
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // [Authorize] on the component and <AuthorizeView> inside work together.
+        // The attribute protects the entire page while AuthorizeView can show
+        // different content sections based on roles or policies.
+        //
+        // EXERCISE: Does the Authorized section render for user "Hank"?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Render ProtectedPage with authenticated user.
-        // Does the Authorized section render?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering ProtectedPage with user "Hank"
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetAuthenticatedUser("Hank");
 
@@ -107,21 +160,34 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = false;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - Does the markup contain "Welcome"?              ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = false;
 
-        Assert.Equal(expected, cut.Markup.Contains("Welcome"));
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The Authorized section should render
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal(answer, cut.Markup.Contains("Welcome"));
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void Unauthenticated_users_see_login_message()
     {
-        // ABOUT: When unauthenticated users try to access protected pages,
-        // they see the NotAuthorized content.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: NotAuthorized Content for Protected Pages
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // When unauthenticated users try to access protected pages, they see
+        // the NotAuthorized content. This typically prompts them to log in.
+        //
+        // EXERCISE: What message is shown to unauthenticated users?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Render ProtectedPage without authentication.
-        // What message is shown?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - rendering ProtectedPage without authentication
+        // ──────────────────────────────────────────────────────────────────────
         var authProvider = new FakeAuthStateProvider();
         authProvider.SetUnauthenticatedUser();
 
@@ -138,8 +204,16 @@ public class C_AuthorizeAttribute : BunitContext
             builder.CloseComponent();
         });
 
-        var expected = "__";
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What message is shown to unauthenticated users? ║
+        // ║                                                                    ║
+        // ║  HINT: Check the NotAuthorized section of ProtectedPage            ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        Assert.Contains(expected, cut.Markup);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The NotAuthorized content should be displayed
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Contains(answer, cut.Markup);
     }
 }
