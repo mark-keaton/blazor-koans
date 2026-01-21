@@ -1,0 +1,169 @@
+@rendermode InteractiveServer
+@implements IDisposable
+
+<div class="async-demo">
+    <h3>Async/Await Demo</h3>
+
+    @* Section 1: Loading state *@
+    <section class="loading-section mb-4">
+        <h4>Async Data Loading</h4>
+        @if (IsLoading)
+        {
+            <p class="loading-message">Loading data...</p>
+        }
+        else
+        {
+            <p class="loaded-message">Data loaded successfully!</p>
+            <ul>
+                @foreach (var item in _loadedItems)
+                {
+                    <li class="loaded-item">@item</li>
+                }
+            </ul>
+        }
+    </section>
+
+    @* Section 2: Status message *@
+    <section class="status-section mb-4">
+        <h4>Status</h4>
+        <p class="status-message">@_statusMessage</p>
+    </section>
+
+    @* Section 3: Action buttons *@
+    <section class="actions-section mb-4">
+        <h4>Async Actions</h4>
+        <div class="btn-group">
+            <button class="btn btn-primary refresh-button" @onclick="RefreshAsync" disabled="@IsLoading">
+                @(IsLoading ? "Loading..." : "Refresh Data")
+            </button>
+            <button class="btn btn-danger error-button" @onclick="TriggerErrorAsync">
+                Trigger Error
+            </button>
+        </div>
+    </section>
+
+    @* Section 4: Error display *@
+    @if (_hasError)
+    {
+        <section class="error-section mb-4">
+            <div class="error-display error-visible alert alert-danger">
+                <strong>Error:</strong> @_errorMessage
+            </div>
+        </section>
+    }
+
+    @* Section 5: Render tracking *@
+    <section class="render-section mb-4">
+        <h4>Render Information</h4>
+        <p class="render-count">Renders: @_renderCount</p>
+    </section>
+</div>
+
+@code {
+    // Public property for loading state
+    public bool IsLoading { get; private set; } = true;
+
+    // Private fields
+    private List<string> _loadedItems = new();
+    private string _statusMessage = "Initializing...";
+    private bool _hasError;
+    private string _errorMessage = string.Empty;
+    private int _renderCount;
+
+    // Cancellation support
+    private CancellationTokenSource _cts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+        _statusMessage = "Loading data...";
+
+        try
+        {
+            // Simulate async data loading
+            _loadedItems = await SimulateLoadingAsync(_cts.Token);
+            _statusMessage = "Ready";
+        }
+        catch (OperationCanceledException)
+        {
+            _statusMessage = "Loading cancelled";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _renderCount = 1;
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            _renderCount++;
+        }
+    }
+
+    private async Task<List<string>> SimulateLoadingAsync(CancellationToken ct)
+    {
+        // Simulate network delay - in bUnit this completes immediately
+        await Task.Delay(10, ct);
+
+        return new List<string>
+        {
+            "Item A",
+            "Item B",
+            "Item C"
+        };
+    }
+
+    private async Task RefreshAsync()
+    {
+        IsLoading = true;
+        _statusMessage = "Refreshing...";
+        _hasError = false;
+
+        try
+        {
+            await Task.Delay(10, _cts.Token);
+            _loadedItems = await SimulateLoadingAsync(_cts.Token);
+            _statusMessage = "Data refreshed!";
+        }
+        catch (OperationCanceledException)
+        {
+            _statusMessage = "Refresh cancelled";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task TriggerErrorAsync()
+    {
+        try
+        {
+            await Task.Delay(10, _cts.Token);
+            throw new InvalidOperationException("Simulated error for demonstration");
+        }
+        catch (OperationCanceledException)
+        {
+            // Ignore cancellation
+        }
+        catch (Exception ex)
+        {
+            _hasError = true;
+            _errorMessage = ex.Message;
+        }
+    }
+
+    public void Dispose()
+    {
+        // Cancel any pending operations
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+}

@@ -1,0 +1,166 @@
+@rendermode InteractiveServer
+
+<div class="loop-demo">
+    <h3>Loop Demo</h3>
+
+    @* Section 1: Basic @foreach *@
+    <section class="foreach-section">
+        <h4>Basic Foreach</h4>
+        <ul class="items-list">
+            @foreach (var item in Items)
+            {
+                <li class="item">@item</li>
+            }
+        </ul>
+    </section>
+
+    @* Section 2: Foreach with Index using LINQ Select *@
+    <section class="indexed-section">
+        <h4>Numbered List (with Index)</h4>
+        <ul class="numbered-list">
+            @foreach (var (item, index) in Items.Select((value, i) => (value, i)))
+            {
+                <li class="numbered-item">@(index + 1). @item</li>
+            }
+        </ul>
+    </section>
+
+    @* Section 3: @for loop with squares *@
+    <section class="for-section">
+        <h4>Number Squares</h4>
+        <div class="squares-container">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <div class="square-@i square-item">@i squared = @(i * i)</div>
+            }
+        </div>
+    </section>
+
+    @* Section 4: Empty collection handling *@
+    <section class="empty-section">
+        <h4>Empty Collection</h4>
+        @if (EmptyItems.Any())
+        {
+            <ul>
+                @foreach (var item in EmptyItems)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="empty-message">No items to display</p>
+        }
+    </section>
+
+    @* Section 5: Nested loops *@
+    <section class="nested-section">
+        <h4>Categories with Items</h4>
+        <div class="categories">
+            @foreach (var category in Categories)
+            {
+                <div class="category">
+                    <h5 class="category-name">@category.Name</h5>
+                    <ul>
+                        @foreach (var item in category.Items)
+                        {
+                            <li class="nested-item">@item</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </section>
+
+    @* Section 6: @key for efficient updates *@
+    <section class="keyed-section">
+        <h4>Keyed List</h4>
+        <button class="add-item" @onclick="AddItem">Add Item</button>
+        <ul class="keyed-list">
+            @foreach (var item in KeyedItems)
+            {
+                <li @key="item.Id" class="keyed-item" data-id="@item.Id">
+                    <span class="keyed-item-name">@item.Name</span>
+                    <button class="remove-item" @onclick="() => RemoveItem(item.Id)">Remove</button>
+                </li>
+            }
+        </ul>
+    </section>
+</div>
+
+@code {
+    // Basic list for @foreach demonstration
+    public List<string> Items { get; set; } = new()
+    {
+        "Apple",
+        "Banana",
+        "Cherry",
+        "Date"
+    };
+
+    // Empty list to demonstrate empty collection handling
+    public List<string> EmptyItems { get; set; } = new();
+
+    // Nested data structure for nested loops
+    public List<Category> Categories { get; set; } = new()
+    {
+        new Category
+        {
+            Name = "Fruits",
+            Items = new List<string> { "Apple", "Orange", "Grape" }
+        },
+        new Category
+        {
+            Name = "Vegetables",
+            Items = new List<string> { "Carrot", "Broccoli" }
+        },
+        new Category
+        {
+            Name = "Dairy",
+            Items = new List<string> { "Milk", "Cheese", "Yogurt" }
+        }
+    };
+
+    // Keyed items for demonstrating @key directive
+    public List<KeyedItem> KeyedItems { get; set; } = new()
+    {
+        new KeyedItem { Id = 1, Name = "First Item" },
+        new KeyedItem { Id = 2, Name = "Second Item" },
+        new KeyedItem { Id = 3, Name = "Third Item" }
+    };
+
+    private int _nextId = 4;
+
+    private void AddItem()
+    {
+        // Add new item to the BEGINNING of the list to demonstrate @key behavior
+        KeyedItems.Insert(0, new KeyedItem
+        {
+            Id = _nextId++,
+            Name = $"New Item {_nextId - 1}"
+        });
+    }
+
+    private void RemoveItem(int id)
+    {
+        var item = KeyedItems.FirstOrDefault(x => x.Id == id);
+        if (item != null)
+        {
+            KeyedItems.Remove(item);
+        }
+    }
+
+    // Supporting classes
+    public class Category
+    {
+        public string Name { get; set; } = string.Empty;
+        public List<string> Items { get; set; } = new();
+    }
+
+    public class KeyedItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
+}

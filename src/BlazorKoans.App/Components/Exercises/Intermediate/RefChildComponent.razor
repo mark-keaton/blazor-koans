@@ -1,0 +1,39 @@
+@rendermode InteractiveServer
+
+<div class="ref-child-component border p-3 mb-2">
+    <h5>Child Component</h5>
+    <p>Name: <span class="display-name">@DisplayName</span></p>
+    <p>Counter: <span class="counter-value">@_counter</span></p>
+</div>
+
+@code {
+    [Parameter]
+    public string DisplayName { get; set; } = "Child";
+
+    private int _counter = 0;
+
+    // Public method that can be called via @ref
+    public void UpdateName(string newName)
+    {
+        DisplayName = newName;
+        StateHasChanged();
+    }
+
+    // Public method to increment counter
+    public void IncrementCounter()
+    {
+        _counter++;
+        StateHasChanged();
+    }
+
+    // Public method to reset state
+    public void Reset()
+    {
+        _counter = 0;
+        DisplayName = "Child";
+        StateHasChanged();
+    }
+
+    // Public property to expose counter value
+    public int Counter => _counter;
+}

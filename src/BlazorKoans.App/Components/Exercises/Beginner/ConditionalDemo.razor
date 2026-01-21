@@ -1,0 +1,111 @@
+@rendermode InteractiveServer
+
+<div class="conditional-demo">
+    <h3>Conditional Rendering Demo</h3>
+
+    @* Section 1: Basic @if/@else for auth state *@
+    <section class="auth-section">
+        <h4>Authentication Status</h4>
+        @if (IsLoggedIn)
+        {
+            <p class="auth-message">Welcome back!</p>
+        }
+        else
+        {
+            <p class="auth-message">Please log in</p>
+        }
+        <button class="toggle-login" @onclick="ToggleLogin">Toggle Login</button>
+    </section>
+
+    @* Section 2: @else if for role-based rendering *@
+    <section class="role-section">
+        <h4>User Role</h4>
+        @if (UserRole == "admin")
+        {
+            <span class="role-badge admin">Administrator</span>
+        }
+        else if (UserRole == "moderator")
+        {
+            <span class="role-badge moderator">Moderator</span>
+        }
+        else if (UserRole == "premium")
+        {
+            <span class="role-badge premium">Premium User</span>
+        }
+        else
+        {
+            <span class="role-badge user">Standard User</span>
+        }
+    </section>
+
+    @* Section 3: Ternary expression *@
+    <section class="count-section">
+        <h4>Item Count Status</h4>
+        <p class="count-status">@(ItemCount == 0 ? "Empty" : "Has items")</p>
+        <p class="count-value">Count: @ItemCount</p>
+    </section>
+
+    @* Section 4: Null check *@
+    <section class="user-section">
+        <h4>User Information</h4>
+        @if (UserName != null)
+        {
+            <div class="user-info">
+                <p>Username: @UserName</p>
+            </div>
+        }
+        else
+        {
+            <p class="no-user">No user data available</p>
+        }
+    </section>
+
+    @* Section 5: Conditional CSS class *@
+    <section class="items-section">
+        <h4>Item Container</h4>
+        <div class="item-container @(ItemCount > 0 ? "has-items" : "empty")">
+            @if (ItemCount > 0)
+            {
+                <p>Container has @ItemCount item(s)</p>
+            }
+            else
+            {
+                <p>Container is empty</p>
+            }
+        </div>
+    </section>
+
+    @* Section 6: Multiple conditions with && *@
+    <section class="premium-section">
+        <h4>Premium Content</h4>
+        @if (IsLoggedIn && UserRole == "premium")
+        {
+            <div class="premium-content">
+                <p>Welcome to exclusive premium content!</p>
+            </div>
+        }
+        else
+        {
+            <p class="premium-locked">Premium content is locked</p>
+        }
+    </section>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsLoggedIn { get; set; } = false;
+
+    [Parameter]
+    public string UserRole { get; set; } = "user";
+
+    [Parameter]
+    public int ItemCount { get; set; } = 0;
+
+    [Parameter]
+    public string? UserName { get; set; } = null;
+
+    private void ToggleLogin()
+    {
+        IsLoggedIn = !IsLoggedIn;
+    }
+}

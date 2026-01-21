@@ -1,0 +1,85 @@
+@rendermode InteractiveServer
+
+<div class="ref-demo">
+    <h3>Component Reference Demo</h3>
+
+    @* Section 1: Basic component reference usage *@
+    <section class="basic-ref-section mb-4">
+        <h4>Basic @@ref Usage</h4>
+        <RefChildComponent @ref="_childRef" />
+
+        <p>Child's DisplayName: <span class="child-name">@(_childRef?.DisplayName ?? "Not available")</span></p>
+        <p>Child's Counter: <span class="child-counter">@(_childRef?.Counter.ToString() ?? "0")</span></p>
+    </section>
+
+    @* Section 2: Calling methods on reference *@
+    <section class="method-calls-section mb-4">
+        <h4>Calling Methods via @@ref</h4>
+        <div class="btn-group">
+            <button class="btn btn-primary update-name" @onclick="UpdateChildName">Update Child Name</button>
+            <button class="btn btn-secondary increment-counter" @onclick="IncrementChildCounter">Increment Counter</button>
+            <button class="btn btn-warning reset-child" @onclick="ResetChild">Reset Child</button>
+        </div>
+    </section>
+
+    @* Section 3: Ref timing information *@
+    <section class="ref-timing-section mb-4">
+        <h4>Reference Timing</h4>
+        <p>Was ref null in OnInitialized? <span class="ref-null-in-init">@_wasNullInInit</span></p>
+        <p>Has ElementReference Id? <span class="has-element-ref">@(!string.IsNullOrEmpty(_inputRef.Id))</span></p>
+        <input @ref="_inputRef" type="text" class="form-control input-with-ref" placeholder="Input with ref" />
+    </section>
+
+    @* Section 4: Multiple refs *@
+    <section class="multiple-refs-section mb-4">
+        <h4>Multiple Component References</h4>
+        <RefChildComponent @ref="_firstChild" DisplayName="First Child" />
+        <RefChildComponent @ref="_secondChild" DisplayName="Second Child" />
+    </section>
+</div>
+
+@code {
+    // Component reference - null until after first render
+    private RefChildComponent? _childRef;
+
+    // Multiple component references
+    private RefChildComponent? _firstChild;
+    private RefChildComponent? _secondChild;
+
+    // Element reference for HTML elements
+    private ElementReference _inputRef;
+
+    // Tracking for timing demonstration
+    private bool _wasNullInInit;
+
+    protected override void OnInitialized()
+    {
+        // At this point, ref has not been populated yet
+        _wasNullInInit = _childRef == null;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Now the refs are populated
+            StateHasChanged();
+        }
+    }
+
+    private void UpdateChildName()
+    {
+        // Call method on the child component
+        _childRef?.UpdateName("Updated via ref");
+    }
+
+    private void IncrementChildCounter()
+    {
+        _childRef?.IncrementCounter();
+    }
+
+    private void ResetChild()
+    {
+        _childRef?.Reset();
+    }
+}
