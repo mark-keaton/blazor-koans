@@ -1,5 +1,6 @@
 using Bunit;
 using BlazorKoans.App.Components.Exercises.Intermediate;
+using Microsoft.AspNetCore.Components;
 using Xunit;
 
 namespace BlazorKoans.Tests.Intermediate._09_TemplatedComponents;
@@ -48,7 +49,7 @@ public class A_RenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "simple-card";
 
         Assert.NotNull(cut.Find($".{expected}"));
     }
@@ -58,15 +59,23 @@ public class A_RenderFragment : BunitContext
     public void NamedRenderFragments_ProvideMultipleSlots()
     {
         // ABOUT: Components can have multiple RenderFragment parameters
-        // with different names. SimpleCard has Header, ChildContent, and Footer.
-        // Each becomes a "slot" where content can be inserted.
+        // with different names. Each becomes a "slot" where content can be inserted.
+        // We can use reflection to discover what RenderFragment parameters a component has.
 
-        // TODO: How many RenderFragment parameters does SimpleCard have?
-        // HINT: Count Header, ChildContent, and Footer
+        // TODO: What are the names of the RenderFragment parameters in SimpleCard?
+        // List them in alphabetical order, separated by commas.
+        // HINT: Look at the [Parameter] properties of type RenderFragment? in SimpleCard.razor
 
-        var expected = 0;
+        var expected = "__";
 
-        Assert.Equal(3, expected);
+        // Use reflection to find all RenderFragment parameters
+        var fragmentNames = typeof(SimpleCard)
+            .GetProperties()
+            .Where(p => p.PropertyType == typeof(RenderFragment))
+            .Select(p => p.Name)
+            .OrderBy(n => n);
+
+        Assert.Equal(expected, string.Join(",", fragmentNames));
     }
 
     [Fact]
