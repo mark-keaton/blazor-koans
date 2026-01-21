@@ -3,37 +3,55 @@
 @using global::Radzen
 @rendermode InteractiveServer
 
+<style>
+    .always-show-scrollbar .rz-data-grid-data {
+        overflow-x: scroll !important;
+    }
+    /* Force scrollbar visible on webkit browsers (Chrome, Safari, Edge) */
+    .always-show-scrollbar .rz-data-grid-data::-webkit-scrollbar {
+        height: 12px;
+        background-color: #f0f0f0;
+    }
+    .always-show-scrollbar .rz-data-grid-data::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 6px;
+    }
+    .always-show-scrollbar .rz-data-grid-data::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+    }
+</style>
+
 <h3>Column Types Demo</h3>
 
-<p><em>Scroll horizontally to see the frozen "Employee Name" column stay in place.</em></p>
+<p><em>Use the horizontal scrollbar below the grid to see the frozen "Employee Name" column stay in place.</em></p>
 
-<div style="max-width: 600px; overflow-x: auto;">
-    <RadzenDataGrid Data="@employees" TItem="Employee" Style="width: 1200px;">
-        <Columns>
-            <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Employee Name" Width="180px" Frozen="true" />
-            <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" Width="200px" />
-            <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" Width="150px" FormatString="{0:C}" TextAlign="global::Radzen.TextAlign.Right" />
-            <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" Width="150px" FormatString="{0:d}" />
-            <RadzenDataGridColumn TItem="Employee" Title="Status" Width="120px">
-                <Template Context="employee">
-                    @if (employee.IsActive)
-                    {
-                        <RadzenBadge BadgeStyle="BadgeStyle.Success" Text="Active" />
-                    }
-                    else
-                    {
-                        <RadzenBadge BadgeStyle="BadgeStyle.Danger" Text="Inactive" />
-                    }
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="150px" Sortable="false">
-                <Template Context="employee">
-                    <RadzenButton Text="Edit" ButtonStyle="global::Radzen.ButtonStyle.Primary" Size="global::Radzen.ButtonSize.Small"
-                                  Click="@(() => EditEmployee(employee.Id))" />
-                </Template>
-            </RadzenDataGridColumn>
-        </Columns>
-    </RadzenDataGrid>
+<div class="always-show-scrollbar">
+<RadzenDataGrid Data="@employees" TItem="Employee" Style="max-width: 600px; height: 250px;" ColumnWidth="200px">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Employee Name" Width="180px" Frozen="true" />
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" Width="250px" />
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" Width="180px" FormatString="{0:C}" TextAlign="global::Radzen.TextAlign.Right" />
+        <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" Width="180px" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="Employee" Title="Status" Width="150px">
+            <Template Context="employee">
+                @if (employee.IsActive)
+                {
+                    <RadzenBadge BadgeStyle="BadgeStyle.Success" Text="Active" />
+                }
+                else
+                {
+                    <RadzenBadge BadgeStyle="BadgeStyle.Danger" Text="Inactive" />
+                }
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="180px" Sortable="false">
+            <Template Context="employee">
+                <RadzenButton Text="Edit" ButtonStyle="global::Radzen.ButtonStyle.Primary" Size="global::Radzen.ButtonSize.Small"
+                              Click="@(() => EditEmployee(employee.Id))" />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
 </div>
 
 <div class="status-panel">
