@@ -7,41 +7,83 @@ using Xunit;
 
 namespace BlazorKoans.Tests.Advanced.HttpClients;
 
+/// <summary>
+/// ╔══════════════════════════════════════════════════════════════════════════════╗
+/// ║                     INJECTING HTTP CLIENT IN BLAZOR                          ║
+/// ╠══════════════════════════════════════════════════════════════════════════════╣
+/// ║  HttpClient is how Blazor apps communicate with web APIs.                    ║
+/// ║  It's injected via DI and typically wrapped in service classes.              ║
+/// ║                                                                              ║
+/// ║  ┌────────────────────────────────────────────────────────────────────────┐  ║
+/// ║  │  @inject HttpClient Http                                             │  ║
+/// ║  │  @inject IWeatherService WeatherService                              │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  // Or in code-behind:                                                │  ║
+/// ║  │  [Inject] public HttpClient Http { get; set; }                        │  ║
+/// ║  │                                                                        │  ║
+/// ║  │  // Best practice: wrap in service class                              │  ║
+/// ║  │  public class WeatherService : IWeatherService { ... }                │  ║
+/// ║  └────────────────────────────────────────────────────────────────────────┘  ║
+/// ╚══════════════════════════════════════════════════════════════════════════════╝
+/// </summary>
 public class A_InjectingHttpClient : BunitContext
 {
     [Fact]
     [Trait("Category", "Advanced")]
     public void HttpClient_can_be_injected_via_dependency_injection()
     {
-        // ABOUT: HttpClient is a core service in Blazor for making HTTP requests.
-        // It should be injected using the @inject directive or [Inject] attribute.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: The @inject Directive for HttpClient
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // HttpClient is injected using the same directive as other services.
+        // In .razor files: @inject HttpClient Http
+        //
+        // EXERCISE: What directive is used? (without the @ symbol)
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: What directive is used to inject HttpClient in a Blazor component?
-        // Replace "__" with the correct directive (without the @ symbol)
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - What directive injects services?                 ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = "__";
 
-        var expected = "__";
-
-        Assert.Equal("inject", expected);
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The directive is "inject"
+        // ──────────────────────────────────────────────────────────────────────
+        Assert.Equal("inject", answer);
     }
 
     [Fact]
     [Trait("Category", "Advanced")]
     public void IWeatherService_can_be_injected_and_used()
     {
-        // ABOUT: Custom services like IWeatherService can be registered with DI
-        // and injected into components just like HttpClient.
+        // ═══════════════════════════════════════════════════════════════════════
+        // LESSON: Using Custom Service Wrappers
+        // ═══════════════════════════════════════════════════════════════════════
+        //
+        // Custom services like IWeatherService wrap HttpClient logic.
+        // FakeWeatherService returns a predefined set of forecasts for testing.
+        //
+        // EXERCISE: How many forecasts does FakeWeatherService return?
+        // ═══════════════════════════════════════════════════════════════════════
 
-        // TODO: Register a FakeWeatherService and render WeatherDisplay component.
-        // How many forecasts does the FakeWeatherService return by default?
-
+        // ──────────────────────────────────────────────────────────────────────
+        // ARRANGE: Setup - registering fake service and rendering
+        // ──────────────────────────────────────────────────────────────────────
         Services.AddSingleton<IWeatherService>(new FakeWeatherService());
 
         var cut = Render<WeatherDisplay>();
 
-        var expected = 0;
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  ✏️  YOUR ANSWER - How many forecasts does FakeWeatherService return?║
+        // ╚════════════════════════════════════════════════════════════════════╝
+        var answer = 0;
 
+        // ──────────────────────────────────────────────────────────────────────
+        // VERIFY: The count should match the fake service's return
+        // ──────────────────────────────────────────────────────────────────────
         cut.WaitForAssertion(() =>
-            cut.MarkupMatches($"<h3>Weather Display</h3><div>Count: {expected}</div>"));
+            cut.MarkupMatches($"<h3>Weather Display</h3><div>Count: {answer}</div>"));
     }
 
     [Fact]
