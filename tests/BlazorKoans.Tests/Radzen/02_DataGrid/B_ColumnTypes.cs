@@ -22,14 +22,15 @@ public class B_ColumnTypes : BunitContext
         // "{0:C}" formats as currency, "{0:N2}" as number with 2 decimals.
         // The {0} represents the property value.
 
-        // TODO: What format string creates currency format (e.g., "$95,000.00")?
-        // HINT: C is for Currency
+        // TODO: What symbol appears in the Salary column due to currency formatting?
+        // HINT: Currency format adds a symbol before the number
 
         var cut = Render<ColumnTypesDemo>();
 
+        var salaryCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[2];
         var expected = "__";
 
-        Assert.Equal("{0:C}", expected);
+        Assert.Contains(expected, salaryCell?.TextContent ?? "");
     }
 
     [Fact]
@@ -38,16 +39,17 @@ public class B_ColumnTypes : BunitContext
     {
         // ABOUT: DateTime values can be formatted using standard date format strings.
         // "{0:d}" shows short date, "{0:yyyy-MM-dd}" shows custom format.
+        // The demo uses "{0:d}" which renders as a short date like "3/15/2020".
 
-        // TODO: What format string shows date as "MM/dd/yyyy"?
+        // TODO: What separator character appears between date parts?
+        // HINT: Short date format uses this character between month, day, year
 
         var cut = Render<ColumnTypesDemo>();
 
-        var salaryCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[2];
-        var expected = "__"; // Should match the format used
+        var hireDateCell = cut.FindAll("tbody tr")[0].QuerySelectorAll("td")[3];
+        var expected = "__";
 
-        // The cell should contain a formatted dollar amount
-        Assert.Contains("$", salaryCell?.TextContent ?? "");
+        Assert.Contains(expected, hireDateCell?.TextContent ?? "");
     }
 
     [Fact]

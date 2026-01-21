@@ -19,7 +19,7 @@
     [Parameter]
     public bool UseEmptyData { get; set; }
 
-    private global::Radzen.Blazor.RadzenDataGrid<Employee>? grid;
+    private RadzenDataGrid<Employee>? grid;
     private List<Employee> employees = new();
 
     protected override void OnInitialized()
