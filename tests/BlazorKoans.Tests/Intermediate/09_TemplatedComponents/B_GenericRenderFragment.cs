@@ -28,7 +28,7 @@ public class B_GenericRenderFragment : BunitContext
         // TODO: In ItemList, what is the parameter name for the generic template?
         // HINT: Look at the [Parameter] declarations in ItemList.razor
 
-        var expected = "__";
+        var expected = "ItemTemplate";
 
         Assert.Equal("ItemTemplate", expected);
     }
@@ -46,7 +46,7 @@ public class B_GenericRenderFragment : BunitContext
         var cut = Render<TemplatedComponentDemo>();
 
         // The demo has a section using default context name
-        var expected = "__";
+        var expected = "context";
 
         var defaultContextSpan = cut.Find(".default-context");
         Assert.NotNull(defaultContextSpan);
@@ -65,7 +65,7 @@ public class B_GenericRenderFragment : BunitContext
         // what name is used for the context?
         // HINT: Look for Context="..." in TemplatedComponentDemo.razor
 
-        var expected = "__";
+        var expected = "product";
 
         Assert.Equal("product", expected);
     }
@@ -80,7 +80,7 @@ public class B_GenericRenderFragment : BunitContext
 
         // TODO: What attribute on ItemList specifies the item type?
 
-        var expected = "__";
+        var expected = "TItem";
 
         Assert.Equal("TItem", expected);
     }
@@ -98,7 +98,7 @@ public class B_GenericRenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = 0;
+        var expected = 3;
 
         var items = cut.FindAll(".item-list-item");
         Assert.Equal(expected, items.Count / 2); // Divided by 2 because there are 2 ItemLists
@@ -117,7 +117,7 @@ public class B_GenericRenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "Laptop";
 
         var firstProduct = cut.Find(".product-name");
         Assert.Contains(expected, firstProduct.TextContent);
@@ -134,7 +134,7 @@ public class B_GenericRenderFragment : BunitContext
         // TODO: How do you invoke a RenderFragment<T> in Razor markup?
         // HINT: Look at how ItemList calls ItemTemplate in the foreach loop
 
-        var expected = "__"; // Something like "@Template(item)" or "@Template"
+        var expected = "@ItemTemplate(item)"; // Something like "@Template(item)" or "@Template"
 
         // The syntax is @ParameterName(contextValue)
         Assert.Equal("@ItemTemplate(item)", expected);
@@ -150,7 +150,7 @@ public class B_GenericRenderFragment : BunitContext
 
         // TODO: What Razor directive declares a type parameter?
 
-        var expected = "__";
+        var expected = "@typeparam";
 
         Assert.Equal("@typeparam", expected);
     }
@@ -166,7 +166,7 @@ public class B_GenericRenderFragment : BunitContext
         // TODO: What short name does the "Full Template" section use?
         // HINT: Look at the last ItemList in TemplatedComponentDemo
 
-        var expected = "__";
+        var expected = "p";
 
         Assert.Equal("p", expected);
     }
@@ -184,7 +184,7 @@ public class B_GenericRenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "item-list-header";
 
         var header = cut.Find($".{expected}");
         Assert.Contains("Product Catalog", header.TextContent);

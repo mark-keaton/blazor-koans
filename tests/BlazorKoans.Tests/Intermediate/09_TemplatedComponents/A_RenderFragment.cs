@@ -30,7 +30,7 @@ public class A_RenderFragment : BunitContext
         // TODO: What is the parameter name for content placed between component tags?
         // HINT: It's a special conventional name that Blazor recognizes
 
-        var expected = "__";
+        var expected = "ChildContent";
 
         Assert.Equal("ChildContent", expected);
     }
@@ -48,7 +48,7 @@ public class A_RenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "simple-card-body";
 
         Assert.NotNull(cut.Find($".{expected}"));
     }
@@ -64,7 +64,7 @@ public class A_RenderFragment : BunitContext
         // TODO: How many RenderFragment parameters does SimpleCard have?
         // HINT: Count Header, ChildContent, and Footer
 
-        var expected = 0;
+        var expected = 3;
 
         Assert.Equal(3, expected);
     }
@@ -81,7 +81,7 @@ public class A_RenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "simple-card-header";
 
         var header = cut.Find($".{expected}");
         Assert.Contains("Card Header", header.TextContent);
@@ -98,7 +98,7 @@ public class A_RenderFragment : BunitContext
 
         var cut = Render<TemplatedComponentDemo>();
 
-        var expected = "__";
+        var expected = "simple-card-footer";
 
         var footer = cut.Find($".{expected}");
         Assert.Contains("Card Footer", footer.TextContent);
@@ -115,7 +115,7 @@ public class A_RenderFragment : BunitContext
         // TODO: What C# operator checks if a RenderFragment is not null?
         // HINT: Look at the @if conditions in SimpleCard.razor
 
-        var expected = "__"; // "!=" or "!!"
+        var expected = "!="; // "!=" or "!!"
 
         Assert.Equal("!=", expected);
     }
@@ -130,7 +130,7 @@ public class A_RenderFragment : BunitContext
 
         // TODO: What is the full type name for a non-generic render fragment?
 
-        var expected = "__";
+        var expected = "RenderFragment";
 
         Assert.Equal("RenderFragment", expected);
     }
