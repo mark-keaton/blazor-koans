@@ -108,13 +108,15 @@ public class E_Paging : BunitContext
     public void Paging_PagerPosition_ControlsLocation()
     {
         // ABOUT: PagerPosition controls where the pager appears:
-        // PagerPosition.Bottom (default), Top, or Both.
+        // - PagerPosition.Bottom (default)
+        // - PagerPosition.Top
+        // - PagerPosition.TopAndBottom
 
-        // TODO: What is the default PagerPosition?
+        // TODO: What PagerPosition value shows the pager at both top and bottom?
 
         var expected = "__";
 
-        Assert.Equal("Bottom", expected);
+        Assert.Equal("TopAndBottom", expected);
     }
 
     [Fact]

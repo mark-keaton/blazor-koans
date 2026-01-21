@@ -8,8 +8,8 @@
 <RadzenDataGrid Data="@employees" TItem="Employee"
                 AllowPaging="true"
                 PageSize="3"
-                PageSizeOptions="@(new int[] { 3, 5, 10 })"
-                PagerPosition="PagerPosition.Bottom"
+                PageSizeOptions="@([ 3, 5, 10 ])"
+                PagerPosition="PagerPosition.TopAndBottom"
                 ShowPagingSummary="true"
                 Style="width: 100%">
     <Columns>
