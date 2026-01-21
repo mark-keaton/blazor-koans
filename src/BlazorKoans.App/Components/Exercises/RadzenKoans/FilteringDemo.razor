@@ -20,10 +20,18 @@
         <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department" />
         <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right" />
         <RadzenDataGridColumn TItem="Employee" Property="HireDate" Title="Hire Date" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="Employee" Title="Active" Width="100px">
+        <RadzenDataGridColumn TItem="Employee" Property="IsActive" Title="Active" Width="120px"
+                              FilterValue="@activeFilter" FilterOperator="FilterOperator.Equals">
             <Template Context="employee">
                 @(employee.IsActive ? "Yes" : "No")
             </Template>
+            <FilterTemplate>
+                <RadzenDropDown @bind-Value="@activeFilter" Data="@activeOptions"
+                               TextProperty="Text" ValueProperty="Value"
+                               AllowClear="true" Placeholder="All"
+                               Style="width: 100%"
+                               Change="@(args => grid?.Reload())" />
+            </FilterTemplate>
         </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
@@ -36,6 +44,13 @@
     private RadzenDataGrid<Employee>? grid;
     private FilterMode filterMode = FilterMode.Simple;
     private string lastFilter = "None";
+    private bool? activeFilter;
+
+    private List<object> activeOptions = new()
+    {
+        new { Text = "Yes", Value = true },
+        new { Text = "No", Value = false }
+    };
 
     private List<Employee> employees = new()
     {
