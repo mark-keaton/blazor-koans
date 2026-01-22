@@ -98,18 +98,20 @@ public class F_Selection : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void Selection_RowSelect_EventFires()
+    public void Selection_RowSelect_ForSideEffects()
     {
-        // ABOUT: The RowSelect event fires when a row is selected.
-        // Use it to react to selections - load details, enable buttons, etc.
-        // The event parameter is TItem (e.g., Employee).
+        // ABOUT: @bind-Value is sufficient for tracking the selected item.
+        // Use RowSelect when you need side effects: navigation, API calls, etc.
+        //
+        // Example: Navigate to employee detail page when row is clicked:
+        //   RowSelect="@(employee => Navigation.NavigateTo($"/employees/{employee.Id}"))"
 
-        // TODO: What parameter type does RowSelect receive?
-        // HINT: Look at the OnRowSelect method signature in SelectionDemo
+        // TODO: For simply displaying the selected employee's name,
+        // which approach is preferred: "@bind-Value" or "RowSelect"?
 
         var expected = "__";
 
-        Assert.Equal("Employee", expected);
+        Assert.Equal("@bind-Value", expected);
     }
 
     [Fact]
