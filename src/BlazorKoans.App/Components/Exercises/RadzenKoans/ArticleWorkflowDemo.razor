@@ -1,0 +1,420 @@
+@using BlazorKoans.App.Models
+@using global::Radzen.Blazor
+@using global::Radzen
+@using Stateless
+@using Stateless.Graph
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+
+<h3>Article Publishing Workflow</h3>
+
+<p>This state machine models an article publishing workflow based on event storming.
+It enforces validation rules and controls when articles can be previewed or published.</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <RadzenCard>
+            <h4>Article Editor</h4>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Title" />
+                <RadzenTextBox @bind-Value="_article.Title" Style="width: 100%"
+                               Placeholder="Enter title (10-100 characters)"
+                               Change="@OnContentChanged" />
+                @if (!string.IsNullOrEmpty(_titleError))
+                {
+                    <small class="text-danger">@_titleError</small>
+                }
+            </div>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Summary" />
+                <RadzenTextArea @bind-Value="_article.Summary" Style="width: 100%" Rows="3"
+                                Placeholder="Enter summary (20-500 characters)"
+                                Change="@OnContentChanged" />
+                @if (!string.IsNullOrEmpty(_summaryError))
+                {
+                    <small class="text-danger">@_summaryError</small>
+                }
+            </div>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Body" />
+                <RadzenTextArea @bind-Value="_article.Body" Style="width: 100%" Rows="5"
+                                Placeholder="Enter article body (minimum 50 characters)"
+                                Change="@OnContentChanged" />
+                @if (!string.IsNullOrEmpty(_bodyError))
+                {
+                    <small class="text-danger">@_bodyError</small>
+                }
+            </div>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Topics" />
+                <RadzenDropDown @bind-Value="_article.Topics" Data="@_availableTopics"
+                                Multiple="true" Style="width: 100%"
+                                Placeholder="Select at least one topic"
+                                Change="@OnContentChanged" />
+                @if (!string.IsNullOrEmpty(_topicsError))
+                {
+                    <small class="text-danger">@_topicsError</small>
+                }
+            </div>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Publication Date (optional)" />
+                <RadzenDatePicker @bind-Value="_article.PublishDate" Style="width: 100%"
+                                  Placeholder="Leave empty for immediate"
+                                  Change="@OnContentChanged" />
+                @if (!string.IsNullOrEmpty(_dateError))
+                {
+                    <small class="text-danger">@_dateError</small>
+                }
+            </div>
+
+            <div class="mb-3">
+                <RadzenLabel Text="Expiration Date (optional)" />
+                <RadzenDatePicker @bind-Value="_article.ExpirationDate" Style="width: 100%"
+                                  Placeholder="Leave empty for no expiration"
+                                  Change="@OnContentChanged" />
+            </div>
+
+            <div class="mb-3">
+                <RadzenCheckBox @bind-Value="_article.HasThumbnail" Change="@((bool _) => OnContentChanged())" />
+                <RadzenLabel Text="Has thumbnail image" Style="margin-left: 8px" />
+                @if (!_article.HasThumbnail)
+                {
+                    <small class="text-muted d-block">First topic image will be used</small>
+                }
+            </div>
+        </RadzenCard>
+    </div>
+
+    <div class="col-md-6">
+        <RadzenCard>
+            <h4>Workflow Actions</h4>
+
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <RadzenButton Text="Save Draft" Icon="save"
+                              Click="@SaveDraft"
+                              Disabled="@(!_machine.CanFire(Trigger.SaveDraft))"
+                              ButtonStyle="ButtonStyle.Secondary" />
+
+                <RadzenButton Text="Validate" Icon="check_circle"
+                              Click="@Validate"
+                              Disabled="@(!_machine.CanFire(Trigger.Validate))"
+                              ButtonStyle="ButtonStyle.Info" />
+
+                <RadzenButton Text="Preview" Icon="visibility"
+                              Click="@Preview"
+                              Disabled="@(!_machine.CanFire(Trigger.Preview))"
+                              ButtonStyle="ButtonStyle.Warning" />
+
+                <RadzenButton Text="Publish" Icon="publish"
+                              Click="@Publish"
+                              Disabled="@(!_machine.CanFire(Trigger.Publish))"
+                              ButtonStyle="ButtonStyle.Success" />
+
+                <RadzenButton Text="Edit" Icon="edit"
+                              Click="@Edit"
+                              Disabled="@(!_machine.CanFire(Trigger.Edit))"
+                              ButtonStyle="ButtonStyle.Light" />
+
+                <RadzenButton Text="Reset" Icon="refresh"
+                              Click="@Reset"
+                              ButtonStyle="ButtonStyle.Danger" />
+            </div>
+
+            <div class="status-panel p-3 border rounded bg-light">
+                <p><strong>Current State:</strong> <span class="badge bg-primary">@_machine.State</span></p>
+                <p><strong>Is Valid:</strong> @(_isValid ? "✅ Yes" : "❌ No")</p>
+                <p><strong>Last Action:</strong> @_lastAction</p>
+                <p><strong>Validation Errors:</strong> @(_validationErrors.Any() ? string.Join(", ", _validationErrors) : "None")</p>
+            </div>
+
+            <div class="mt-3 p-3 border rounded">
+                <h5>Permitted Actions</h5>
+                <ul class="mb-0">
+                    @foreach (var trigger in _machine.PermittedTriggers)
+                    {
+                        <li>@trigger</li>
+                    }
+                </ul>
+            </div>
+        </RadzenCard>
+    </div>
+</div>
+
+<RadzenButton Text="@(_showGraph ? "Hide State Diagram" : "Show State Diagram")"
+              Icon="@(_showGraph ? "visibility_off" : "visibility")"
+              ButtonStyle="ButtonStyle.Secondary"
+              Click="@ToggleGraph" Style="margin-top: 1rem" />
+
+@if (_showGraph)
+{
+    <div class="mt-3 p-3 border rounded bg-light">
+        <h5>Article Workflow State Machine</h5>
+        <pre class="mermaid">@MermaidGraph.Format(_machine.GetInfo())</pre>
+        <hr />
+        <details>
+            <summary>Raw Mermaid Code</summary>
+            <pre><code>@MermaidGraph.Format(_machine.GetInfo())</code></pre>
+        </details>
+        <details>
+            <summary>DOT Graph (Graphviz)</summary>
+            <pre><code>@UmlDotGraph.Format(_machine.GetInfo())</code></pre>
+        </details>
+    </div>
+}
+
+<div class="mt-3 p-3 border rounded bg-light">
+    <h5>Workflow Rules (from Event Storming)</h5>
+    <ul>
+        <li><strong>Title:</strong> Must be 10-100 characters</li>
+        <li><strong>Summary:</strong> Must be 20-500 characters</li>
+        <li><strong>Body:</strong> Must be at least 50 characters</li>
+        <li><strong>Topics:</strong> At least 1 topic must be selected</li>
+        <li><strong>Dates:</strong> Expiration date must be after publication date</li>
+        <li><strong>Save Draft:</strong> Always allowed (even when invalid)</li>
+        <li><strong>Preview:</strong> Only when article is valid</li>
+        <li><strong>Publish:</strong> Only when article is valid</li>
+    </ul>
+</div>
+
+@code {
+    // States based on the event storming workflow
+    public enum State
+    {
+        Draft,           // Initial state - editing content
+        Validating,      // Running validation
+        Invalid,         // Validation failed
+        Valid,           // Validation passed
+        Previewing,      // Viewing preview
+        Published        // Article is live
+    }
+
+    // Triggers (actions/commands from event storming)
+    public enum Trigger
+    {
+        Edit,            // Make changes to content
+        SaveDraft,       // Save current state as draft
+        Validate,        // Run validation rules
+        ValidationFailed,
+        ValidationPassed,
+        Preview,         // Preview the article
+        Publish,         // Publish the article
+        ClosePreview
+    }
+
+    // Article model
+    public class DraftArticle
+    {
+        public string Title { get; set; } = "";
+        public string Summary { get; set; } = "";
+        public string Body { get; set; } = "";
+        public IEnumerable<string> Topics { get; set; } = Enumerable.Empty<string>();
+        public DateTime? PublishDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
+        public bool HasThumbnail { get; set; }
+    }
+
+    private StateMachine<State, Trigger> _machine = null!;
+    private DraftArticle _article = new();
+    private bool _isValid = false;
+    private List<string> _validationErrors = new();
+    private string _lastAction = "New draft created";
+    private bool _showGraph = false;
+
+    // Validation error messages
+    private string? _titleError;
+    private string? _summaryError;
+    private string? _bodyError;
+    private string? _topicsError;
+    private string? _dateError;
+
+    private readonly List<string> _availableTopics = new()
+    {
+        "Bill", "Vote", "Action Alert", "Poll", "Legislature"
+    };
+
+    protected override void OnInitialized()
+    {
+        _machine = new StateMachine<State, Trigger>(State.Draft);
+
+        // Draft state - can save, validate, or edit
+        _machine.Configure(State.Draft)
+            .Permit(Trigger.Validate, State.Validating)
+            .Permit(Trigger.SaveDraft, State.Draft)
+            .OnEntry(() => _lastAction = "Editing draft");
+
+        // Validating state - transitions based on validation result
+        _machine.Configure(State.Validating)
+            .Permit(Trigger.ValidationFailed, State.Invalid)
+            .Permit(Trigger.ValidationPassed, State.Valid)
+            .OnEntry(() => RunValidation());
+
+        // Invalid state - can edit to fix, or save draft anyway
+        _machine.Configure(State.Invalid)
+            .Permit(Trigger.Edit, State.Draft)
+            .Permit(Trigger.SaveDraft, State.Invalid)
+            .Permit(Trigger.Validate, State.Validating)
+            .OnEntry(() => _lastAction = "Validation failed - cannot preview or publish");
+
+        // Valid state - can preview, publish, or continue editing
+        _machine.Configure(State.Valid)
+            .Permit(Trigger.Preview, State.Previewing)
+            .Permit(Trigger.Publish, State.Published)
+            .Permit(Trigger.Edit, State.Draft)
+            .Permit(Trigger.SaveDraft, State.Valid)
+            .OnEntry(() => _lastAction = "Validation passed - ready for preview or publish");
+
+        // Previewing state - can go back to edit, publish, or close
+        _machine.Configure(State.Previewing)
+            .Permit(Trigger.Publish, State.Published)
+            .Permit(Trigger.Edit, State.Draft)
+            .Permit(Trigger.ClosePreview, State.Valid)
+            .OnEntry(() => _lastAction = "Previewing article");
+
+        // Published state - final state, can edit to create new draft
+        _machine.Configure(State.Published)
+            .Permit(Trigger.Edit, State.Draft)
+            .OnEntry(() => _lastAction = "Article published! 🎉");
+
+        _machine.OnTransitioned(t =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    private void RunValidation()
+    {
+        _validationErrors.Clear();
+        _titleError = null;
+        _summaryError = null;
+        _bodyError = null;
+        _topicsError = null;
+        _dateError = null;
+
+        // Title validation (10-100 characters)
+        if (string.IsNullOrWhiteSpace(_article.Title) || _article.Title.Length < 10)
+        {
+            _titleError = "Title must be at least 10 characters";
+            _validationErrors.Add("Title too short");
+        }
+        else if (_article.Title.Length > 100)
+        {
+            _titleError = "Title must be 100 characters or less";
+            _validationErrors.Add("Title too long");
+        }
+
+        // Summary validation (20-500 characters)
+        if (string.IsNullOrWhiteSpace(_article.Summary) || _article.Summary.Length < 20)
+        {
+            _summaryError = "Summary must be at least 20 characters";
+            _validationErrors.Add("Summary too short");
+        }
+        else if (_article.Summary.Length > 500)
+        {
+            _summaryError = "Summary must be 500 characters or less";
+            _validationErrors.Add("Summary too long");
+        }
+
+        // Body validation (minimum 50 characters)
+        if (string.IsNullOrWhiteSpace(_article.Body) || _article.Body.Length < 50)
+        {
+            _bodyError = "Body must be at least 50 characters";
+            _validationErrors.Add("Body too short");
+        }
+
+        // Topics validation (at least 1)
+        if (!_article.Topics.Any())
+        {
+            _topicsError = "Select at least one topic";
+            _validationErrors.Add("No topics selected");
+        }
+
+        // Date validation
+        if (_article.PublishDate.HasValue && _article.ExpirationDate.HasValue)
+        {
+            if (_article.ExpirationDate <= _article.PublishDate)
+            {
+                _dateError = "Expiration date must be after publication date";
+                _validationErrors.Add("Invalid dates");
+            }
+        }
+
+        _isValid = !_validationErrors.Any();
+
+        // Fire appropriate transition
+        if (_isValid)
+        {
+            _machine.Fire(Trigger.ValidationPassed);
+        }
+        else
+        {
+            _machine.Fire(Trigger.ValidationFailed);
+        }
+    }
+
+    private void OnContentChanged()
+    {
+        // When content changes, if we were valid, go back to draft
+        if (_machine.State == State.Valid || _machine.State == State.Previewing)
+        {
+            _machine.Fire(Trigger.Edit);
+        }
+    }
+
+    private void SaveDraft()
+    {
+        _machine.Fire(Trigger.SaveDraft);
+        _lastAction = $"Draft saved at {DateTime.Now:HH:mm:ss}";
+        StateHasChanged();
+    }
+
+    private void Validate()
+    {
+        _machine.Fire(Trigger.Validate);
+    }
+
+    private void Preview()
+    {
+        _machine.Fire(Trigger.Preview);
+    }
+
+    private void Publish()
+    {
+        _machine.Fire(Trigger.Publish);
+    }
+
+    private void Edit()
+    {
+        _machine.Fire(Trigger.Edit);
+    }
+
+    private void Reset()
+    {
+        _article = new DraftArticle();
+        _validationErrors.Clear();
+        _isValid = false;
+        _titleError = null;
+        _summaryError = null;
+        _bodyError = null;
+        _topicsError = null;
+        _dateError = null;
+        _machine = new StateMachine<State, Trigger>(State.Draft);
+        OnInitialized();
+        _lastAction = "Reset - new draft created";
+        StateHasChanged();
+    }
+
+    private async Task ToggleGraph()
+    {
+        _showGraph = !_showGraph;
+        if (_showGraph)
+        {
+            await Task.Delay(100);
+            await JS.InvokeVoidAsync("mermaid.run");
+        }
+    }
+}
