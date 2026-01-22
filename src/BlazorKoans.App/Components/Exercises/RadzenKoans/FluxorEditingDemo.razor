@@ -1,0 +1,117 @@
+@using BlazorKoans.App.Models
+@using BlazorKoans.App.Store.EmployeeEdit
+@using global::Radzen.Blazor
+@using global::Radzen
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
+@rendermode InteractiveServer
+
+<h3>Fluxor Editing Demo</h3>
+
+<p>This demo uses <a href="https://github.com/mrpmorris/Fluxor" target="_blank">Fluxor</a> (Redux pattern)
+to manage editing state. Compare with the Stateless FSM approach.</p>
+
+<RadzenDataGrid @ref="grid" Data="@State.Value.Employees" TItem="Employee"
+                EditMode="DataGridEditMode.Single"
+                RowUpdate="@OnUpdateRow"
+                RowCreate="@OnCreateRow"
+                Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-Value="employee.Name" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-Value="employee.Department" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right">
+            <EditTemplate Context="employee">
+                <RadzenNumeric @bind-Value="employee.Salary" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="200px" Sortable="false" Filterable="false">
+            <Template Context="employee">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                              Disabled="@(!State.Value.CanEdit)" Click="@(() => EditRow(employee))" Text="Edit" />
+            </Template>
+            <EditTemplate Context="employee">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small"
+                              Click="@(() => SaveRow(employee))" Text="Save" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                              Click="@(() => CancelRow(employee))" Text="Cancel" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<RadzenButton Text="Add New Employee" Icon="add" Click="@AddRow"
+              Disabled="@(!State.Value.CanAdd)" Style="margin-top: 1rem" />
+
+<div class="status-panel mt-3">
+    <p><strong>Current Mode:</strong> @State.Value.Mode</p>
+    <p><strong>Last Action:</strong> @State.Value.LastAction</p>
+    <p><strong>Can Edit:</strong> @State.Value.CanEdit | <strong>Can Add:</strong> @State.Value.CanAdd</p>
+</div>
+
+<div class="mt-3 p-3 border rounded bg-light">
+    <h5>Fluxor Pattern</h5>
+    <pre><code>// Action dispatched:
+Dispatcher.Dispatch(new StartEditAction(employee));
+
+// Reducer handles state transition:
+return state with { Mode = EditMode.Editing, CurrentEmployee = employee };
+
+// Component reacts via IState&lt;T&gt;:
+@@State.Value.Mode  // Auto-updates UI</code></pre>
+</div>
+
+@code {
+    [Inject] private IState<EmployeeEditState> State { get; set; } = default!;
+    [Inject] private IDispatcher Dispatcher { get; set; } = default!;
+
+    private RadzenDataGrid<Employee>? grid;
+
+    private async Task EditRow(Employee employee)
+    {
+        if (grid == null) return;
+
+        Dispatcher.Dispatch(new StartEditAction(employee));
+        await grid.EditRow(employee);
+    }
+
+    private async Task AddRow()
+    {
+        if (grid == null) return;
+
+        Dispatcher.Dispatch(new StartAddAction());
+        await grid.InsertRow(State.Value.CurrentEmployee!);
+    }
+
+    private async Task SaveRow(Employee employee)
+    {
+        if (grid == null) return;
+        await grid.UpdateRow(employee);
+    }
+
+    private void CancelRow(Employee employee)
+    {
+        if (grid == null) return;
+
+        grid.CancelEditRow(employee);
+        Dispatcher.Dispatch(new CancelAction());
+    }
+
+    private void OnUpdateRow(Employee employee)
+    {
+        Dispatcher.Dispatch(new SaveAction(employee));
+    }
+
+    private void OnCreateRow(Employee employee)
+    {
+        Dispatcher.Dispatch(new SaveAction(employee));
+    }
+}

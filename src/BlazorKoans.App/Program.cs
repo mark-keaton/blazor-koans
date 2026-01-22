@@ -1,5 +1,6 @@
 using BlazorKoans.App.Components;
 using BlazorKoans.App.Services;
+using Fluxor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddRazorComponents()
 // Register services for DI koans
 builder.Services.AddScoped<IGreetingService, GreetingService>();
 builder.Services.AddScoped<ICounterService, CounterService>();
+
+// Register Fluxor
+builder.Services.AddFluxor(options => options
+    .ScanAssemblies(typeof(Program).Assembly));
 
 var app = builder.Build();
 

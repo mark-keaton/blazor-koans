@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" Version="6.9.0" />
     <PackageReference Include="Radzen.Blazor" Version="8.6.3" />
     <PackageReference Include="Stateless" Version="5.20.0" />
   </ItemGroup>
