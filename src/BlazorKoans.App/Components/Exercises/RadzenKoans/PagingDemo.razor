@@ -11,6 +11,7 @@
                 PageSizeOptions="@([ 3, 5, 10 ])"
                 PagerPosition="PagerPosition.TopAndBottom"
                 ShowPagingSummary="true"
+                Page="@OnPageChanged"
                 Style="width: 100%">
     <Columns>
         <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name" />
@@ -20,7 +21,18 @@
     </Columns>
 </RadzenDataGrid>
 
+<div class="mt-3">
+    <p><strong>Page Event:</strong> @pageChangedInfo</p>
+</div>
+
 @code {
+    private string pageChangedInfo = "Navigate to see event data";
+
+    private void OnPageChanged(PagerEventArgs args)
+    {
+        pageChangedInfo = $"Page {args.PageIndex + 1}, Skip={args.Skip}, Top={args.Top}";
+    }
+
     private List<Employee> employees = new()
     {
         new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },

@@ -135,17 +135,18 @@ public class E_Paging : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void Paging_PageChanged_EventFires()
+    public void Paging_PageEvent_Fires()
     {
-        // ABOUT: The PageChanged event fires when the user navigates to a different page.
-        // You can use this to load data for the new page or track analytics.
+        // ABOUT: The Page event fires when the user navigates to a different page.
+        // Use it to load data for the new page or track analytics.
+        // The event provides Skip and Top values for server-side paging.
 
-        // TODO: What parameter type does PageChanged event receive?
-        // HINT: It's a PageChangedEventArgs
+        // TODO: What parameter type does the Page event receive?
+        // HINT: Look at the OnPageChanged method signature in PagingDemo
 
         var expected = "__";
 
-        Assert.Equal("PageChangedEventArgs", expected);
+        Assert.Equal("PagerEventArgs", expected);
     }
 
     [Fact]
