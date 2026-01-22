@@ -8,6 +8,7 @@
 <RadzenDataGrid Data="@employees" TItem="Employee"
                 SelectionMode="global::Radzen.DataGridSelectionMode.Single"
                 @bind-Value="@selectedEmployees"
+                RowSelect="@OnRowSelect"
                 Style="width: 100%">
     <Columns>
         <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name" />
@@ -30,9 +31,12 @@
     {
         <p>No employee selected</p>
     }
+    <p><strong>RowSelect Event:</strong> @rowSelectInfo</p>
 </div>
 
 @code {
+    private string rowSelectInfo = "Click a row to see event";
+
     private List<Employee> employees = new()
     {
         new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },
@@ -43,4 +47,10 @@
     };
 
     private IList<Employee>? selectedEmployees;
+
+    private void OnRowSelect(Employee employee)
+    {
+        rowSelectInfo = $"Selected: {employee.Name}";
+    } 
+
 }

@@ -7,7 +7,7 @@ namespace BlazorKoans.Tests.Radzen._02_DataGrid;
 /// <summary>
 /// Selection allows users to select one or more rows in the grid.
 /// RadzenDataGrid supports single selection, multiple selection, and
-/// the SelectionChanged event to react to user selections.
+/// the RowSelect event to react to user selections.
 ///
 /// Think of selection like checking items in a to-do list - you can select
 /// one item to view details, or multiple items to perform bulk actions.
@@ -98,16 +98,18 @@ public class F_Selection : BunitContext
 
     [Fact]
     [Trait("Category", "Radzen")]
-    public void Selection_SelectionChanged_EventFires()
+    public void Selection_RowSelect_EventFires()
     {
-        // ABOUT: The SelectionChanged event fires whenever the selection changes.
-        // This lets you react to selections - load details, enable buttons, etc.
+        // ABOUT: The RowSelect event fires when a row is selected.
+        // Use it to react to selections - load details, enable buttons, etc.
+        // The event parameter is TItem (e.g., Employee).
 
-        // TODO: Does SelectionChanged fire when clicking a row?
+        // TODO: What parameter type does RowSelect receive?
+        // HINT: Look at the OnRowSelect method signature in SelectionDemo
 
-        var expected = "__"; // "Yes" or "No"
+        var expected = "__";
 
-        Assert.Equal("Yes", expected);
+        Assert.Equal("Employee", expected);
     }
 
     [Fact]
