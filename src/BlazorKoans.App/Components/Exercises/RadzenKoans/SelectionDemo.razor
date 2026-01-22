@@ -29,7 +29,10 @@
     }
     else
     {
-        <p>No employee selected</p>
+        var employee = employees.First();
+        <p>Name: @employee.Name</p>
+        <p>Department: @employee.Department</p>
+        <p>Salary: @employee.Salary.ToString("C")</p>
     }
     <p><strong>RowSelect Event:</strong> @rowSelectInfo</p>
 </div>

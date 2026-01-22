@@ -1,3 +1,4 @@
+using System.Linq;
 using Bunit;
 using BlazorKoans.App.Components.Exercises.RadzenKoans;
 using Xunit;
@@ -22,11 +23,14 @@ public class G_InlineEditing : BunitContext
         // EditMode.Single allows editing one row at a time.
         // EditMode.Multiple allows editing multiple rows simultaneously.
 
-        // TODO: What EditMode allows editing only one row at a time?
+        var cut = Render<InlineEditingDemo>();
 
-        var expected = "__";
+        // TODO: How many Edit buttons are visible (one per row)?
+        var editButtons = cut.FindAll("button").Where(b => b.TextContent.Contains("Edit"));
 
-        Assert.Equal("Single", expected);
+        var expected = 0;
+
+        Assert.Equal(expected, editButtons.Count());
     }
 
     [Fact]
@@ -107,30 +111,35 @@ public class G_InlineEditing : BunitContext
     [Trait("Category", "Radzen")]
     public void Editing_CommandColumn_AddsEditButtons()
     {
-        // ABOUT: RadzenDataGridColumn with a Template can include Edit/Update/Cancel buttons.
-        // Use RadzenButton with icon="edit" for Edit, "check" for Save, "close" for Cancel.
-        // The grid handles the state transitions automatically.
+        // ABOUT: Add an Actions column with Edit/Save/Cancel buttons.
+        // Use Template for view mode (Edit button) and EditTemplate for edit mode
+        // (Save and Cancel buttons).
 
-        // TODO: What icon is commonly used for the Edit button?
+        var cut = Render<InlineEditingDemo>();
+
+        // TODO: What is the title of the column containing the Edit button?
+        // HINT: Look at InlineEditingDemo's last column
 
         var expected = "__";
 
-        Assert.Equal("edit", expected);
+        Assert.Contains(expected, cut.Markup);
     }
 
     [Fact]
     [Trait("Category", "Radzen")]
     public void Editing_RowCreate_AddsNewRow()
     {
-        // ABOUT: The RowCreate event fires when adding a new row.
-        // You can use this to insert the new item into your data collection
-        // and save it to the database.
+        // ABOUT: To add new rows, provide a button that calls grid.InsertRow().
+        // The RowCreate event fires when the user saves the new row.
 
-        // TODO: What event fires when creating a new row?
+        var cut = Render<InlineEditingDemo>();
+
+        // TODO: What text is on the button that adds a new employee?
+        // HINT: Look at the button below the grid in InlineEditingDemo
 
         var expected = "__";
 
-        Assert.Equal("RowCreate", expected);
+        Assert.Contains(expected, cut.Markup);
     }
 
     [Fact]
