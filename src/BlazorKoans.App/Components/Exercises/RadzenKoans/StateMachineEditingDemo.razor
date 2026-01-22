@@ -2,6 +2,8 @@
 @using global::Radzen.Blazor
 @using global::Radzen
 @using Stateless
+@using Stateless.Graph
+@inject IJSRuntime JS
 @rendermode InteractiveServer
 
 <h3>State Machine Editing Demo</h3>
@@ -54,6 +56,28 @@ to enforce single-row editing. You cannot edit or add another row while one is i
     <p><strong>Can Edit:</strong> @CanEdit | <strong>Can Add:</strong> @CanAdd</p>
 </div>
 
+<RadzenButton Text="@(showGraph ? "Hide State Diagram" : "Show State Diagram")"
+              Icon="@(showGraph ? "visibility_off" : "visibility")"
+              ButtonStyle="ButtonStyle.Secondary"
+              Click="@ToggleGraph" Style="margin-top: 1rem" />
+
+@if (showGraph)
+{
+    <div class="mt-3 p-3 border rounded bg-light">
+        <h5>State Machine Diagram (Mermaid)</h5>
+        <pre class="mermaid">@MermaidGraph.Format(_machine.GetInfo())</pre>
+        <hr />
+        <details>
+            <summary>Raw Mermaid Code</summary>
+            <pre><code>@MermaidGraph.Format(_machine.GetInfo())</code></pre>
+        </details>
+        <details>
+            <summary>DOT Graph (Graphviz)</summary>
+            <pre><code>@UmlDotGraph.Format(_machine.GetInfo())</code></pre>
+        </details>
+    </div>
+}
+
 @code {
     // State Machine Definition
     public enum EditState { Viewing, Editing, Adding }
@@ -65,6 +89,7 @@ to enforce single-row editing. You cannot edit or add another row while one is i
     private RadzenDataGrid<Employee>? grid;
     private Employee? _currentEmployee;
     private string lastAction = "None";
+    private bool showGraph = false;
 
     private List<Employee> employees = new()
     {
@@ -150,5 +175,16 @@ to enforce single-row editing. You cannot edit or add another row while one is i
         _machine.Fire(EditTrigger.Save);
         lastAction = $"Created: {employee.Name}";
         StateHasChanged();
+    }
+
+    private async Task ToggleGraph()
+    {
+        showGraph = !showGraph;
+        if (showGraph)
+        {
+            // Give Mermaid time to render after DOM update
+            await Task.Delay(100);
+            await JS.InvokeVoidAsync("mermaid.run");
+        }
     }
 }
