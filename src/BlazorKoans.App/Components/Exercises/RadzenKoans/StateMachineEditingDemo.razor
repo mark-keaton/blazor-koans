@@ -1,0 +1,154 @@
+@using BlazorKoans.App.Models
+@using global::Radzen.Blazor
+@using global::Radzen
+@using Stateless
+@rendermode InteractiveServer
+
+<h3>State Machine Editing Demo</h3>
+
+<p>This demo uses the <a href="https://github.com/dotnet-state-machine/stateless" target="_blank">Stateless</a> library
+to enforce single-row editing. You cannot edit or add another row while one is in progress.</p>
+
+<RadzenDataGrid @ref="grid" Data="@employees" TItem="Employee"
+                EditMode="DataGridEditMode.Single"
+                RowUpdate="@OnUpdateRow"
+                RowCreate="@OnCreateRow"
+                Style="width: 100%">
+    <Columns>
+        <RadzenDataGridColumn TItem="Employee" Property="Name" Title="Name">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-Value="employee.Name" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Property="Department" Title="Department">
+            <EditTemplate Context="employee">
+                <RadzenTextBox @bind-Value="employee.Department" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Property="Salary" Title="Salary" FormatString="{0:C}" TextAlign="TextAlign.Right">
+            <EditTemplate Context="employee">
+                <RadzenNumeric @bind-Value="employee.Salary" Style="width: 100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Employee" Title="Actions" Width="200px" Sortable="false" Filterable="false">
+            <Template Context="employee">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                              Disabled="@(!CanEdit)" Click="@(() => EditRow(employee))" Text="Edit" />
+            </Template>
+            <EditTemplate Context="employee">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Size="ButtonSize.Small"
+                              Click="@(() => SaveRow(employee))" Text="Save" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                              Click="@(() => CancelRow(employee))" Text="Cancel" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<RadzenButton Text="Add New Employee" Icon="add" Click="@AddRow"
+              Disabled="@(!CanAdd)" Style="margin-top: 1rem" />
+
+<div class="status-panel mt-3">
+    <p><strong>Current State:</strong> @_machine.State</p>
+    <p><strong>Last Action:</strong> @lastAction</p>
+    <p><strong>Can Edit:</strong> @CanEdit | <strong>Can Add:</strong> @CanAdd</p>
+</div>
+
+@code {
+    // State Machine Definition
+    public enum EditState { Viewing, Editing, Adding }
+    public enum EditTrigger { Edit, Add, Save, Cancel }
+
+    private StateMachine<EditState, EditTrigger> _machine = null!;
+    private StateMachine<EditState, EditTrigger>.TriggerWithParameters<Employee> _editTrigger = null!;
+
+    private RadzenDataGrid<Employee>? grid;
+    private Employee? _currentEmployee;
+    private string lastAction = "None";
+
+    private List<Employee> employees = new()
+    {
+        new Employee { Id = 1, Name = "Alice Johnson", Department = "Engineering", Salary = 95000, HireDate = new DateTime(2020, 3, 15) },
+        new Employee { Id = 2, Name = "Bob Smith", Department = "Marketing", Salary = 75000, HireDate = new DateTime(2021, 7, 1) },
+        new Employee { Id = 3, Name = "Carol Williams", Department = "Engineering", Salary = 105000, HireDate = new DateTime(2019, 1, 10) }
+    };
+
+    protected override void OnInitialized()
+    {
+        _machine = new StateMachine<EditState, EditTrigger>(EditState.Viewing);
+        _editTrigger = _machine.SetTriggerParameters<Employee>(EditTrigger.Edit);
+
+        _machine.Configure(EditState.Viewing)
+            .Permit(EditTrigger.Add, EditState.Adding)
+            .Permit(EditTrigger.Edit, EditState.Editing);
+
+        _machine.Configure(EditState.Editing)
+            .OnEntryFrom(_editTrigger, employee => _currentEmployee = employee)
+            .OnExit(() => _currentEmployee = null)
+            .Permit(EditTrigger.Save, EditState.Viewing)
+            .Permit(EditTrigger.Cancel, EditState.Viewing);
+
+        _machine.Configure(EditState.Adding)
+            .OnEntry(() => _currentEmployee = new Employee { Id = employees.Count + 1, HireDate = DateTime.Now })
+            .OnExit(() => _currentEmployee = null)
+            .Permit(EditTrigger.Save, EditState.Viewing)
+            .Permit(EditTrigger.Cancel, EditState.Viewing);
+
+        _machine.OnTransitioned(t => lastAction = $"{t.Source} → {t.Destination} via {t.Trigger}");
+    }
+
+    // UI helpers - CanFire() checks if transition is valid
+    private bool CanEdit => _machine.CanFire(EditTrigger.Edit);
+    private bool CanAdd => _machine.CanFire(EditTrigger.Add);
+
+    // Actions
+    private async Task EditRow(Employee employee)
+    {
+        if (grid == null) return;
+
+        _machine.Fire(_editTrigger, employee);
+        await grid.EditRow(employee);
+        StateHasChanged();
+    }
+
+    private async Task AddRow()
+    {
+        if (grid == null) return;
+
+        _machine.Fire(EditTrigger.Add);
+        await grid.InsertRow(_currentEmployee!);
+        StateHasChanged();
+    }
+
+    private async Task SaveRow(Employee employee)
+    {
+        if (grid == null) return;
+
+        await grid.UpdateRow(employee);
+        // State transition happens in OnUpdateRow/OnCreateRow
+    }
+
+    private void CancelRow(Employee employee)
+    {
+        if (grid == null) return;
+
+        grid.CancelEditRow(employee);
+        _machine.Fire(EditTrigger.Cancel);
+        StateHasChanged();
+    }
+
+    private void OnUpdateRow(Employee employee)
+    {
+        _machine.Fire(EditTrigger.Save);
+        lastAction = $"Updated: {employee.Name}";
+        StateHasChanged();
+    }
+
+    private void OnCreateRow(Employee employee)
+    {
+        employees.Add(employee);
+        _machine.Fire(EditTrigger.Save);
+        lastAction = $"Created: {employee.Name}";
+        StateHasChanged();
+    }
+}
