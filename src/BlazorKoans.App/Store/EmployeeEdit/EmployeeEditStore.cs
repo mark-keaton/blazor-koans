@@ -26,7 +26,7 @@ public record EmployeeEditState
 
 // ============== ACTIONS ==============
 public record StartEditAction(Employee Employee);
-public record StartAddAction;
+public record StartAddAction(Employee Employee);
 public record SaveAction(Employee Employee);
 public record CancelAction;
 
@@ -51,16 +51,10 @@ public static class EmployeeEditReducers
     {
         if (state.Mode != EditMode.Viewing) return state; // Guard
 
-        var newEmployee = new Employee
-        {
-            Id = state.Employees.Count + 1,
-            HireDate = DateTime.Now
-        };
-
         return state with
         {
             Mode = EditMode.Adding,
-            CurrentEmployee = newEmployee,
+            CurrentEmployee = action.Employee,
             LastAction = "Adding new employee"
         };
     }

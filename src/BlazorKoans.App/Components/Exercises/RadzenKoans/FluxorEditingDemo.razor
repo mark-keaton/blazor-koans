@@ -87,8 +87,14 @@ return state with { Mode = EditMode.Editing, CurrentEmployee = employee };
     {
         if (grid == null) return;
 
-        Dispatcher.Dispatch(new StartAddAction());
-        await grid.InsertRow(State.Value.CurrentEmployee!);
+        var newEmployee = new Employee
+        {
+            Id = State.Value.Employees.Count + 1,
+            HireDate = DateTime.Now
+        };
+
+        Dispatcher.Dispatch(new StartAddAction(newEmployee));
+        await grid.InsertRow(newEmployee);
     }
 
     private async Task SaveRow(Employee employee)

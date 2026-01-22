@@ -85,6 +85,7 @@ to enforce single-row editing. You cannot edit or add another row while one is i
 
     private StateMachine<EditState, EditTrigger> _machine = null!;
     private StateMachine<EditState, EditTrigger>.TriggerWithParameters<Employee> _editTrigger = null!;
+    private StateMachine<EditState, EditTrigger>.TriggerWithParameters<Employee> _addTrigger = null!;
 
     private RadzenDataGrid<Employee>? grid;
     private Employee? _currentEmployee;
@@ -113,8 +114,10 @@ to enforce single-row editing. You cannot edit or add another row while one is i
             .Permit(EditTrigger.Save, EditState.Viewing)
             .Permit(EditTrigger.Cancel, EditState.Viewing);
 
+        _addTrigger = _machine.SetTriggerParameters<Employee>(EditTrigger.Add);
+
         _machine.Configure(EditState.Adding)
-            .OnEntry(() => _currentEmployee = new Employee { Id = employees.Count + 1, HireDate = DateTime.Now })
+            .OnEntryFrom(_addTrigger, employee => _currentEmployee = employee)
             .OnExit(() => _currentEmployee = null)
             .Permit(EditTrigger.Save, EditState.Viewing)
             .Permit(EditTrigger.Cancel, EditState.Viewing);
@@ -140,8 +143,9 @@ to enforce single-row editing. You cannot edit or add another row while one is i
     {
         if (grid == null) return;
 
-        _machine.Fire(EditTrigger.Add);
-        await grid.InsertRow(_currentEmployee!);
+        var newEmployee = new Employee { Id = employees.Count + 1, HireDate = DateTime.Now };
+        _machine.Fire(_addTrigger, newEmployee);
+        await grid.InsertRow(newEmployee);
         StateHasChanged();
     }
 
