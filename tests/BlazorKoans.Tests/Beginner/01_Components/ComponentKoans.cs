@@ -81,7 +81,7 @@ public class ComponentKoans : BunitContext
             .Add(p => p.Items, items)
             .Add(p => p.ItemTemplate, item => $"<li>{item}</li>"));
 
-        var tagName = "__";
+        var tagName = "ul";
 
         cut.MarkupMatches($@"<{tagName}>
             <li>Apple</li>
